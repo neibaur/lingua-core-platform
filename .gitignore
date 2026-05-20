@@ -1,0 +1,113 @@
+# Dependency directories
+node_modules/
+
+# Next.js build output
+.next/
+
+# Production and build directories
+dist/
+build/
+
+# Turborepo
+.turbo/
+
+# Coverage reports
+coverage/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Database files
+*.db
+*.sqlite
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.json
+
+# Cache
+.cache/
+.next/cache/
+.nuxt/
+.oas3-cache/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Yarn integrity file
+.yarn-integrity
+
+# npm
+package-lock.json
+npm-shrinkwrap.json
+
+# pnpm
+pnpm-lock.yaml
+.pnpm-debug.log
+node_modules/.pnpm
+
+# VS Code workspace storage
+*.code-workspace
+.vscode-test/
+
+# TypeScript
+*.tsbuildinfo
+
+# Build directories
+out/
+coverage/
+
+# Storybook
+storybook-static/
+
+# Misc
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+*.rej
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# JetBrains
+*.iml
+.idea/
+
+# Optional npm cache directory
+.npm/
