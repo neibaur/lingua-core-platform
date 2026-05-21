@@ -15,6 +15,19 @@ export type {
   NormalizationRuleOutput,
 } from "./normalization";
 export { tokenizeText } from "./pipeline/tokenize-text";
+export { buildSearchProjection } from "./search";
+export { extractOriginalSpan } from "./search";
+export {
+  mapNormalizedRangeToOriginalRange,
+  validateProjectionOffsets,
+} from "./search";
+export type {
+  ProjectionOffsetValidationResult,
+  ProjectionSourceRange,
+  SearchProjectionPipelineResult,
+  SearchProjectionRecord,
+  SearchProjectionTokenType,
+} from "./search";
 export type { SearchIndexDocument } from "./shared/search-index";
 export type {
   NormalizedToken,
