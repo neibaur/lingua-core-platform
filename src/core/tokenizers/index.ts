@@ -36,6 +36,7 @@ export {
   reconstructQuerySpan,
   unionMatchedDocuments,
 } from "./search";
+export { lexQuery } from "./search";
 export { matchSearchTerm } from "./search";
 export { buildPhraseWindow } from "./search";
 export { extractMatchSpan } from "./search";
@@ -61,6 +62,10 @@ export type {
   Query,
   QueryExecutionResult,
   QueryPostingMatch,
+  QueryLexeme,
+  QueryLexemeType,
+  QueryParserDiagnostic,
+  QueryParserDiagnosticSeverity,
   SearchCorpus,
   SearchCorpusFormatVersion,
   SearchMatch,
@@ -68,6 +73,7 @@ export type {
   SearchProjectionPipelineResult,
   SearchProjectionRecord,
   SearchProjectionTokenType,
+  SourceSpan,
   TokenQuery,
 } from "./search";
 export type { SearchIndexDocument } from "./shared/search-index";
