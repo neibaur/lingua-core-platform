@@ -6,6 +6,7 @@ import type {
   QueryPipelineStageResult,
 } from "../shared/query-pipeline-types";
 import { executeQuery } from "../../query-engine";
+import { buildQueryExecutionPlan } from "../../query-ir";
 import type { CompileQueryResult } from "../../query-parser";
 import { compileQueryAst, lexQuery, parseQuery } from "../../query-parser";
 import type {
@@ -32,10 +33,12 @@ export function executeQueryPipeline(
       lexemes,
       ast: parseResult.ast,
       plan: null,
+      executionPlan: null,
       executionQuery: null,
       diagnostics: parseDiagnostics,
       parseStageResult,
       compileResult: null,
+      executionPlanResult: null,
       executionResult: null,
     });
   }
@@ -55,13 +58,23 @@ export function executeQueryPipeline(
       lexemes,
       ast: parseResult.ast,
       plan: compileResult.plan,
+      executionPlan: null,
       executionQuery: compileResult.query,
       diagnostics: compileDiagnostics,
       parseStageResult,
       compileResult,
+      executionPlanResult: null,
       executionResult: null,
     });
   }
+
+  const executionPlan = buildQueryExecutionPlan(compileResult.plan);
+  const executionPlanStageResult: QueryPipelineStageResult<"plan"> =
+    Object.freeze({
+      stage: "plan",
+      success: executionPlan.diagnostics.length === 0,
+      diagnostics: Object.freeze([]),
+    });
 
   const executionResult = executeQuery(
     input.corpus.invertedIndex,
@@ -73,10 +86,12 @@ export function executeQueryPipeline(
     lexemes,
     ast: parseResult.ast,
     plan: compileResult.plan,
+    executionPlan,
     executionQuery: compileResult.query,
     diagnostics: [],
     parseStageResult,
     compileResult,
+    executionPlanResult: executionPlanStageResult,
     executionResult,
   });
 }
@@ -86,10 +101,12 @@ function createPipelineResult(input: {
   readonly lexemes: readonly QueryLexeme[];
   readonly ast: QueryPipelineMetadata["ast"];
   readonly plan: QueryPipelineMetadata["plan"];
+  readonly executionPlan: QueryPipelineMetadata["executionPlan"];
   readonly executionQuery: QueryPipelineMetadata["executionQuery"];
   readonly diagnostics: readonly QueryPipelineDiagnostic[];
   readonly parseStageResult: QueryPipelineStageResult<"parse">;
   readonly compileResult: CompileQueryResult | null;
+  readonly executionPlanResult: QueryPipelineStageResult<"plan"> | null;
   readonly executionResult: ExecuteQueryPipelineResult["executionResult"];
 }): ExecuteQueryPipelineResult {
   return Object.freeze({
@@ -100,10 +117,12 @@ function createPipelineResult(input: {
       lexemes: Object.freeze([...input.lexemes]),
       ast: input.ast,
       plan: input.plan,
+      executionPlan: input.executionPlan,
       executionQuery: input.executionQuery,
     }),
     parseResult: input.parseStageResult,
     compileResult: input.compileResult,
+    executionPlanResult: input.executionPlanResult,
     executionResult: input.executionResult,
   });
 }

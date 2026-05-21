@@ -6,6 +6,7 @@ export type {
   ExecuteQueryPipelineDiagnostic,
   LexQueryPipelineDiagnostic,
   ParseQueryPipelineDiagnostic,
+  PlanQueryPipelineDiagnostic,
   QueryPipelineDiagnostic,
   QueryPipelineDiagnosticBase,
   QueryPipelineMetadata,
