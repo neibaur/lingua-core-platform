@@ -6,6 +6,14 @@ export { DictionaryTokenizerDriver } from "./drivers/dictionary";
 export type { DictionaryTokenizerDriverOptions } from "./drivers/dictionary";
 export { MockTokenizerDriver } from "./drivers/mock";
 export type { MockTokenizerDriverOptions } from "./drivers/mock";
+export { normalizeText } from "./normalization";
+export type {
+  IndexMap,
+  NormalizationResult,
+  NormalizationRule,
+  NormalizationRuleInput,
+  NormalizationRuleOutput,
+} from "./normalization";
 export { tokenizeText } from "./pipeline/tokenize-text";
 export type { SearchIndexDocument } from "./shared/search-index";
 export type {
