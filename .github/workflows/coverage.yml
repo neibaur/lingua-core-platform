@@ -1,0 +1,53 @@
+name: Coverage
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  advisory:
+    name: advisory
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@10.0.0 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run advisory coverage
+        run: pnpm test:coverage
+
+      - name: Add coverage summary
+        if: always()
+        run: |
+          if [ -f coverage/coverage-summary.json ]; then
+            node -e "const fs = require('node:fs'); const summary = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8')).total; const rows = Object.entries(summary).filter(([key]) => key !== 'branchesTrue').map(([key, value]) => '| ' + key + ' | ' + value.pct + '% | ' + value.covered + '/' + value.total + ' |').join('\n'); fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, '## Vitest Coverage\n\n| Metric | Covered | Count |\n| --- | ---: | ---: |\n' + rows + '\n');"
+          else
+            echo "Coverage summary was not generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-coverage
+          path: coverage
+          if-no-files-found: ignore
