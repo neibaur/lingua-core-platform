@@ -36,7 +36,7 @@ export {
   reconstructQuerySpan,
   unionMatchedDocuments,
 } from "./search";
-export { lexQuery, parseQuery } from "./search";
+export { compileQueryAst, lexQuery, parseQuery } from "./search";
 export { matchSearchTerm } from "./search";
 export { buildPhraseWindow } from "./search";
 export { extractMatchSpan } from "./search";
@@ -71,6 +71,9 @@ export type {
   QueryAstBaseNode,
   QueryAstNode,
   QueryNodeType,
+  CompiledQueryPlan,
+  CompileQueryResult,
+  QueryCompileDiagnostic,
   QueryParserDiagnostic,
   QueryParserDiagnosticSeverity,
   TokenQueryNode,

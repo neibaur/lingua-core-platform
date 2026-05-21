@@ -1,3 +1,4 @@
+export { compileQueryAst } from "./query-planner";
 export { parseQuery } from "./parser";
 export { lexQuery } from "./lexer";
 export type {
@@ -11,6 +12,11 @@ export type {
 } from "./ast";
 export type { QueryLexeme, QueryLexemeType } from "./lexer";
 export type { ParseQueryResult } from "./parser";
+export type {
+  CompiledQueryPlan,
+  CompileQueryResult,
+  QueryCompileDiagnostic,
+} from "./query-planner";
 export type {
   QueryParserDiagnostic,
   QueryParserDiagnosticSeverity,
