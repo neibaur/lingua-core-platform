@@ -5,6 +5,19 @@ export {
   deserializeSearchCorpus,
   serializeSearchCorpus,
 } from "./index-primitives";
+export {
+  executeBooleanQuery,
+  executePhraseQuery,
+  executeQuery,
+  executeTokenQuery,
+} from "./query-engine";
+export {
+  groupPostingsByDocument,
+  intersectMatchedDocuments,
+  mergeDocumentMatches,
+  reconstructQuerySpan,
+  unionMatchedDocuments,
+} from "./query-engine";
 export { matchSearchTerm } from "./matching";
 export { buildPhraseWindow } from "./matching";
 export { extractMatchSpan } from "./matching";
@@ -30,6 +43,16 @@ export type {
   SearchMatch,
   SearchMatchRange,
 } from "./matching";
+export type {
+  BooleanQuery,
+  MatchedDocument,
+  MatchedSpan,
+  PhraseQuery,
+  Query,
+  QueryExecutionResult,
+  QueryPostingMatch,
+  TokenQuery,
+} from "./query-engine";
 export type { SearchProjectionPipelineResult } from "./shared/search-projection-pipeline-result";
 export type {
   SearchProjectionRecord,
