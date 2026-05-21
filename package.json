@@ -11,9 +11,11 @@
   "scripts": {
     "dev": "echo \"Error: Add framework runtime dev script later\" && exit 1",
     "build": "echo \"Error: Add framework runtime build script later\" && exit 1",
-    "lint": "echo \"Add ESLint config later\" && exit 0",
-    "format": "echo \"Add formatter later\" && exit 0",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint .",
+    "format": "prettier --write \".\"",
+    "format:check": "prettier --check \".\"",
+    "typecheck": "tsc --noEmit",
+    "validate": "pnpm run format:check && pnpm run lint && pnpm run typecheck"
   },
   "keywords": [
     "language-learning",
@@ -30,7 +32,12 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^20.12.7",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.0.0",
     "typescript": "^5.4.5",
-    "@types/node": "^20.12.7"
+    "typescript-eslint": "^8.0.0"
   }
 }
