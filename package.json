@@ -1,0 +1,36 @@
+{
+  "name": "lingua-core-platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Governance-first multi-tenant language platform engine.",
+  "packageManager": "pnpm@10.0.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "echo \"Error: Add framework runtime dev script later\" && exit 1",
+    "build": "echo \"Error: Add framework runtime build script later\" && exit 1",
+    "lint": "echo \"Add ESLint config later\" && exit 0",
+    "format": "echo \"Add formatter later\" && exit 0",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "language-learning",
+    "linguistics",
+    "dictionary",
+    "search-engine",
+    "postgresql",
+    "typescript",
+    "seo",
+    "modular-monolith",
+    "fullstack",
+    "nlp"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "@types/node": "^20.12.7"
+  }
+}
