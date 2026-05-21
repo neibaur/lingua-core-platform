@@ -21,6 +21,10 @@ export {
 export { buildQueryExecutionPlan } from "./query-ir";
 export { QUERY_EXECUTION_PLAN_FORMAT_VERSION } from "./query-ir";
 export { executeQueryPipeline } from "./query-pipeline";
+export {
+  buildQueryExecutionTrace,
+  buildQueryExplanation,
+} from "./query-tracing";
 export { compileQueryAst, lexQuery, parseQuery } from "./query-parser";
 export { matchSearchTerm } from "./matching";
 export { buildPhraseWindow } from "./matching";
@@ -70,6 +74,7 @@ export type {
 export type {
   CompileQueryPipelineDiagnostic,
   ExecuteQueryPipelineInput,
+  ExecuteQueryPipelineOptions,
   ExecuteQueryPipelineResult,
   ExecuteQueryPipelineDiagnostic,
   LexQueryPipelineDiagnostic,
@@ -81,6 +86,18 @@ export type {
   QueryPipelineStage,
   QueryPipelineStageResult,
 } from "./query-pipeline";
+export type {
+  QueryExecutionTrace,
+  QueryExecutionTraceMetadata,
+  QueryExecutionTraceStage,
+  QueryExecutionTraceStatus,
+  QueryExecutionTraceStep,
+  QueryExplanation,
+  QueryExplanationArtifact,
+  QueryExplanationArtifactType,
+  QueryExplanationStage,
+  QueryTraceMetadataPrimitive,
+} from "./query-tracing";
 export type {
   QueryLexeme,
   QueryLexemeType,

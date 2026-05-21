@@ -144,3 +144,34 @@ flowchart LR
 - No AI dependency as a core runtime requirement.
 - No commitment to a specific database, hosting provider, ORM, or deployment platform.
 - No proprietary content, private prompts, commercial datasets, analytics secrets, or tenant-specific private data in the public core.
+
+## Deterministic Query Explainability
+
+The search query pipeline is intentionally shaped like a deterministic
+compiler/runtime boundary:
+
+```text
+Raw Query
+-> Lexer
+-> Parser AST
+-> Planner / Compiler
+-> Execution Plan IR
+-> Runtime Query Execution
+-> Match Results / Diagnostics
+```
+
+Explainability infrastructure is an additive introspection layer over these
+stage artifacts. It must not rewrite queries, inspect corpus state for planning,
+introduce ranking, or mutate runtime execution. Equivalent inputs must produce
+equivalent explanations, traces, stage artifacts, and serialized output.
+
+Query explanations summarize structural remnants from each deterministic stage:
+lexing, parsing, AST shape, compilation, execution-plan IR, runtime query shape,
+execution results, and diagnostics. Explanation artifacts preserve source-span
+provenance where the stage provides it and avoid retaining live runtime objects.
+
+Execution traces are structural artifacts, not telemetry systems. They are not
+performance profilers, metrics systems, tracing SDK integrations, adaptive
+runtime infrastructure, or optimization signals. Trace identifiers and step
+identifiers must be deterministic, timestamps must remain absent or explicitly
+null, and metadata must be serialization-safe primitive data only.

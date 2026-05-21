@@ -10,10 +10,20 @@ import type {
   QueryParserDiagnosticSeverity,
 } from "../../query-parser";
 import type { Query, QueryExecutionResult } from "../../query-engine";
+import type {
+  QueryExecutionTrace,
+  QueryExplanation,
+} from "../../query-tracing";
 
 export interface ExecuteQueryPipelineInput {
   readonly rawQuery: string;
   readonly corpus: SearchCorpus;
+  readonly options?: ExecuteQueryPipelineOptions;
+}
+
+export interface ExecuteQueryPipelineOptions {
+  readonly explain?: boolean;
+  readonly trace?: boolean;
 }
 
 export type QueryPipelineStage =
@@ -82,4 +92,6 @@ export interface ExecuteQueryPipelineResult {
   readonly compileResult: CompileQueryResult | null;
   readonly executionPlanResult: QueryPipelineStageResult<"plan"> | null;
   readonly executionResult: QueryExecutionResult | null;
+  readonly queryExplanation?: QueryExplanation;
+  readonly executionTrace?: QueryExecutionTrace;
 }
