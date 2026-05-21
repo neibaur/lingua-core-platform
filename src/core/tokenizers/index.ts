@@ -16,7 +16,11 @@ export type {
 } from "./normalization";
 export { tokenizeText } from "./pipeline/tokenize-text";
 export { buildSearchProjection } from "./search";
+export { matchSearchTerm } from "./search";
+export { buildPhraseWindow } from "./search";
+export { extractMatchSpan } from "./search";
 export { extractOriginalSpan } from "./search";
+export { isContiguousMatch } from "./search";
 export {
   mapNormalizedRangeToOriginalRange,
   validateProjectionOffsets,
@@ -24,6 +28,9 @@ export {
 export type {
   ProjectionOffsetValidationResult,
   ProjectionSourceRange,
+  PhraseMatchResult,
+  SearchMatch,
+  SearchMatchRange,
   SearchProjectionPipelineResult,
   SearchProjectionRecord,
   SearchProjectionTokenType,
