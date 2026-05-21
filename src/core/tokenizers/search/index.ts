@@ -1,4 +1,10 @@
 export { buildSearchProjection } from "./pipeline/build-search-projection";
+export { CorpusIndexer } from "./index-primitives";
+export {
+  canonicalizeSearchCorpus,
+  deserializeSearchCorpus,
+  serializeSearchCorpus,
+} from "./index-primitives";
 export { matchSearchTerm } from "./matching";
 export { buildPhraseWindow } from "./matching";
 export { extractMatchSpan } from "./matching";
@@ -9,6 +15,16 @@ export {
   validateProjectionOffsets,
 } from "./utils/validate-projection-offsets";
 export type { ProjectionSourceRange } from "./shared/projection-source-range";
+export {
+  SEARCH_CORPUS_FORMAT_VERSION,
+  type CorpusDocument,
+  type CorpusIndexDocumentInput,
+  type CorpusStatistics,
+  type InvertedIndex,
+  type PostingRecord,
+  type SearchCorpus,
+  type SearchCorpusFormatVersion,
+} from "./index-primitives";
 export type {
   PhraseMatchResult,
   SearchMatch,

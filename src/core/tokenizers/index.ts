@@ -16,6 +16,13 @@ export type {
 } from "./normalization";
 export { tokenizeText } from "./pipeline/tokenize-text";
 export { buildSearchProjection } from "./search";
+export { CorpusIndexer } from "./search";
+export { SEARCH_CORPUS_FORMAT_VERSION } from "./search";
+export {
+  canonicalizeSearchCorpus,
+  deserializeSearchCorpus,
+  serializeSearchCorpus,
+} from "./search";
 export { matchSearchTerm } from "./search";
 export { buildPhraseWindow } from "./search";
 export { extractMatchSpan } from "./search";
@@ -26,9 +33,16 @@ export {
   validateProjectionOffsets,
 } from "./search";
 export type {
+  CorpusDocument,
+  CorpusIndexDocumentInput,
+  CorpusStatistics,
+  InvertedIndex,
+  PostingRecord,
   ProjectionOffsetValidationResult,
   ProjectionSourceRange,
   PhraseMatchResult,
+  SearchCorpus,
+  SearchCorpusFormatVersion,
   SearchMatch,
   SearchMatchRange,
   SearchProjectionPipelineResult,
