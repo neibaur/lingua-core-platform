@@ -19,6 +19,7 @@ export function canonicalizeJsonValue(value: unknown): JsonValue {
 export function assertJsonValue(
   value: unknown,
   path: string,
+  seenObjects: readonly object[] = [],
 ): asserts value is JsonValue {
   if (value === null) {
     return;
@@ -35,17 +36,27 @@ export function assertJsonValue(
 
       throw new TypeError(`${path} must be a finite JSON number.`);
     case "object":
-      assertJsonObjectOrArray(value, path);
+      assertJsonObjectOrArray(value, path, seenObjects);
       return;
     default:
       throw new TypeError(`${path} must be JSON-safe data.`);
   }
 }
 
-function assertJsonObjectOrArray(value: object, path: string): void {
+function assertJsonObjectOrArray(
+  value: object,
+  path: string,
+  seenObjects: readonly object[],
+): void {
+  if (seenObjects.includes(value)) {
+    throw new TypeError(`${path} must not contain circular references.`);
+  }
+
+  const nextSeenObjects = Object.freeze([...seenObjects, value]);
+
   if (Array.isArray(value)) {
     value.forEach((item, index) => {
-      assertJsonValue(item, `${path}[${String(index)}]`);
+      assertJsonValue(item, `${path}[${String(index)}]`, nextSeenObjects);
     });
     return;
   }
@@ -55,7 +66,7 @@ function assertJsonObjectOrArray(value: object, path: string): void {
   }
 
   Object.entries(value).forEach(([key, entryValue]) => {
-    assertJsonValue(entryValue, `${path}.${key}`);
+    assertJsonValue(entryValue, `${path}.${key}`, nextSeenObjects);
   });
 }
 

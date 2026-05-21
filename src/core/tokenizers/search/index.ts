@@ -22,6 +22,20 @@ export { buildQueryExecutionPlan } from "./query-ir";
 export { QUERY_EXECUTION_PLAN_FORMAT_VERSION } from "./query-ir";
 export { executeQueryPipeline } from "./query-pipeline";
 export {
+  canonicalizeForEquivalence,
+  createQueryReplaySnapshot,
+  createQuerySnapshotBundle,
+  deserializeQueryReplaySnapshot,
+  deserializeQuerySnapshotBundle,
+  reconstructQueryReplaySnapshot,
+  reconstructQuerySnapshotBundle,
+  replayQuerySnapshotBundle,
+  stableJsonStringify,
+  validateQueryReplaySnapshot,
+  validateQuerySnapshotBundle,
+  verifyCanonicalStructuralEquivalence,
+} from "./query-snapshots";
+export {
   buildQueryExecutionTrace,
   buildQueryExplanation,
 } from "./query-tracing";
@@ -86,6 +100,27 @@ export type {
   QueryPipelineStage,
   QueryPipelineStageResult,
 } from "./query-pipeline";
+export type {
+  ExecutionPlanSnapshot,
+  JsonObject,
+  JsonPrimitive,
+  JsonValue,
+  QueryExecutionTraceSnapshot,
+  QueryExplanationSnapshot,
+  QueryPipelineSnapshot,
+  QueryReplaySnapshot,
+  QuerySnapshotArtifactKind,
+  QuerySnapshotBundle,
+  QuerySnapshotDiagnostic,
+  QuerySnapshotDiagnosticCode,
+  QuerySnapshotDiagnosticSeverity,
+  QuerySnapshotEnvelope,
+  QuerySnapshotEquivalenceResult,
+  QuerySnapshotId,
+  QuerySnapshotReconstructionResult,
+  QuerySnapshotSchemaVersion,
+  QuerySnapshotValidationResult,
+} from "./query-snapshots";
 export type {
   QueryExecutionTrace,
   QueryExecutionTraceMetadata,
