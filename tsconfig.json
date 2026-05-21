@@ -16,11 +16,10 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "exactOptionalPropertyTypes": true,
-    "baseUrl": ".",
     "paths": {
-      "@/core/*": ["src/core/*"],
-      "@/tenants/*": ["src/tenants/*"],
-      "@/shared/*": ["src/shared/*"]
+      "@/core/*": ["./src/core/*"],
+      "@/tenants/*": ["./src/tenants/*"],
+      "@/shared/*": ["./src/shared/*"]
     }
   },
   "include": ["src/**/*"],
