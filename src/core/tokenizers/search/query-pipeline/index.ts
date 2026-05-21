@@ -2,6 +2,7 @@ export { executeQueryPipeline } from "./pipeline/execute-query-pipeline";
 export type {
   CompileQueryPipelineDiagnostic,
   ExecuteQueryPipelineInput,
+  ExecuteQueryPipelineOptions,
   ExecuteQueryPipelineResult,
   ExecuteQueryPipelineDiagnostic,
   LexQueryPipelineDiagnostic,

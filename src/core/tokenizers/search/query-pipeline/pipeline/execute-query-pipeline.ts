@@ -1,12 +1,17 @@
 import type { QueryPipelineDiagnostic } from "../shared/query-pipeline-types";
 import type {
   ExecuteQueryPipelineInput,
+  ExecuteQueryPipelineOptions,
   ExecuteQueryPipelineResult,
   QueryPipelineMetadata,
   QueryPipelineStageResult,
 } from "../shared/query-pipeline-types";
 import { executeQuery } from "../../query-engine";
 import { buildQueryExecutionPlan } from "../../query-ir";
+import {
+  buildQueryExecutionTrace,
+  buildQueryExplanation,
+} from "../../query-tracing";
 import type { CompileQueryResult } from "../../query-parser";
 import { compileQueryAst, lexQuery, parseQuery } from "../../query-parser";
 import type {
@@ -28,7 +33,7 @@ export function executeQueryPipeline(
   });
 
   if (parseDiagnostics.length > 0 || parseResult.ast === null) {
-    return createPipelineResult({
+    return createPipelineResult(input.options, {
       rawQuery: input.rawQuery,
       lexemes,
       ast: parseResult.ast,
@@ -53,7 +58,7 @@ export function executeQueryPipeline(
     compileResult.plan === null ||
     compileResult.query === null
   ) {
-    return createPipelineResult({
+    return createPipelineResult(input.options, {
       rawQuery: input.rawQuery,
       lexemes,
       ast: parseResult.ast,
@@ -81,7 +86,7 @@ export function executeQueryPipeline(
     compileResult.query,
   );
 
-  return createPipelineResult({
+  return createPipelineResult(input.options, {
     rawQuery: input.rawQuery,
     lexemes,
     ast: parseResult.ast,
@@ -96,20 +101,23 @@ export function executeQueryPipeline(
   });
 }
 
-function createPipelineResult(input: {
-  readonly rawQuery: string;
-  readonly lexemes: readonly QueryLexeme[];
-  readonly ast: QueryPipelineMetadata["ast"];
-  readonly plan: QueryPipelineMetadata["plan"];
-  readonly executionPlan: QueryPipelineMetadata["executionPlan"];
-  readonly executionQuery: QueryPipelineMetadata["executionQuery"];
-  readonly diagnostics: readonly QueryPipelineDiagnostic[];
-  readonly parseStageResult: QueryPipelineStageResult<"parse">;
-  readonly compileResult: CompileQueryResult | null;
-  readonly executionPlanResult: QueryPipelineStageResult<"plan"> | null;
-  readonly executionResult: ExecuteQueryPipelineResult["executionResult"];
-}): ExecuteQueryPipelineResult {
-  return Object.freeze({
+function createPipelineResult(
+  options: ExecuteQueryPipelineOptions | undefined,
+  input: {
+    readonly rawQuery: string;
+    readonly lexemes: readonly QueryLexeme[];
+    readonly ast: QueryPipelineMetadata["ast"];
+    readonly plan: QueryPipelineMetadata["plan"];
+    readonly executionPlan: QueryPipelineMetadata["executionPlan"];
+    readonly executionQuery: QueryPipelineMetadata["executionQuery"];
+    readonly diagnostics: readonly QueryPipelineDiagnostic[];
+    readonly parseStageResult: QueryPipelineStageResult<"parse">;
+    readonly compileResult: CompileQueryResult | null;
+    readonly executionPlanResult: QueryPipelineStageResult<"plan"> | null;
+    readonly executionResult: ExecuteQueryPipelineResult["executionResult"];
+  },
+): ExecuteQueryPipelineResult {
+  const result: ExecuteQueryPipelineResult = {
     success: input.diagnostics.length === 0,
     diagnostics: Object.freeze([...input.diagnostics]),
     metadata: Object.freeze({
@@ -124,6 +132,22 @@ function createPipelineResult(input: {
     compileResult: input.compileResult,
     executionPlanResult: input.executionPlanResult,
     executionResult: input.executionResult,
+  };
+
+  const baseResult = Object.freeze(result);
+
+  if (options?.explain !== true && options?.trace !== true) {
+    return baseResult;
+  }
+
+  return Object.freeze({
+    ...baseResult,
+    ...(options.explain === true
+      ? { queryExplanation: buildQueryExplanation(baseResult) }
+      : {}),
+    ...(options.trace === true
+      ? { executionTrace: buildQueryExecutionTrace(baseResult) }
+      : {}),
   });
 }
 
