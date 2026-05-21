@@ -23,6 +23,19 @@ export {
   deserializeSearchCorpus,
   serializeSearchCorpus,
 } from "./search";
+export {
+  executeBooleanQuery,
+  executePhraseQuery,
+  executeQuery,
+  executeTokenQuery,
+} from "./search";
+export {
+  groupPostingsByDocument,
+  intersectMatchedDocuments,
+  mergeDocumentMatches,
+  reconstructQuerySpan,
+  unionMatchedDocuments,
+} from "./search";
 export { matchSearchTerm } from "./search";
 export { buildPhraseWindow } from "./search";
 export { extractMatchSpan } from "./search";
@@ -33,14 +46,21 @@ export {
   validateProjectionOffsets,
 } from "./search";
 export type {
+  BooleanQuery,
   CorpusDocument,
   CorpusIndexDocumentInput,
   CorpusStatistics,
   InvertedIndex,
+  MatchedDocument,
+  MatchedSpan,
+  PhraseQuery,
   PostingRecord,
   ProjectionOffsetValidationResult,
   ProjectionSourceRange,
   PhraseMatchResult,
+  Query,
+  QueryExecutionResult,
+  QueryPostingMatch,
   SearchCorpus,
   SearchCorpusFormatVersion,
   SearchMatch,
@@ -48,6 +68,7 @@ export type {
   SearchProjectionPipelineResult,
   SearchProjectionRecord,
   SearchProjectionTokenType,
+  TokenQuery,
 } from "./search";
 export type { SearchIndexDocument } from "./shared/search-index";
 export type {
