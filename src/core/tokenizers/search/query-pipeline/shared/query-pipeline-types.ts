@@ -1,4 +1,5 @@
 import type { SearchCorpus } from "../../index-primitives";
+import type { QueryExecutionPlan } from "../../query-ir";
 import type {
   CompiledQueryPlan,
   CompileQueryResult,
@@ -15,7 +16,12 @@ export interface ExecuteQueryPipelineInput {
   readonly corpus: SearchCorpus;
 }
 
-export type QueryPipelineStage = "lex" | "parse" | "compile" | "execute";
+export type QueryPipelineStage =
+  | "lex"
+  | "parse"
+  | "compile"
+  | "plan"
+  | "execute";
 
 export interface QueryPipelineDiagnosticBase {
   readonly stage: QueryPipelineStage;
@@ -42,10 +48,15 @@ export interface ExecuteQueryPipelineDiagnostic extends QueryPipelineDiagnosticB
   readonly stage: "execute";
 }
 
+export interface PlanQueryPipelineDiagnostic extends QueryPipelineDiagnosticBase {
+  readonly stage: "plan";
+}
+
 export type QueryPipelineDiagnostic =
   | LexQueryPipelineDiagnostic
   | ParseQueryPipelineDiagnostic
   | CompileQueryPipelineDiagnostic
+  | PlanQueryPipelineDiagnostic
   | ExecuteQueryPipelineDiagnostic;
 
 export interface QueryPipelineStageResult<TStage extends QueryPipelineStage> {
@@ -59,6 +70,7 @@ export interface QueryPipelineMetadata {
   readonly lexemes: readonly QueryLexeme[];
   readonly ast: QueryAstNode | null;
   readonly plan: CompiledQueryPlan | null;
+  readonly executionPlan: QueryExecutionPlan | null;
   readonly executionQuery: Query | null;
 }
 
@@ -68,5 +80,6 @@ export interface ExecuteQueryPipelineResult {
   readonly metadata: QueryPipelineMetadata;
   readonly parseResult: QueryPipelineStageResult<"parse">;
   readonly compileResult: CompileQueryResult | null;
+  readonly executionPlanResult: QueryPipelineStageResult<"plan"> | null;
   readonly executionResult: QueryExecutionResult | null;
 }

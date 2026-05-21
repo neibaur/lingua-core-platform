@@ -18,6 +18,8 @@ export {
   reconstructQuerySpan,
   unionMatchedDocuments,
 } from "./query-engine";
+export { buildQueryExecutionPlan } from "./query-ir";
+export { QUERY_EXECUTION_PLAN_FORMAT_VERSION } from "./query-ir";
 export { executeQueryPipeline } from "./query-pipeline";
 export { compileQueryAst, lexQuery, parseQuery } from "./query-parser";
 export { matchSearchTerm } from "./matching";
@@ -56,12 +58,23 @@ export type {
   TokenQuery,
 } from "./query-engine";
 export type {
+  BooleanExecutionPlanNode,
+  PhraseExecutionPlanNode,
+  QueryExecutionPlan,
+  QueryExecutionPlanDiagnostic,
+  QueryExecutionPlanMetadata,
+  QueryExecutionPlanNode,
+  QueryExecutionPlanNodeType,
+  TokenExecutionPlanNode,
+} from "./query-ir";
+export type {
   CompileQueryPipelineDiagnostic,
   ExecuteQueryPipelineInput,
   ExecuteQueryPipelineResult,
   ExecuteQueryPipelineDiagnostic,
   LexQueryPipelineDiagnostic,
   ParseQueryPipelineDiagnostic,
+  PlanQueryPipelineDiagnostic,
   QueryPipelineDiagnostic,
   QueryPipelineDiagnosticBase,
   QueryPipelineMetadata,
