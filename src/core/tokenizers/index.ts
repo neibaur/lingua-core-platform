@@ -2,6 +2,8 @@ export type {
   SupportedLanguageCode,
   TokenizerDriver,
 } from "./drivers/tokenizer-driver";
+export { DictionaryTokenizerDriver } from "./drivers/dictionary";
+export type { DictionaryTokenizerDriverOptions } from "./drivers/dictionary";
 export { MockTokenizerDriver } from "./drivers/mock";
 export type { MockTokenizerDriverOptions } from "./drivers/mock";
 export { tokenizeText } from "./pipeline/tokenize-text";
