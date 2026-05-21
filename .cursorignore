@@ -1,0 +1,25 @@
+# Dependency and Build Artifacts
+node_modules/
+.next/
+dist/
+build/
+.turbo/
+coverage/
+
+# Lockfiles (Prevent embedding pollution)
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Databases
+*.db
+*.sqlite
+
+# Secret Environment Files
+.env
+.env.local
+.env.*.local
+
+# Git History & System Metadata
+.git/
+.DS_Store

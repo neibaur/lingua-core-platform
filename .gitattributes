@@ -1,0 +1,2 @@
+# Enforce line-feed consistency across operating systems
+* text=auto eol=lf
