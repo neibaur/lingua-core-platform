@@ -110,6 +110,7 @@ export function validateSnapshotEnvelope(
 export function validateJsonSafeStructure(
   value: unknown,
   path: string,
+  seenObjects: readonly object[] = [],
 ): readonly QuerySnapshotDiagnostic[] {
   if (value === null) {
     return Object.freeze([]);
@@ -132,7 +133,7 @@ export function validateJsonSafeStructure(
         ),
       ]);
     case "object":
-      return validateJsonObjectOrArray(value, path);
+      return validateJsonObjectOrArray(value, path, seenObjects);
     default:
       return Object.freeze([
         createQuerySnapshotDiagnostic(
@@ -147,13 +148,30 @@ export function validateJsonSafeStructure(
 function validateJsonObjectOrArray(
   value: object,
   path: string,
+  seenObjects: readonly object[],
 ): readonly QuerySnapshotDiagnostic[] {
   const diagnostics: QuerySnapshotDiagnostic[] = [];
+
+  if (seenObjects.includes(value)) {
+    return Object.freeze([
+      createQuerySnapshotDiagnostic(
+        "SNAPSHOT_NON_JSON_SAFE",
+        path,
+        "Snapshot value must not contain circular references.",
+      ),
+    ]);
+  }
+
+  const nextSeenObjects = Object.freeze([...seenObjects, value]);
 
   if (Array.isArray(value)) {
     value.forEach((item, index) => {
       diagnostics.push(
-        ...validateJsonSafeStructure(item, `${path}[${String(index)}]`),
+        ...validateJsonSafeStructure(
+          item,
+          `${path}[${String(index)}]`,
+          nextSeenObjects,
+        ),
       );
     });
 
@@ -172,7 +190,11 @@ function validateJsonObjectOrArray(
 
   Object.entries(value).forEach(([key, entryValue]) => {
     diagnostics.push(
-      ...validateJsonSafeStructure(entryValue, `${path}.${key}`),
+      ...validateJsonSafeStructure(
+        entryValue,
+        `${path}.${key}`,
+        nextSeenObjects,
+      ),
     );
   });
 
