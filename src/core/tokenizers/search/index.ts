@@ -18,6 +18,7 @@ export {
   reconstructQuerySpan,
   unionMatchedDocuments,
 } from "./query-engine";
+export { executeQueryPipeline } from "./query-pipeline";
 export { compileQueryAst, lexQuery, parseQuery } from "./query-parser";
 export { matchSearchTerm } from "./matching";
 export { buildPhraseWindow } from "./matching";
@@ -54,6 +55,19 @@ export type {
   QueryPostingMatch,
   TokenQuery,
 } from "./query-engine";
+export type {
+  CompileQueryPipelineDiagnostic,
+  ExecuteQueryPipelineInput,
+  ExecuteQueryPipelineResult,
+  ExecuteQueryPipelineDiagnostic,
+  LexQueryPipelineDiagnostic,
+  ParseQueryPipelineDiagnostic,
+  QueryPipelineDiagnostic,
+  QueryPipelineDiagnosticBase,
+  QueryPipelineMetadata,
+  QueryPipelineStage,
+  QueryPipelineStageResult,
+} from "./query-pipeline";
 export type {
   QueryLexeme,
   QueryLexemeType,
