@@ -36,6 +36,7 @@ export {
   reconstructQuerySpan,
   unionMatchedDocuments,
 } from "./search";
+export { executeQueryPipeline } from "./search";
 export { compileQueryAst, lexQuery, parseQuery } from "./search";
 export { matchSearchTerm } from "./search";
 export { buildPhraseWindow } from "./search";
@@ -62,6 +63,17 @@ export type {
   Query,
   QueryExecutionResult,
   QueryPostingMatch,
+  CompileQueryPipelineDiagnostic,
+  ExecuteQueryPipelineInput,
+  ExecuteQueryPipelineResult,
+  ExecuteQueryPipelineDiagnostic,
+  LexQueryPipelineDiagnostic,
+  ParseQueryPipelineDiagnostic,
+  QueryPipelineDiagnostic,
+  QueryPipelineDiagnosticBase,
+  QueryPipelineMetadata,
+  QueryPipelineStage,
+  QueryPipelineStageResult,
   QueryLexeme,
   QueryLexemeType,
   ParseQueryResult,
