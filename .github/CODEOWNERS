@@ -1,0 +1,7 @@
+* @neibaur
+
+/src/core/tokenizers/ @neibaur
+/src/database/ @neibaur
+.github/workflows/ @neibaur
+.github/dependabot.yml @neibaur
+AGENTS.md @neibaur
