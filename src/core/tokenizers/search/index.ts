@@ -18,7 +18,7 @@ export {
   reconstructQuerySpan,
   unionMatchedDocuments,
 } from "./query-engine";
-export { lexQuery } from "./query-parser";
+export { lexQuery, parseQuery } from "./query-parser";
 export { matchSearchTerm } from "./matching";
 export { buildPhraseWindow } from "./matching";
 export { extractMatchSpan } from "./matching";
@@ -57,8 +57,16 @@ export type {
 export type {
   QueryLexeme,
   QueryLexemeType,
+  ParseQueryResult,
+  BooleanQueryNode,
+  GroupedQueryNode,
+  PhraseQueryNode,
+  QueryAstBaseNode,
+  QueryAstNode,
+  QueryNodeType,
   QueryParserDiagnostic,
   QueryParserDiagnosticSeverity,
+  TokenQueryNode,
   SourceSpan,
 } from "./query-parser";
 export type { SearchProjectionPipelineResult } from "./shared/search-projection-pipeline-result";
