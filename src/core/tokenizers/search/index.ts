@@ -54,6 +54,12 @@ export {
   buildQueryExecutionTrace,
   buildQueryExplanation,
 } from "./query-tracing";
+export {
+  composeRuntimeCapabilityManifest,
+  evaluateRuntimeCapabilityCompatibility,
+  RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  validateRuntimeCapabilityManifest,
+} from "./runtime-capabilities";
 export { compileQueryAst, lexQuery, parseQuery } from "./query-parser";
 export { matchSearchTerm } from "./matching";
 export { buildPhraseWindow } from "./matching";
@@ -169,6 +175,20 @@ export type {
   QuerySnapshotSchemaVersion,
   QuerySnapshotValidationResult,
 } from "./query-snapshots";
+export type {
+  RuntimeCapabilityCompatibilityResult,
+  RuntimeCapabilityDeclaration,
+  RuntimeCapabilityDiagnostic,
+  RuntimeCapabilityDiagnosticCode,
+  RuntimeCapabilityDiagnosticSeverity,
+  RuntimeCapabilityId,
+  RuntimeCapabilityKind,
+  RuntimeCapabilityManifest,
+  RuntimeCapabilityManifestMetadata,
+  RuntimeCapabilityManifestSchemaVersion,
+  RuntimeCapabilityStability,
+  RuntimeCapabilityValidationResult,
+} from "./runtime-capabilities";
 export type {
   QueryExecutionTrace,
   QueryExecutionTraceMetadata,
