@@ -12,7 +12,7 @@ import {
   createQuerySnapshotSuccess,
   type QuerySnapshotValidationResult,
 } from "./diagnostics";
-import { stableJsonStringify } from "./stable-json";
+import { canonicalizeJsonValue, stableJsonStringify } from "./stable-json";
 import { validateJsonSafeStructure } from "./validate";
 
 export function diffQueryReplaySnapshots(
@@ -202,7 +202,7 @@ function createDiffValue(value: JsonValue | undefined): QueryReplayDiffValue {
 
   return Object.freeze({
     present: true as const,
-    value,
+    value: canonicalizeJsonValue(value),
   });
 }
 

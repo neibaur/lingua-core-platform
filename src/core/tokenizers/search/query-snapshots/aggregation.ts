@@ -1,5 +1,6 @@
 import type {
   JsonObject,
+  JsonValue,
   ReplayAggregationArtifact,
   ReplayAggregationStage,
   ReplayAggregationSummary,
@@ -101,16 +102,29 @@ function getArtifactOrder(artifact: ReplayAggregationArtifact): number {
 }
 
 function freezeJsonObject(value: JsonObject): JsonObject {
-  const entries = Object.entries(value).map(([key, entryValue]) => {
-    if (
-      Array.isArray(entryValue) ||
-      (entryValue !== null && typeof entryValue === "object")
-    ) {
-      return [key, freezeJsonObject(entryValue as JsonObject)] as const;
-    }
+  const frozenObject: Record<string, JsonValue> = {};
 
-    return [key, entryValue] as const;
+  Object.keys(value).forEach((key) => {
+    const entryValue = value[key];
+
+    frozenObject[key] = freezeJsonValue(entryValue);
   });
 
-  return Object.freeze(Object.fromEntries(entries)) as JsonObject;
+  return Object.freeze(frozenObject);
+}
+
+function freezeJsonValue(value: JsonValue): JsonValue {
+  if (isJsonArray(value)) {
+    return Object.freeze(value.map((item) => freezeJsonValue(item)));
+  }
+
+  if (value !== null && typeof value === "object") {
+    return freezeJsonObject(value);
+  }
+
+  return value;
+}
+
+function isJsonArray(value: JsonValue): value is readonly JsonValue[] {
+  return Array.isArray(value);
 }

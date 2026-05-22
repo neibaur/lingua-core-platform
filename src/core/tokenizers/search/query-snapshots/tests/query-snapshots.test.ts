@@ -5,6 +5,7 @@ import type { SearchCorpus } from "../../index-primitives";
 import { executeQueryPipeline } from "../../query-pipeline";
 import type {
   ExecutionPlanSnapshot,
+  JsonObject,
   QueryExecutionTraceSnapshot,
 } from "../contracts";
 import { aggregateReplayDiagnostics } from "../aggregation";
@@ -16,7 +17,10 @@ import {
 } from "../artifact-validators";
 import { diffJsonValues, diffQueryReplaySnapshots } from "../diff";
 import { evaluateQueryReplayCompatibility } from "../compatibility";
-import { verifyCanonicalStructuralEquivalence } from "../equivalence";
+import {
+  canonicalizeForEquivalence,
+  verifyCanonicalStructuralEquivalence,
+} from "../equivalence";
 import {
   createQueryReplaySnapshot,
   createQuerySnapshotBundle,
@@ -258,6 +262,26 @@ describe("query snapshots", () => {
     });
   });
 
+  it("returns frozen canonical equivalence values", () => {
+    const result = canonicalizeForEquivalence({
+      z: ["last"],
+      a: { b: [2, 1] },
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(Object.isFrozen(result.data)).toBe(true);
+      if (
+        result.data !== null &&
+        typeof result.data === "object" &&
+        isJsonObject(result.data)
+      ) {
+        expect(Object.keys(result.data)).toEqual(["a", "z"]);
+        expect(Object.isFrozen(result.data["z"])).toBe(true);
+      }
+    }
+  });
+
   it("reconstructs already parsed snapshots without mutating provenance", () => {
     const snapshot = buildExecutionPlanSnapshot();
     const reconstructed = reconstructQueryReplaySnapshot(snapshot);
@@ -320,6 +344,30 @@ describe("query snapshots", () => {
       expect(Object.isFrozen(result.data)).toBe(true);
       expect(Object.isFrozen(result.data.diffs)).toBe(true);
       expect(JSON.parse(JSON.stringify(result.data))).toEqual(result.data);
+    }
+  });
+
+  it("freezes nested JSON values captured by replay diff entries", () => {
+    const result = diffJsonValues(
+      { artifact: { terms: ["thai", "english"] } },
+      { artifact: { terms: ["thai"] } },
+    );
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      const leftValue = result.data[0].left;
+
+      expect(leftValue.present).toBe(true);
+      if (leftValue.present) {
+        expect(Object.isFrozen(leftValue.value)).toBe(true);
+        if (
+          leftValue.value !== null &&
+          typeof leftValue.value === "object" &&
+          isJsonObject(leftValue.value)
+        ) {
+          expect(Object.isFrozen(leftValue.value["terms"])).toBe(true);
+        }
+      }
     }
   });
 
@@ -692,6 +740,42 @@ describe("query snapshots", () => {
     expect(Object.isFrozen(aggregate.summaries)).toBe(true);
   });
 
+  it("preserves and freezes nested JSON arrays in replay diagnostic aggregates", () => {
+    const aggregate = aggregateReplayDiagnostics([
+      {
+        stage: "validation",
+        artifact: "snapshot-envelope",
+        diagnostics: [
+          {
+            code: "NESTED_ARRAY",
+            path: "$.artifact.values",
+            message: "Nested array diagnostic.",
+            values: ["b", "a"],
+            nested: {
+              values: [2, 1],
+            },
+          },
+        ],
+      },
+    ]);
+    const diagnostic = aggregate.diagnostics[0];
+    const values = diagnostic["values"];
+    const nested = diagnostic["nested"];
+
+    expect(Array.isArray(values)).toBe(true);
+    expect(Object.isFrozen(values)).toBe(true);
+    expect(values).toEqual(["b", "a"]);
+    expect(nested).toEqual({ values: [2, 1] });
+    expect(Object.isFrozen(nested)).toBe(true);
+    if (
+      nested !== null &&
+      typeof nested === "object" &&
+      !Array.isArray(nested)
+    ) {
+      expect(Object.isFrozen(nested["values"])).toBe(true);
+    }
+  });
+
   it("serializes replay diagnostic aggregates bit-for-bit canonically", () => {
     const first = aggregateReplayDiagnostics([
       {
@@ -962,6 +1046,10 @@ function buildExecutionPlanSnapshot(): ExecutionPlanSnapshot {
   }
 
   return snapshot.data as ExecutionPlanSnapshot;
+}
+
+function isJsonObject(value: unknown): value is JsonObject {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
 function buildTraceSnapshot(): QueryExecutionTraceSnapshot {

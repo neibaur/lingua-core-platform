@@ -93,6 +93,29 @@ describe("replay audit reports", () => {
     expect(first.auditId).not.toBe(second.auditId);
   });
 
+  it("rejects invalid audit composition sequence coordinates", () => {
+    expect(() =>
+      composeReplayAuditReport({
+        sourceSnapshotId: "query-snapshot-0",
+        targetSnapshotId: "query-snapshot-1",
+        composedAtSequence: -1,
+        governanceReport: createGovernanceReport(),
+      }),
+    ).toThrow(
+      "Replay audit composedAtSequence must be a non-negative integer primitive.",
+    );
+    expect(() =>
+      composeReplayAuditReport({
+        sourceSnapshotId: "query-snapshot-0",
+        targetSnapshotId: "query-snapshot-1",
+        composedAtSequence: 1.5,
+        governanceReport: createGovernanceReport(),
+      }),
+    ).toThrow(
+      "Replay audit composedAtSequence must be a non-negative integer primitive.",
+    );
+  });
+
   it("defensively freezes the audit envelope and nested collection buffers", () => {
     const auditReport = composeReplayAuditReport({
       sourceSnapshotId: "query-snapshot-0",
