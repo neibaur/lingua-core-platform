@@ -7,6 +7,7 @@ import type {
   ExecutionPlanSnapshot,
   QueryExecutionTraceSnapshot,
 } from "../contracts";
+import { aggregateReplayDiagnostics } from "../aggregation";
 import { diffJsonValues, diffQueryReplaySnapshots } from "../diff";
 import { evaluateQueryReplayCompatibility } from "../compatibility";
 import { verifyCanonicalStructuralEquivalence } from "../equivalence";
@@ -19,6 +20,7 @@ import {
   replayQuerySnapshotBundle,
 } from "../reconstruction";
 import { stableJsonStringify } from "../stable-json";
+import { summarizeReplayDiff } from "../summary";
 import {
   validateQueryReplaySnapshot,
   validateQueryReplaySnapshotWithArtifacts,
@@ -461,6 +463,283 @@ describe("query snapshots", () => {
         },
       ],
     });
+  });
+
+  it("summarizes replay diffs with deterministic stage ordering", () => {
+    const left = buildExecutionPlanSnapshot();
+    const right = {
+      ...left,
+      artifact: {
+        ...left.artifact,
+        metadata: {
+          ...left.artifact.metadata,
+          sourceSpan: {
+            start: 0,
+            end: 13,
+          },
+        },
+      },
+    };
+    const diffResult = diffQueryReplaySnapshots(left, right);
+
+    expect(diffResult.success).toBe(true);
+    if (!diffResult.success) {
+      return;
+    }
+
+    const summary = summarizeReplayDiff(diffResult.data);
+
+    expect(summary).toEqual({
+      classification: "different",
+      severity: "warning",
+      equivalent: false,
+      compatible: true,
+      statistics: {
+        totalDiffCount: 1,
+        envelopeDiffCount: 0,
+        artifactDiffCount: 0,
+        provenanceMismatchCount: 1,
+        incompatibilityCount: 0,
+      },
+      stageSummaries: [
+        {
+          stage: "envelope",
+          severity: "none",
+          diffCount: 0,
+          paths: [],
+        },
+        {
+          stage: "artifact",
+          severity: "none",
+          diffCount: 0,
+          paths: [],
+        },
+        {
+          stage: "provenance",
+          severity: "warning",
+          diffCount: 1,
+          paths: ["$.artifact.metadata.sourceSpan.end"],
+        },
+        {
+          stage: "compatibility",
+          severity: "none",
+          diffCount: 0,
+          paths: [],
+        },
+      ],
+      compatibilitySummary: {
+        compatible: true,
+        severity: "none",
+        schemaVersionCompatible: true,
+        artifactKindCompatible: true,
+        migrationRequired: false,
+      },
+    });
+    expect(Object.isFrozen(summary)).toBe(true);
+    expect(Object.isFrozen(summary.stageSummaries)).toBe(true);
+    expect(JSON.parse(JSON.stringify(summary))).toEqual(summary);
+  });
+
+  it("summarizes replay incompatibility with stable severity", () => {
+    const left = buildExecutionPlanSnapshot();
+    const right = {
+      ...left,
+      artifactKind: "query-execution-trace",
+      schemaVersion: "query-snapshot-v2",
+      snapshotId: "query-snapshot-1",
+    };
+    const diffResult = diffQueryReplaySnapshots(left, right);
+
+    expect(diffResult.success).toBe(true);
+    if (!diffResult.success) {
+      return;
+    }
+
+    const summary = summarizeReplayDiff(diffResult.data);
+
+    expect(summary.severity).toBe("error");
+    expect(summary.compatibilitySummary).toEqual({
+      compatible: false,
+      severity: "error",
+      schemaVersionCompatible: false,
+      artifactKindCompatible: false,
+      migrationRequired: false,
+    });
+    expect(summary.statistics).toEqual({
+      totalDiffCount: 3,
+      envelopeDiffCount: 3,
+      artifactDiffCount: 0,
+      provenanceMismatchCount: 0,
+      incompatibilityCount: 2,
+    });
+  });
+
+  it("aggregates replay diagnostics in deterministic stage and artifact order", () => {
+    const aggregate = aggregateReplayDiagnostics([
+      {
+        stage: "diff",
+        artifact: "query-execution-trace",
+        diagnostics: [
+          {
+            code: "TRACE_DIFF",
+            path: "$.trace",
+            message: "Trace mismatch.",
+          },
+        ],
+      },
+      {
+        stage: "validation",
+        artifact: "execution-plan",
+        diagnostics: [
+          {
+            code: "PLAN_INVALID",
+            path: "$.plan",
+            message: "Plan invalid.",
+          },
+        ],
+      },
+      {
+        stage: "validation",
+        artifact: "snapshot-envelope",
+        diagnostics: [
+          {
+            code: "ENVELOPE_INVALID",
+            path: "$",
+            message: "Envelope invalid.",
+          },
+        ],
+      },
+      {
+        stage: "provenance",
+        artifact: "execution-plan",
+        diagnostics: [
+          {
+            code: "SOURCE_SPAN_MISMATCH",
+            path: "$.artifact.root.sourceSpan.end",
+            message: "Source span mismatch.",
+          },
+        ],
+      },
+    ]);
+
+    expect(aggregate).toEqual({
+      totalDiagnosticCount: 4,
+      severity: "error",
+      summaries: [
+        {
+          stage: "validation",
+          diagnosticCount: 2,
+          artifactCount: 2,
+          severity: "error",
+        },
+        {
+          stage: "compatibility",
+          diagnosticCount: 0,
+          artifactCount: 0,
+          severity: "none",
+        },
+        {
+          stage: "diff",
+          diagnosticCount: 1,
+          artifactCount: 1,
+          severity: "error",
+        },
+        {
+          stage: "provenance",
+          diagnosticCount: 1,
+          artifactCount: 1,
+          severity: "error",
+        },
+      ],
+      diagnostics: [
+        {
+          artifact: "snapshot-envelope",
+          code: "ENVELOPE_INVALID",
+          message: "Envelope invalid.",
+          path: "$",
+          stage: "validation",
+        },
+        {
+          artifact: "execution-plan",
+          code: "PLAN_INVALID",
+          message: "Plan invalid.",
+          path: "$.plan",
+          stage: "validation",
+        },
+        {
+          artifact: "query-execution-trace",
+          code: "TRACE_DIFF",
+          message: "Trace mismatch.",
+          path: "$.trace",
+          stage: "diff",
+        },
+        {
+          artifact: "execution-plan",
+          code: "SOURCE_SPAN_MISMATCH",
+          message: "Source span mismatch.",
+          path: "$.artifact.root.sourceSpan.end",
+          stage: "provenance",
+        },
+      ],
+    });
+    expect(Object.isFrozen(aggregate)).toBe(true);
+    expect(Object.isFrozen(aggregate.summaries)).toBe(true);
+  });
+
+  it("serializes replay diagnostic aggregates bit-for-bit canonically", () => {
+    const first = aggregateReplayDiagnostics([
+      {
+        stage: "provenance",
+        artifact: "execution-plan",
+        diagnostics: [
+          {
+            path: "$.artifact.root.sourceSpan.end",
+            message: "Source span mismatch.",
+            code: "SOURCE_SPAN_MISMATCH",
+          },
+        ],
+      },
+      {
+        stage: "compatibility",
+        artifact: "snapshot-envelope",
+        diagnostics: [
+          {
+            message: "Schema mismatch.",
+            code: "SCHEMA_MISMATCH",
+            path: "$.schemaVersion",
+          },
+        ],
+      },
+    ]);
+    const second = aggregateReplayDiagnostics([
+      {
+        stage: "compatibility",
+        artifact: "snapshot-envelope",
+        diagnostics: [
+          {
+            path: "$.schemaVersion",
+            code: "SCHEMA_MISMATCH",
+            message: "Schema mismatch.",
+          },
+        ],
+      },
+      {
+        stage: "provenance",
+        artifact: "execution-plan",
+        diagnostics: [
+          {
+            code: "SOURCE_SPAN_MISMATCH",
+            message: "Source span mismatch.",
+            path: "$.artifact.root.sourceSpan.end",
+          },
+        ],
+      },
+    ]);
+
+    expect(stableJsonStringify(first)).toBe(stableJsonStringify(second));
+    expect(stableJsonStringify(first)).toBe(
+      '{"diagnostics":[{"artifact":"snapshot-envelope","code":"SCHEMA_MISMATCH","message":"Schema mismatch.","path":"$.schemaVersion","stage":"compatibility"},{"artifact":"execution-plan","code":"SOURCE_SPAN_MISMATCH","message":"Source span mismatch.","path":"$.artifact.root.sourceSpan.end","stage":"provenance"}],"severity":"error","summaries":[{"artifactCount":0,"diagnosticCount":0,"severity":"none","stage":"validation"},{"artifactCount":1,"diagnosticCount":1,"severity":"error","stage":"compatibility"},{"artifactCount":0,"diagnosticCount":0,"severity":"none","stage":"diff"},{"artifactCount":1,"diagnosticCount":1,"severity":"error","stage":"provenance"}],"totalDiagnosticCount":2}',
+    );
   });
 });
 
