@@ -14,6 +14,8 @@ export {
   type ReplayAggregationArtifact,
   type ReplayAggregationStage,
   type ReplayAggregationSummary,
+  type ReplayArtifactValidationTarget,
+  type ReplayArtifactValidatorDispatch,
   type ReplayCompatibilitySummary,
   type ReplayDiagnosticAggregate,
   type ReplayDiagnosticGroup,
@@ -22,6 +24,11 @@ export {
   type ReplayDiffStatistics,
   type ReplayDiffSummary,
   type ReplayDiffSummaryStage,
+  type ReplayValidatorCompiledExecutionPlanShape,
+  type ReplayValidatorQueryAstNodeShape,
+  type ReplayValidatorQueryExecutionTraceShape,
+  type ReplayValidatorQueryExplanationShape,
+  type ReplayValidatorQueryPipelineResultShape,
   type QueryExecutionTraceSnapshot,
   type QueryExplanationSnapshot,
   type QueryPipelineSnapshot,
@@ -33,6 +40,12 @@ export {
   type QuerySnapshotSchemaVersion,
 } from "./contracts";
 export { aggregateReplayDiagnostics } from "./aggregation";
+export {
+  validateExecutionPlanArtifact,
+  validateQueryExecutionTraceArtifact,
+  validateReplayArtifactByKind,
+  validateSnapshotEnvelopeArtifact,
+} from "./artifact-validators";
 export { evaluateQueryReplayCompatibility } from "./compatibility";
 export { diffJsonValues, diffQueryReplaySnapshots } from "./diff";
 export {

@@ -8,6 +8,12 @@ import type {
   QueryExecutionTraceSnapshot,
 } from "../contracts";
 import { aggregateReplayDiagnostics } from "../aggregation";
+import {
+  validateExecutionPlanArtifact,
+  validateQueryExecutionTraceArtifact,
+  validateReplayArtifactByKind,
+  validateSnapshotEnvelopeArtifact,
+} from "../artifact-validators";
 import { diffJsonValues, diffQueryReplaySnapshots } from "../diff";
 import { evaluateQueryReplayCompatibility } from "../compatibility";
 import { verifyCanonicalStructuralEquivalence } from "../equivalence";
@@ -741,6 +747,202 @@ describe("query snapshots", () => {
       '{"diagnostics":[{"artifact":"snapshot-envelope","code":"SCHEMA_MISMATCH","message":"Schema mismatch.","path":"$.schemaVersion","stage":"compatibility"},{"artifact":"execution-plan","code":"SOURCE_SPAN_MISMATCH","message":"Source span mismatch.","path":"$.artifact.root.sourceSpan.end","stage":"provenance"}],"severity":"error","summaries":[{"artifactCount":0,"diagnosticCount":0,"severity":"none","stage":"validation"},{"artifactCount":1,"diagnosticCount":1,"severity":"error","stage":"compatibility"},{"artifactCount":0,"diagnosticCount":0,"severity":"none","stage":"diff"},{"artifactCount":1,"diagnosticCount":1,"severity":"error","stage":"provenance"}],"totalDiagnosticCount":2}',
     );
   });
+
+  it("accepts valid snapshot envelope artifacts through explicit dispatch", () => {
+    const snapshot = buildExecutionPlanSnapshot();
+    const directResult = validateSnapshotEnvelopeArtifact(snapshot);
+    const dispatchResult = validateReplayArtifactByKind({
+      target: "snapshot-envelope",
+      artifact: snapshot,
+    });
+
+    expect(directResult.success).toBe(true);
+    expect(dispatchResult.success).toBe(true);
+    expect(Object.isFrozen(directResult)).toBe(true);
+    expect(JSON.parse(JSON.stringify(dispatchResult))).toEqual(dispatchResult);
+  });
+
+  it("rejects malformed snapshot envelope artifacts deterministically", () => {
+    const result = validateReplayArtifactByKind({
+      target: "snapshot-envelope",
+      artifact: {
+        schemaVersion: "query-snapshot-v1",
+        artifactKind: "execution-plan",
+        snapshotId: "runtime-id",
+        artifact: {},
+      },
+    });
+
+    expect(result).toEqual({
+      success: false,
+      diagnostics: [
+        {
+          code: "SNAPSHOT_INVALID_SNAPSHOT_ID",
+          severity: "error",
+          path: "$.snapshotId",
+          message:
+            "Snapshot snapshotId must use the query-snapshot-{number} format.",
+        },
+      ],
+    });
+  });
+
+  it("accepts compiled execution plan artifacts with stable sequential nodes", () => {
+    const plan = buildCompiledExecutionPlanArtifact();
+    const result = validateReplayArtifactByKind({
+      target: "execution-plan",
+      artifact: plan,
+    });
+
+    expect(result).toEqual({
+      success: true,
+      data: plan,
+    });
+    expect(Object.isFrozen(result)).toBe(true);
+  });
+
+  it("rejects compiled execution plan invariant violations in field order", () => {
+    const result = validateExecutionPlanArtifact({
+      planId: 7,
+      artifactKind: "QUERY_PLAN",
+      sequentialNodes: [
+        {
+          sequenceId: 1,
+          sourceSpan: {
+            start: 4,
+            end: 2,
+          },
+        },
+        "not-a-node",
+      ],
+    });
+
+    expect(result).toEqual({
+      success: false,
+      diagnostics: [
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.planId",
+          message: "planId must be a string.",
+        },
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.artifactKind",
+          message: "artifactKind must be EXECUTION_PLAN.",
+        },
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.sequentialNodes[0].sourceSpan.end",
+          message: "sourceSpan.end must be greater than or equal to start.",
+        },
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.sequentialNodes[0].sequenceId",
+          message: "Execution plan node sequenceId must match its array index.",
+        },
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.sequentialNodes[1]",
+          message: "Execution plan node must be a plain object.",
+        },
+      ],
+    });
+  });
+
+  it("accepts query execution trace artifacts with consistent step counts", () => {
+    const trace = buildTraceArtifact();
+    const result = validateReplayArtifactByKind({
+      target: "query-execution-trace",
+      artifact: trace,
+    });
+
+    expect(result).toEqual({
+      success: true,
+      data: trace,
+    });
+    expect(JSON.parse(JSON.stringify(result))).toEqual(result);
+  });
+
+  it("rejects query execution trace step count and ordering violations", () => {
+    const result = validateQueryExecutionTraceArtifact({
+      traceId: "query-trace-0",
+      stepCount: 3,
+      steps: [
+        {
+          stepId: "query-trace-step-1",
+        },
+        "not-a-step",
+      ],
+    });
+
+    expect(result).toEqual({
+      success: false,
+      diagnostics: [
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.stepCount",
+          message: "Query execution trace stepCount must match steps length.",
+        },
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.steps[0].stepId",
+          message:
+            "Query execution trace stepId must match deterministic step order.",
+        },
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.steps[1]",
+          message: "Query execution trace step must be a plain object.",
+        },
+      ],
+    });
+  });
+
+  it("feeds validator diagnostics into deterministic aggregation", () => {
+    const invalidPlan = validateExecutionPlanArtifact({
+      planId: "plan-0",
+      artifactKind: "EXECUTION_PLAN",
+      sequentialNodes: [
+        {
+          sequenceId: 0,
+          sourceSpan: {
+            start: 2,
+            end: 1,
+          },
+        },
+      ],
+    });
+
+    expect(invalidPlan.success).toBe(false);
+    if (invalidPlan.success) {
+      return;
+    }
+
+    const aggregate = aggregateReplayDiagnostics([
+      {
+        stage: "validation",
+        artifact: "execution-plan",
+        diagnostics: invalidPlan.diagnostics.map((diagnostic) => ({
+          code: diagnostic.code,
+          severity: diagnostic.severity,
+          path: diagnostic.path,
+          message: diagnostic.message,
+        })),
+      },
+    ]);
+
+    expect(stableJsonStringify(aggregate)).toBe(
+      '{"diagnostics":[{"artifact":"execution-plan","code":"SNAPSHOT_INVALID_ARTIFACT_SHAPE","message":"sourceSpan.end must be greater than or equal to start.","path":"$.sequentialNodes[0].sourceSpan.end","severity":"error","stage":"validation"}],"severity":"error","summaries":[{"artifactCount":1,"diagnosticCount":1,"severity":"error","stage":"validation"},{"artifactCount":0,"diagnosticCount":0,"severity":"none","stage":"compatibility"},{"artifactCount":0,"diagnosticCount":0,"severity":"none","stage":"diff"},{"artifactCount":0,"diagnosticCount":0,"severity":"none","stage":"provenance"}],"totalDiagnosticCount":1}',
+    );
+  });
 });
 
 function buildExecutionPlanSnapshot(): ExecutionPlanSnapshot {
@@ -779,6 +981,44 @@ function buildTraceSnapshot(): QueryExecutionTraceSnapshot {
   }
 
   return snapshot.data as QueryExecutionTraceSnapshot;
+}
+
+function buildCompiledExecutionPlanArtifact() {
+  return {
+    planId: "compiled-plan-0",
+    artifactKind: "EXECUTION_PLAN" as const,
+    sequentialNodes: [
+      {
+        sequenceId: 0,
+        sourceSpan: {
+          start: 0,
+          end: 3,
+        },
+      },
+      {
+        sequenceId: 1,
+        sourceSpan: {
+          start: 4,
+          end: 8,
+        },
+      },
+    ],
+  };
+}
+
+function buildTraceArtifact() {
+  return {
+    traceId: "query-trace-0",
+    stepCount: 2,
+    steps: [
+      {
+        stepId: "query-trace-step-0",
+      },
+      {
+        stepId: "query-trace-step-1",
+      },
+    ],
+  };
 }
 
 function buildCorpus(): SearchCorpus {

@@ -183,3 +183,51 @@ export interface ReplayDiagnosticAggregate {
   readonly summaries: readonly ReplayAggregationSummary[];
   readonly diagnostics: readonly JsonObject[];
 }
+
+export type ReplayArtifactValidationTarget =
+  | "snapshot-envelope"
+  | "query-pipeline-result"
+  | "execution-plan"
+  | "query-explanation"
+  | "query-execution-trace";
+
+export interface ReplayValidatorQueryAstNodeShape {
+  readonly kind: string;
+  readonly sourceSpan: {
+    readonly start: number;
+    readonly end: number;
+  };
+  readonly nodes?: readonly unknown[];
+}
+
+export interface ReplayValidatorCompiledExecutionPlanShape {
+  readonly planId: string;
+  readonly sequentialNodes: readonly unknown[];
+  readonly artifactKind: "EXECUTION_PLAN";
+}
+
+export interface ReplayValidatorQueryExecutionTraceShape {
+  readonly traceId: string;
+  readonly steps: readonly unknown[];
+  readonly stepCount: number;
+}
+
+export interface ReplayValidatorQueryExplanationShape {
+  readonly strategy: string;
+  readonly structuralTrace: unknown;
+  readonly outputMatchCount: number;
+}
+
+export interface ReplayValidatorQueryPipelineResultShape {
+  readonly query: string;
+  readonly ast: unknown;
+  readonly plan: unknown;
+  readonly trace: unknown;
+  readonly explanation: unknown;
+  readonly artifactKind: "PIPELINE_RESULT";
+}
+
+export interface ReplayArtifactValidatorDispatch {
+  readonly target: ReplayArtifactValidationTarget;
+  readonly artifact: unknown;
+}
