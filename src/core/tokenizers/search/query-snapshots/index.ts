@@ -66,6 +66,18 @@ export {
   type QuerySnapshotEquivalenceResult,
 } from "./equivalence";
 export {
+  buildReplayGovernanceReport,
+  REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION,
+  type BuildReplayGovernanceReportInput,
+  type ReplayGovernanceArtifactSummary,
+  type ReplayGovernanceDiagnosticItem,
+  type ReplayGovernanceMismatchItem,
+  type ReplayGovernanceReport,
+  type ReplayGovernanceReportCompatibility,
+  type ReplayGovernanceReportSummary,
+  type ReplayGovernanceValidationBlock,
+} from "./governance-report";
+export {
   createQueryReplaySnapshot,
   createQuerySnapshotBundle,
   deserializeQueryReplaySnapshot,
