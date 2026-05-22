@@ -32,6 +32,28 @@ export function validateQueryReplaySnapshot(
   return createQuerySnapshotSuccess(value as QueryReplaySnapshot);
 }
 
+export function validateQueryReplaySnapshotWithArtifacts(
+  value: unknown,
+): QuerySnapshotValidationResult<QueryReplaySnapshot> {
+  const envelopeResult = validateQueryReplaySnapshot(value);
+
+  if (!envelopeResult.success) {
+    return envelopeResult;
+  }
+
+  const artifactDiagnostics = validateArtifactShape(
+    envelopeResult.data.artifactKind,
+    envelopeResult.data.artifact,
+    "$.artifact",
+  );
+
+  if (artifactDiagnostics.length > 0) {
+    return createQuerySnapshotFailure(artifactDiagnostics);
+  }
+
+  return envelopeResult;
+}
+
 export function validateQuerySnapshotBundle(
   value: unknown,
 ): QuerySnapshotValidationResult<QuerySnapshotBundle> {
@@ -273,6 +295,67 @@ function validateArtifactBoundary(
       "Snapshot artifact must be a plain object.",
     ),
   ]);
+}
+
+function validateArtifactShape(
+  artifactKind: QuerySnapshotArtifactKind,
+  artifact: unknown,
+  path: string,
+): readonly QuerySnapshotDiagnostic[] {
+  if (!isJsonObject(artifact)) {
+    return Object.freeze([
+      createQuerySnapshotDiagnostic(
+        "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+        path,
+        "Snapshot artifact must be a plain object before artifact validation.",
+      ),
+    ]);
+  }
+
+  switch (artifactKind) {
+    case "query-pipeline-result":
+      return validateRequiredProperties(
+        artifact,
+        ["success", "diagnostics", "metadata"],
+        path,
+      );
+    case "execution-plan":
+      return validateRequiredProperties(
+        artifact,
+        ["formatVersion", "root", "metadata", "diagnostics"],
+        path,
+      );
+    case "query-explanation":
+      return validateRequiredProperties(
+        artifact,
+        ["formatVersion", "success", "stages", "artifacts", "diagnostics"],
+        path,
+      );
+    case "query-execution-trace":
+      return validateRequiredProperties(artifact, ["traceId", "steps"], path);
+  }
+}
+
+function validateRequiredProperties(
+  artifact: JsonObject,
+  requiredProperties: readonly string[],
+  path: string,
+): readonly QuerySnapshotDiagnostic[] {
+  const diagnostics: QuerySnapshotDiagnostic[] = [];
+
+  requiredProperties.forEach((property) => {
+    if (!(property in artifact)) {
+      diagnostics.push(
+        createQuerySnapshotDiagnostic(
+          "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          `${path}.${property}`,
+          `Snapshot artifact is missing required ${property} property.`,
+        ),
+      );
+    }
+  });
+
+  return Object.freeze(diagnostics);
 }
 
 function isJsonObject(value: unknown): value is JsonObject {

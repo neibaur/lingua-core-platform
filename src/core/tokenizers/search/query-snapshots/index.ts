@@ -4,6 +4,13 @@ export {
   type JsonObject,
   type JsonPrimitive,
   type JsonValue,
+  type QueryReplayCompatibilityClassification,
+  type QueryReplayCompatibilityResult,
+  type QueryReplayDiffClassification,
+  type QueryReplayDiffEntry,
+  type QueryReplayDiffKind,
+  type QueryReplayDiffResult,
+  type QueryReplayDiffValue,
   type QueryExecutionTraceSnapshot,
   type QueryExplanationSnapshot,
   type QueryPipelineSnapshot,
@@ -14,6 +21,8 @@ export {
   type QuerySnapshotId,
   type QuerySnapshotSchemaVersion,
 } from "./contracts";
+export { evaluateQueryReplayCompatibility } from "./compatibility";
+export { diffJsonValues, diffQueryReplaySnapshots } from "./diff";
 export {
   createQuerySnapshotDiagnostic,
   createQuerySnapshotFailure,
@@ -48,6 +57,7 @@ export {
 export {
   validateJsonSafeStructure,
   validateQueryReplaySnapshot,
+  validateQueryReplaySnapshotWithArtifacts,
   validateQuerySnapshotBundle,
   validateSnapshotEnvelope,
 } from "./validate";

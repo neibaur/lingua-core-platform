@@ -8,6 +8,7 @@ export type QuerySnapshotDiagnosticCode =
   | "SNAPSHOT_INVALID_SERIALIZATION"
   | "SNAPSHOT_MALFORMED_BUNDLE"
   | "SNAPSHOT_INVALID_RECONSTRUCTION_BOUNDARY"
+  | "SNAPSHOT_INVALID_ARTIFACT_SHAPE"
   | "SNAPSHOT_NOT_EQUIVALENT";
 
 export type QuerySnapshotDiagnosticSeverity = "error";

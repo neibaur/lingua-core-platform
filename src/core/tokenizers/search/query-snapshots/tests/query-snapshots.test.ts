@@ -7,6 +7,8 @@ import type {
   ExecutionPlanSnapshot,
   QueryExecutionTraceSnapshot,
 } from "../contracts";
+import { diffJsonValues, diffQueryReplaySnapshots } from "../diff";
+import { evaluateQueryReplayCompatibility } from "../compatibility";
 import { verifyCanonicalStructuralEquivalence } from "../equivalence";
 import {
   createQueryReplaySnapshot,
@@ -19,6 +21,7 @@ import {
 import { stableJsonStringify } from "../stable-json";
 import {
   validateQueryReplaySnapshot,
+  validateQueryReplaySnapshotWithArtifacts,
   validateQuerySnapshotBundle,
 } from "../validate";
 
@@ -267,6 +270,197 @@ describe("query snapshots", () => {
         end: 12,
       });
     }
+  });
+
+  it("produces deterministic replay diffs for structural provenance changes", () => {
+    const left = buildExecutionPlanSnapshot();
+    const right = {
+      ...left,
+      artifact: {
+        ...left.artifact,
+        metadata: {
+          ...left.artifact.metadata,
+          sourceSpan: {
+            start: 0,
+            end: 13,
+          },
+        },
+      },
+    };
+
+    const result = diffQueryReplaySnapshots(left, right);
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.classification).toBe("different");
+      expect(result.data.equivalent).toBe(false);
+      expect(result.data.compatible).toBe(true);
+      expect(result.data.diffs).toEqual([
+        {
+          path: "$.artifact.metadata.sourceSpan.end",
+          kind: "provenance",
+          left: {
+            present: true,
+            value: 12,
+          },
+          right: {
+            present: true,
+            value: 13,
+          },
+        },
+      ]);
+      expect(Object.isFrozen(result.data)).toBe(true);
+      expect(Object.isFrozen(result.data.diffs)).toBe(true);
+      expect(JSON.parse(JSON.stringify(result.data))).toEqual(result.data);
+    }
+  });
+
+  it("classifies schema and artifact-kind mismatches as incompatible diffs", () => {
+    const left = buildExecutionPlanSnapshot();
+    const right = {
+      ...left,
+      artifactKind: "query-execution-trace",
+      schemaVersion: "query-snapshot-v2",
+      snapshotId: "query-snapshot-1",
+    };
+
+    const result = diffQueryReplaySnapshots(left, right);
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.classification).toBe("incompatible");
+      expect(result.data.compatible).toBe(false);
+      expect(result.data.diffs.map((diff) => [diff.path, diff.kind])).toEqual([
+        ["$.artifactKind", "artifact-kind"],
+        ["$.schemaVersion", "schema-version"],
+        ["$.snapshotId", "snapshot-id"],
+      ]);
+    }
+  });
+
+  it("evaluates replay compatibility without migration side effects", () => {
+    const compatible = evaluateQueryReplayCompatibility(
+      buildExecutionPlanSnapshot(),
+      buildExecutionPlanSnapshot(),
+    );
+    const incompatible = evaluateQueryReplayCompatibility(
+      buildExecutionPlanSnapshot(),
+      buildTraceSnapshot(),
+    );
+
+    expect(compatible).toEqual({
+      success: true,
+      data: {
+        classification: "compatible",
+        compatible: true,
+        schemaVersionCompatible: true,
+        artifactKindCompatible: true,
+        migrationRequired: false,
+      },
+    });
+    expect(incompatible).toEqual({
+      success: true,
+      data: {
+        classification: "incompatible",
+        compatible: false,
+        schemaVersionCompatible: true,
+        artifactKindCompatible: false,
+        migrationRequired: false,
+      },
+    });
+  });
+
+  it("runs artifact-specific validation orchestration explicitly", () => {
+    const validResult = validateQueryReplaySnapshotWithArtifacts(
+      buildExecutionPlanSnapshot(),
+    );
+    const invalidResult = validateQueryReplaySnapshotWithArtifacts({
+      schemaVersion: "query-snapshot-v1",
+      artifactKind: "execution-plan",
+      snapshotId: "query-snapshot-0",
+      artifact: {
+        formatVersion: "query-execution-plan-v1",
+      },
+    });
+
+    expect(validResult.success).toBe(true);
+    expect(invalidResult).toEqual({
+      success: false,
+      diagnostics: [
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.artifact.root",
+          message: "Snapshot artifact is missing required root property.",
+        },
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.artifact.metadata",
+          message: "Snapshot artifact is missing required metadata property.",
+        },
+        {
+          code: "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+          severity: "error",
+          path: "$.artifact.diagnostics",
+          message:
+            "Snapshot artifact is missing required diagnostics property.",
+        },
+      ],
+    });
+  });
+
+  it("produces deterministic JSON value diffs with sorted object keys", () => {
+    const result = diffJsonValues(
+      {
+        z: 1,
+        a: 2,
+      },
+      {
+        z: 3,
+        b: 4,
+      },
+    );
+
+    expect(result).toEqual({
+      success: true,
+      data: [
+        {
+          path: "$.a",
+          kind: "structural",
+          left: {
+            present: true,
+            value: 2,
+          },
+          right: {
+            present: false,
+          },
+        },
+        {
+          path: "$.b",
+          kind: "structural",
+          left: {
+            present: false,
+          },
+          right: {
+            present: true,
+            value: 4,
+          },
+        },
+        {
+          path: "$.z",
+          kind: "structural",
+          left: {
+            present: true,
+            value: 1,
+          },
+          right: {
+            present: true,
+            value: 3,
+          },
+        },
+      ],
+    });
   });
 });
 
