@@ -63,3 +63,52 @@ export type JsonValue =
   | { readonly [key: string]: JsonValue };
 
 export type JsonObject = { readonly [key: string]: JsonValue };
+
+export type QueryReplayCompatibilityClassification =
+  | "compatible"
+  | "incompatible";
+
+export type QueryReplayDiffClassification =
+  | "equivalent"
+  | "different"
+  | "incompatible";
+
+export type QueryReplayDiffKind =
+  | "schema-version"
+  | "artifact-kind"
+  | "snapshot-id"
+  | "provenance"
+  | "structural";
+
+export type QueryReplayDiffValue =
+  | {
+      readonly present: true;
+      readonly value: JsonValue;
+    }
+  | {
+      readonly present: false;
+    };
+
+export interface QueryReplayDiffEntry {
+  readonly path: string;
+  readonly kind: QueryReplayDiffKind;
+  readonly left: QueryReplayDiffValue;
+  readonly right: QueryReplayDiffValue;
+}
+
+export interface QueryReplayDiffResult {
+  readonly classification: QueryReplayDiffClassification;
+  readonly equivalent: boolean;
+  readonly compatible: boolean;
+  readonly serializedLeft: string;
+  readonly serializedRight: string;
+  readonly diffs: readonly QueryReplayDiffEntry[];
+}
+
+export interface QueryReplayCompatibilityResult {
+  readonly classification: QueryReplayCompatibilityClassification;
+  readonly compatible: boolean;
+  readonly schemaVersionCompatible: boolean;
+  readonly artifactKindCompatible: boolean;
+  readonly migrationRequired: boolean;
+}
