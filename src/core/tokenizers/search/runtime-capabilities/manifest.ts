@@ -13,7 +13,7 @@ export interface ComposeRuntimeCapabilityManifestInput {
 export function composeRuntimeCapabilityManifest(
   input: ComposeRuntimeCapabilityManifestInput,
 ): RuntimeCapabilityManifest {
-  return deepFreeze({
+  return deepFreezeStructure({
     schemaVersion: RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
     metadata: normalizeManifestMetadata(input.metadata),
     capabilities: orderCapabilityDeclarations(
@@ -119,7 +119,7 @@ function compareStrings(left: string, right: string): number {
   return 0;
 }
 
-function deepFreeze<T>(value: T): T {
+export function deepFreezeStructure<T>(value: T): T {
   return freezeValue(value) as T;
 }
 

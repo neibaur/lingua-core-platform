@@ -1,5 +1,10 @@
 export {
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  type RuntimeCapabilityCertificationDiagnosticCode,
+  type RuntimeCapabilityCertificationInput,
+  type RuntimeCapabilityCertificationMismatch,
+  type RuntimeCapabilityCertificationResult,
+  type RuntimeCapabilityCertificationStatus,
   type RuntimeCapabilityCompatibilityResult,
   type RuntimeCapabilityDeclaration,
   type RuntimeCapabilityDiagnostic,
@@ -17,9 +22,14 @@ export {
   compareCapabilityDeclarations,
   compareRuntimeCapabilityDiagnostics,
   composeRuntimeCapabilityManifest,
+  deepFreezeStructure,
   orderCapabilityDeclarations,
   type ComposeRuntimeCapabilityManifestInput,
 } from "./manifest";
+export {
+  certifyRuntimeCapabilityManifest,
+  orderCertificationMismatches,
+} from "./certification";
 export {
   evaluateRuntimeCapabilityCompatibility,
   orderRuntimeCapabilityDiagnostics,

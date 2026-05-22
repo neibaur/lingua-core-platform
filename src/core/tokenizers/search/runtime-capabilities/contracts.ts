@@ -77,3 +77,27 @@ export interface RuntimeCapabilityCompatibilityResult {
   readonly providedManifestId: string;
   readonly diagnostics: readonly RuntimeCapabilityDiagnostic[];
 }
+
+export type RuntimeCapabilityCertificationStatus = "certified" | "rejected";
+
+export type RuntimeCapabilityCertificationDiagnosticCode =
+  | "CAPABILITY_MISMATCH"
+  | "CERTIFICATION_FAILURE";
+
+export interface RuntimeCapabilityCertificationMismatch {
+  readonly stageIndex: number;
+  readonly objectPath: string;
+  readonly diagnosticCode: RuntimeCapabilityCertificationDiagnosticCode;
+  readonly message: string;
+}
+
+export interface RuntimeCapabilityCertificationResult {
+  readonly status: RuntimeCapabilityCertificationStatus;
+  readonly platformBaseline: "lingua-core-platform@phase9";
+  readonly structuralMismatches: ReadonlyArray<RuntimeCapabilityCertificationMismatch>;
+}
+
+export interface RuntimeCapabilityCertificationInput {
+  readonly expectedManifest: unknown;
+  readonly providedManifest: unknown;
+}
