@@ -5,7 +5,7 @@ import {
   createQuerySnapshotSuccess,
   type QuerySnapshotValidationResult,
 } from "./diagnostics";
-import { stableJsonStringify } from "./stable-json";
+import { stableJsonParse, stableJsonStringify } from "./stable-json";
 import { validateJsonSafeStructure } from "./validate";
 
 export interface QuerySnapshotEquivalenceResult {
@@ -59,6 +59,6 @@ export function canonicalizeForEquivalence(
   }
 
   return createQuerySnapshotSuccess(
-    JSON.parse(stableJsonStringify(value)) as JsonValue,
+    stableJsonParse(stableJsonStringify(value)),
   );
 }
