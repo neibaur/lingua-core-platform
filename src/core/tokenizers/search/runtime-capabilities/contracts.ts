@@ -101,3 +101,20 @@ export interface RuntimeCapabilityCertificationInput {
   readonly expectedManifest: unknown;
   readonly providedManifest: unknown;
 }
+
+export type RuntimeCapabilityCertificationArtifact =
+  RuntimeCapabilityCertificationResult;
+
+export interface RuntimeCapabilityCertificationSummaryMismatch {
+  readonly stageIndex: number;
+  readonly objectPath: string;
+  readonly diagnosticCode: "CAPABILITY_MISMATCH" | "CERTIFICATION_FAILURE";
+  readonly message: string;
+}
+
+export interface RuntimeCapabilityCertificationSummary {
+  readonly trackingId: "lingua-core-platform:runtime-certification-summary";
+  readonly totalCapabilitiesEvaluated: number;
+  readonly globalStatus: "certified" | "rejected";
+  readonly aggregatedMismatches: ReadonlyArray<RuntimeCapabilityCertificationSummaryMismatch>;
+}
