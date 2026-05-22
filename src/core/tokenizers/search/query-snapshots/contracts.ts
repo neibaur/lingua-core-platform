@@ -213,18 +213,22 @@ export interface ReplayValidatorQueryExecutionTraceShape {
 }
 
 export interface ReplayValidatorQueryExplanationShape {
-  readonly strategy: string;
-  readonly structuralTrace: unknown;
-  readonly outputMatchCount: number;
+  readonly artifactKind: "QUERY_EXPLANATION";
+  readonly formatVersion: "query-explanation-v1";
+  readonly success: boolean;
+  readonly stages: readonly unknown[];
+  readonly artifacts: readonly unknown[];
+  readonly diagnostics: readonly unknown[];
 }
 
 export interface ReplayValidatorQueryPipelineResultShape {
+  readonly artifactKind: "QUERY_PIPELINE_RESULT";
   readonly query: string;
-  readonly ast: unknown;
-  readonly plan: unknown;
-  readonly trace: unknown;
-  readonly explanation: unknown;
-  readonly artifactKind: "PIPELINE_RESULT";
+  readonly lexemes: readonly string[];
+  readonly astJson: string;
+  readonly executionPlanId: string;
+  readonly traceId: string;
+  readonly explanationId: string;
 }
 
 export interface ReplayArtifactValidatorDispatch {
