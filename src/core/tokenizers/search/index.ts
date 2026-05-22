@@ -61,10 +61,12 @@ export {
   composeRuntimeCapabilityCertificationAuditSnapshot,
   composeRuntimeCapabilityGovernanceReport,
   composeRuntimeCapabilityManifest,
+  composeRuntimeOperationalGovernanceManifest,
   evaluateRuntimeCapabilityCompatibility,
   RUNTIME_CAPABILITY_AUDIT_SNAPSHOT_SCHEMA_VERSION,
   RUNTIME_CAPABILITY_GOVERNANCE_REPORT_SCHEMA_VERSION,
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION,
   validateRuntimeCapabilityManifest,
 } from "./runtime-capabilities";
 export { compileQueryAst, lexQuery, parseQuery } from "./query-parser";
@@ -186,6 +188,7 @@ export type {
   BuildRuntimeCapabilityCertificationSummaryInput,
   ComposeRuntimeCapabilityCertificationAuditSnapshotInput,
   ComposeRuntimeCapabilityGovernanceReportInput,
+  ComposeRuntimeOperationalGovernanceManifestInput,
   RuntimeCapabilityAuditSnapshotSchemaVersion,
   RuntimeCapabilityAuditSnapshotStatus,
   RuntimeCapabilityCertificationArtifact,
@@ -213,6 +216,9 @@ export type {
   RuntimeCapabilityManifestSchemaVersion,
   RuntimeCapabilityStability,
   RuntimeCapabilityValidationResult,
+  RuntimeOperationalGovernanceManifest,
+  RuntimeOperationalGovernanceManifestSchemaVersion,
+  RuntimeOperationalGovernanceStatus,
 } from "./runtime-capabilities";
 export type {
   QueryExecutionTrace,

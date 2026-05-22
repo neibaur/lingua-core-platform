@@ -66,3 +66,11 @@ export {
   type RuntimeCapabilityAuditSnapshotStatus,
   type RuntimeCapabilityCertificationAuditSnapshot,
 } from "./audit-snapshot";
+export {
+  composeRuntimeOperationalGovernanceManifest,
+  RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION,
+  type ComposeRuntimeOperationalGovernanceManifestInput,
+  type RuntimeOperationalGovernanceManifest,
+  type RuntimeOperationalGovernanceManifestSchemaVersion,
+  type RuntimeOperationalGovernanceStatus,
+} from "./operational-governance-manifest";
