@@ -50,3 +50,11 @@ export {
   orderRuntimeCapabilityDiagnostics,
   validateRuntimeCapabilityManifest,
 } from "./validate";
+export {
+  composeRuntimeCapabilityGovernanceReport,
+  RUNTIME_CAPABILITY_GOVERNANCE_REPORT_SCHEMA_VERSION,
+  type ComposeRuntimeCapabilityGovernanceReportInput,
+  type RuntimeCapabilityGovernanceReport,
+  type RuntimeCapabilityGovernanceReportSchemaVersion,
+  type RuntimeCapabilityGovernanceReportStatus,
+} from "./governance-report";
