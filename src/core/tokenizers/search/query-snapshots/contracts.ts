@@ -112,3 +112,74 @@ export interface QueryReplayCompatibilityResult {
   readonly artifactKindCompatible: boolean;
   readonly migrationRequired: boolean;
 }
+
+export type ReplayDiffSeverity = "none" | "warning" | "error";
+
+export type ReplayDiffSummaryStage =
+  | "envelope"
+  | "artifact"
+  | "provenance"
+  | "compatibility";
+
+export interface ReplayDiffStatistics {
+  readonly totalDiffCount: number;
+  readonly envelopeDiffCount: number;
+  readonly artifactDiffCount: number;
+  readonly provenanceMismatchCount: number;
+  readonly incompatibilityCount: number;
+}
+
+export interface ReplayDiffStageSummary {
+  readonly stage: ReplayDiffSummaryStage;
+  readonly severity: ReplayDiffSeverity;
+  readonly diffCount: number;
+  readonly paths: readonly string[];
+}
+
+export interface ReplayCompatibilitySummary {
+  readonly compatible: boolean;
+  readonly severity: ReplayDiffSeverity;
+  readonly schemaVersionCompatible: boolean;
+  readonly artifactKindCompatible: boolean;
+  readonly migrationRequired: boolean;
+}
+
+export interface ReplayDiffSummary {
+  readonly classification: QueryReplayDiffClassification;
+  readonly severity: ReplayDiffSeverity;
+  readonly equivalent: boolean;
+  readonly compatible: boolean;
+  readonly statistics: ReplayDiffStatistics;
+  readonly stageSummaries: readonly ReplayDiffStageSummary[];
+  readonly compatibilitySummary: ReplayCompatibilitySummary;
+}
+
+export type ReplayAggregationStage =
+  | "validation"
+  | "compatibility"
+  | "diff"
+  | "provenance";
+
+export type ReplayAggregationArtifact =
+  | "snapshot-envelope"
+  | QuerySnapshotArtifactKind;
+
+export interface ReplayDiagnosticGroup {
+  readonly stage: ReplayAggregationStage;
+  readonly artifact: ReplayAggregationArtifact;
+  readonly diagnostics: readonly JsonObject[];
+}
+
+export interface ReplayAggregationSummary {
+  readonly stage: ReplayAggregationStage;
+  readonly diagnosticCount: number;
+  readonly artifactCount: number;
+  readonly severity: ReplayDiffSeverity;
+}
+
+export interface ReplayDiagnosticAggregate {
+  readonly totalDiagnosticCount: number;
+  readonly severity: ReplayDiffSeverity;
+  readonly summaries: readonly ReplayAggregationSummary[];
+  readonly diagnostics: readonly JsonObject[];
+}

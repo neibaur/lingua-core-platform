@@ -11,6 +11,17 @@ export {
   type QueryReplayDiffKind,
   type QueryReplayDiffResult,
   type QueryReplayDiffValue,
+  type ReplayAggregationArtifact,
+  type ReplayAggregationStage,
+  type ReplayAggregationSummary,
+  type ReplayCompatibilitySummary,
+  type ReplayDiagnosticAggregate,
+  type ReplayDiagnosticGroup,
+  type ReplayDiffSeverity,
+  type ReplayDiffStageSummary,
+  type ReplayDiffStatistics,
+  type ReplayDiffSummary,
+  type ReplayDiffSummaryStage,
   type QueryExecutionTraceSnapshot,
   type QueryExplanationSnapshot,
   type QueryPipelineSnapshot,
@@ -21,6 +32,7 @@ export {
   type QuerySnapshotId,
   type QuerySnapshotSchemaVersion,
 } from "./contracts";
+export { aggregateReplayDiagnostics } from "./aggregation";
 export { evaluateQueryReplayCompatibility } from "./compatibility";
 export { diffJsonValues, diffQueryReplaySnapshots } from "./diff";
 export {
@@ -61,3 +73,4 @@ export {
   validateQuerySnapshotBundle,
   validateSnapshotEnvelope,
 } from "./validate";
+export { summarizeReplayCompatibility, summarizeReplayDiff } from "./summary";
