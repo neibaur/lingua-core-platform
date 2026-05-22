@@ -42,7 +42,9 @@ export {
 export { aggregateReplayDiagnostics } from "./aggregation";
 export {
   validateExecutionPlanArtifact,
+  validateQueryExplanationArtifact,
   validateQueryExecutionTraceArtifact,
+  validateQueryPipelineArtifact,
   validateReplayArtifactByKind,
   validateSnapshotEnvelopeArtifact,
 } from "./artifact-validators";
