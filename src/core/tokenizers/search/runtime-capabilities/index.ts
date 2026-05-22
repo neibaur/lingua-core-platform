@@ -1,9 +1,12 @@
 export {
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  type RuntimeCapabilityCertificationArtifact,
   type RuntimeCapabilityCertificationDiagnosticCode,
   type RuntimeCapabilityCertificationInput,
   type RuntimeCapabilityCertificationMismatch,
   type RuntimeCapabilityCertificationResult,
+  type RuntimeCapabilityCertificationSummary,
+  type RuntimeCapabilityCertificationSummaryMismatch,
   type RuntimeCapabilityCertificationStatus,
   type RuntimeCapabilityCompatibilityResult,
   type RuntimeCapabilityDeclaration,
@@ -26,6 +29,11 @@ export {
   orderCapabilityDeclarations,
   type ComposeRuntimeCapabilityManifestInput,
 } from "./manifest";
+export {
+  buildRuntimeCapabilityCertificationSummary,
+  orderCertificationSummaryMismatches,
+  type BuildRuntimeCapabilityCertificationSummaryInput,
+} from "./aggregation";
 export {
   certifyRuntimeCapabilityManifest,
   orderCertificationMismatches,

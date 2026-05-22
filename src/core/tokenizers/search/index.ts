@@ -55,6 +55,7 @@ export {
   buildQueryExplanation,
 } from "./query-tracing";
 export {
+  buildRuntimeCapabilityCertificationSummary,
   certifyRuntimeCapabilityManifest,
   composeRuntimeCapabilityManifest,
   evaluateRuntimeCapabilityCompatibility,
@@ -177,10 +178,14 @@ export type {
   QuerySnapshotValidationResult,
 } from "./query-snapshots";
 export type {
+  BuildRuntimeCapabilityCertificationSummaryInput,
+  RuntimeCapabilityCertificationArtifact,
   RuntimeCapabilityCertificationDiagnosticCode,
   RuntimeCapabilityCertificationInput,
   RuntimeCapabilityCertificationMismatch,
   RuntimeCapabilityCertificationResult,
+  RuntimeCapabilityCertificationSummary,
+  RuntimeCapabilityCertificationSummaryMismatch,
   RuntimeCapabilityCertificationStatus,
   RuntimeCapabilityCompatibilityResult,
   RuntimeCapabilityDeclaration,
