@@ -58,3 +58,11 @@ export {
   type RuntimeCapabilityGovernanceReportSchemaVersion,
   type RuntimeCapabilityGovernanceReportStatus,
 } from "./governance-report";
+export {
+  composeRuntimeCapabilityCertificationAuditSnapshot,
+  RUNTIME_CAPABILITY_AUDIT_SNAPSHOT_SCHEMA_VERSION,
+  type ComposeRuntimeCapabilityCertificationAuditSnapshotInput,
+  type RuntimeCapabilityAuditSnapshotSchemaVersion,
+  type RuntimeCapabilityAuditSnapshotStatus,
+  type RuntimeCapabilityCertificationAuditSnapshot,
+} from "./audit-snapshot";
