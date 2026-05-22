@@ -14,6 +14,7 @@ export {
   type RuntimeCapabilityDiagnosticCode,
   type RuntimeCapabilityDiagnosticSeverity,
   type RuntimeCapabilityId,
+  type RuntimeCapabilityIntrospectionEnvelope,
   type RuntimeCapabilityKind,
   type RuntimeCapabilityManifest,
   type RuntimeCapabilityManifestMetadata,
@@ -34,6 +35,12 @@ export {
   orderCertificationSummaryMismatches,
   type BuildRuntimeCapabilityCertificationSummaryInput,
 } from "./aggregation";
+export {
+  buildRuntimeCapabilityIntrospectionEnvelope,
+  orderRuntimeCapabilityCertifications,
+  orderRuntimeCapabilityManifests,
+  type BuildRuntimeCapabilityIntrospectionEnvelopeInput,
+} from "./introspection";
 export {
   certifyRuntimeCapabilityManifest,
   orderCertificationMismatches,

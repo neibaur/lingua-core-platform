@@ -56,6 +56,7 @@ export {
 } from "./query-tracing";
 export {
   buildRuntimeCapabilityCertificationSummary,
+  buildRuntimeCapabilityIntrospectionEnvelope,
   certifyRuntimeCapabilityManifest,
   composeRuntimeCapabilityManifest,
   evaluateRuntimeCapabilityCompatibility,
@@ -193,6 +194,7 @@ export type {
   RuntimeCapabilityDiagnosticCode,
   RuntimeCapabilityDiagnosticSeverity,
   RuntimeCapabilityId,
+  RuntimeCapabilityIntrospectionEnvelope,
   RuntimeCapabilityKind,
   RuntimeCapabilityManifest,
   RuntimeCapabilityManifestMetadata,

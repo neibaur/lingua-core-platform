@@ -118,3 +118,15 @@ export interface RuntimeCapabilityCertificationSummary {
   readonly globalStatus: "certified" | "rejected";
   readonly aggregatedMismatches: ReadonlyArray<RuntimeCapabilityCertificationSummaryMismatch>;
 }
+
+export interface RuntimeCapabilityIntrospectionEnvelope {
+  readonly trackingId: string;
+  readonly schemaVersion: "lingua-core-platform:runtime-introspection-envelope@phase9";
+  readonly generatedFrom: "runtime-capability-introspection";
+  readonly manifestCount: number;
+  readonly certificationCount: number;
+  readonly globalStatus: "certified" | "rejected";
+  readonly manifests: ReadonlyArray<RuntimeCapabilityManifest>;
+  readonly certifications: ReadonlyArray<RuntimeCapabilityCertificationArtifact>;
+  readonly certificationSummary: RuntimeCapabilityCertificationSummary;
+}
