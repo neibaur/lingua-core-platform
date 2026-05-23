@@ -4,12 +4,12 @@ import type {
   RuntimeCapabilityCertificationMismatch,
   RuntimeCapabilityCertificationResult,
   RuntimeCapabilityDiagnostic,
-} from "./contracts.js";
-import { deepFreezeStructure } from "./manifest.js";
+} from "./contracts";
+import { deepFreezeStructure } from "./manifest";
 import {
   evaluateRuntimeCapabilityCompatibility,
   validateRuntimeCapabilityManifest,
-} from "./validate.js";
+} from "./validate";
 
 const RUNTIME_CAPABILITY_CERTIFICATION_PLATFORM_BASELINE =
   "lingua-core-platform@phase9";
