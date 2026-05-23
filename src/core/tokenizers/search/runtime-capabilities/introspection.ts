@@ -1,5 +1,6 @@
 import {
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
   RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
   type RuntimeCapabilityCertificationArtifact,
   type RuntimeCapabilityCertificationSummary,
@@ -28,6 +29,12 @@ export const buildRuntimeCapabilityIntrospectionEnvelope = (
   input: BuildRuntimeCapabilityIntrospectionEnvelopeInput,
 ): RuntimeCapabilityIntrospectionEnvelope => {
   assertNonEmptyIdentifier(input.trackingId, "trackingId");
+
+  assertSchemaVersion(
+    input.certificationSummary.schemaVersion,
+    RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
+    "certificationSummary",
+  );
 
   for (const manifest of input.manifests) {
     assertSchemaVersion(
@@ -107,6 +114,7 @@ function normalizeCertificationSummary(
   certificationSummary: RuntimeCapabilityCertificationSummary,
 ): RuntimeCapabilityCertificationSummary {
   return {
+    schemaVersion: certificationSummary.schemaVersion,
     trackingId: certificationSummary.trackingId,
     totalCapabilitiesEvaluated: certificationSummary.totalCapabilitiesEvaluated,
     globalStatus: certificationSummary.globalStatus,

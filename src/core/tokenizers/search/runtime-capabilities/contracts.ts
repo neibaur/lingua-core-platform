@@ -12,6 +12,12 @@ export const RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION =
 export type RuntimeCapabilityIntrospectionEnvelopeSchemaVersion =
   typeof RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION;
 
+export const RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION =
+  "lingua-core-platform:runtime-certification-summary@phase9";
+
+export type RuntimeCapabilityCertificationSummarySchemaVersion =
+  typeof RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION;
+
 export type RuntimeCapabilityId = `${string}:${string}:${string}`;
 
 export type RuntimeCapabilityKind =
@@ -119,6 +125,7 @@ export interface RuntimeCapabilityCertificationSummaryMismatch {
 }
 
 export interface RuntimeCapabilityCertificationSummary {
+  readonly schemaVersion: RuntimeCapabilityCertificationSummarySchemaVersion;
   readonly trackingId: "lingua-core-platform:runtime-certification-summary";
   readonly totalCapabilitiesEvaluated: number;
   readonly globalStatus: "certified" | "rejected";

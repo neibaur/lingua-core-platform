@@ -8,10 +8,12 @@ import {
   orderRuntimeCapabilityCertifications,
   orderRuntimeCapabilityManifests,
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
 import type {
   RuntimeCapabilityCertificationArtifact,
+  RuntimeCapabilityCertificationSummary,
   RuntimeCapabilityDeclaration,
   RuntimeCapabilityManifest,
 } from "./contracts";
@@ -363,6 +365,27 @@ describe("runtime capability introspection envelopes", () => {
       }),
     ).toThrow(
       "[governance invariant] manifest manifestId must be unique: runtime:manifest:duplicate",
+    );
+  });
+
+  it("throws when certificationSummary carries a wrong schemaVersion", () => {
+    const summary = buildRuntimeCapabilityCertificationSummary({
+      certifications: [],
+    });
+    const driftedSummary = {
+      ...summary,
+      schemaVersion: "wrong@version",
+    } as unknown as RuntimeCapabilityCertificationSummary;
+
+    expect(() =>
+      buildRuntimeCapabilityIntrospectionEnvelope({
+        trackingId: "runtime:introspection:summary-schema-drift",
+        manifests: [],
+        certifications: [],
+        certificationSummary: driftedSummary,
+      }),
+    ).toThrow(
+      `[governance invariant] certificationSummary schemaVersion must be ${RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION}`,
     );
   });
 

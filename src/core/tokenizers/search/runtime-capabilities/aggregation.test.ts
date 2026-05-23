@@ -4,6 +4,7 @@ import {
   buildRuntimeCapabilityCertificationSummary,
   certifyRuntimeCapabilityManifest,
   composeRuntimeCapabilityManifest,
+  RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
 import type {
@@ -24,6 +25,7 @@ describe("runtime capability certification aggregation", () => {
     });
 
     expect(summary).toEqual({
+      schemaVersion: RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
       trackingId: "lingua-core-platform:runtime-certification-summary",
       totalCapabilitiesEvaluated: 1,
       globalStatus: "certified",
@@ -217,6 +219,16 @@ describe("runtime capability certification aggregation", () => {
     buildRuntimeCapabilityCertificationSummary({ certifications });
 
     expect(certifications).toEqual(before);
+  });
+
+  it("sets hardcoded schemaVersion on every summary", () => {
+    const summary = buildRuntimeCapabilityCertificationSummary({
+      certifications: [],
+    });
+
+    expect(summary.schemaVersion).toBe(
+      RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
+    );
   });
 
   it("produces stable replay ordering for equivalent inputs", () => {
