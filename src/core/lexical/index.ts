@@ -53,3 +53,12 @@ export {
 } from "./validation/lexical-dataset-validation";
 export { normalizeLexicalKey } from "./normalization/normalize-lexical-key";
 export { thaiToneMarkNormalizationRule } from "./normalization/thai-tone-mark-normalization-rule";
+export {
+  LEXICAL_DATASET_VALIDATION_REPORT_SCHEMA_VERSION,
+  LEXICAL_DATASET_VALIDATION_RULE_CODES,
+  composeLexicalDatasetValidationReport,
+  type ComposeLexicalDatasetValidationReportInput,
+  type LexicalDatasetDiagnosticsByCode,
+  type LexicalDatasetValidationReport,
+  type LexicalDatasetValidationReportSchemaVersion,
+} from "./validation/lexical-dataset-validation-report";
