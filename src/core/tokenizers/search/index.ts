@@ -70,6 +70,7 @@ export {
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
   RUNTIME_GOVERNANCE_CLOSURE_SCHEMA_VERSION,
   RUNTIME_GOVERNANCE_PROVENANCE_SCHEMA_VERSION,
+  RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
   RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION,
   validateRuntimeCapabilityManifest,
 } from "./runtime-capabilities";
@@ -214,6 +215,7 @@ export type {
   RuntimeCapabilityGovernanceReportStatus,
   RuntimeCapabilityId,
   RuntimeCapabilityIntrospectionEnvelope,
+  RuntimeCapabilityIntrospectionEnvelopeSchemaVersion,
   RuntimeCapabilityKind,
   RuntimeCapabilityManifest,
   RuntimeCapabilityManifestMetadata,

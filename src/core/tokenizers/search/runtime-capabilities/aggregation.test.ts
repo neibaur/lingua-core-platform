@@ -71,7 +71,7 @@ describe("runtime capability certification aggregation", () => {
         objectPath: "$.expectedManifest.schemaVersion",
         diagnosticCode: "CERTIFICATION_FAILURE",
         message:
-          "Runtime capability manifest schemaVersion must be runtime-capability-manifest-v1.",
+          "Runtime capability manifest schemaVersion must be lingua-core-platform:runtime-capability-manifest@phase9.",
       },
     ]);
   });

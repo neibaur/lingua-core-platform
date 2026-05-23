@@ -1,10 +1,16 @@
 import type { JsonObject } from "../query-snapshots";
 
 export const RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION =
-  "runtime-capability-manifest-v1";
+  "lingua-core-platform:runtime-capability-manifest@phase9";
 
 export type RuntimeCapabilityManifestSchemaVersion =
   typeof RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION;
+
+export const RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION =
+  "lingua-core-platform:runtime-introspection-envelope@phase9";
+
+export type RuntimeCapabilityIntrospectionEnvelopeSchemaVersion =
+  typeof RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION;
 
 export type RuntimeCapabilityId = `${string}:${string}:${string}`;
 
@@ -121,7 +127,7 @@ export interface RuntimeCapabilityCertificationSummary {
 
 export interface RuntimeCapabilityIntrospectionEnvelope {
   readonly trackingId: string;
-  readonly schemaVersion: "lingua-core-platform:runtime-introspection-envelope@phase9";
+  readonly schemaVersion: RuntimeCapabilityIntrospectionEnvelopeSchemaVersion;
   readonly generatedFrom: "runtime-capability-introspection";
   readonly manifestCount: number;
   readonly certificationCount: number;
