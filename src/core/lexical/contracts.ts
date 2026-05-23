@@ -1,7 +1,5 @@
 import type { LexicalEntryId } from "./identity/lexical-entry-id";
 
-export type { LexicalEntryId };
-
 export const LEXICAL_INDEX_SCHEMA_VERSION =
   "lingua-core-platform:lexical-index@phase10";
 
