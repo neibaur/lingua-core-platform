@@ -119,6 +119,26 @@ function compareStrings(left: string, right: string): number {
   return 0;
 }
 
+export function assertNonEmptyIdentifier(value: string, field: string): void {
+  if (value === "") {
+    throw new Error(
+      `[governance invariant] ${field} must be a non-empty string`,
+    );
+  }
+}
+
+export function assertSchemaVersion(
+  actual: unknown,
+  expected: string,
+  field: string,
+): void {
+  if (actual !== expected) {
+    throw new Error(
+      `[governance invariant] ${field} schemaVersion must be ${expected}`,
+    );
+  }
+}
+
 export function deepFreezeStructure<T>(value: T): T {
   return freezeValue(value) as T;
 }

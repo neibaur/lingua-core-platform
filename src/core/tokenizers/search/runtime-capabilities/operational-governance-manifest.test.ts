@@ -8,6 +8,7 @@ import {
   composeRuntimeCapabilityGovernanceReport,
   composeRuntimeCapabilityManifest,
   composeRuntimeOperationalGovernanceManifest,
+  RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
 import type {
@@ -163,6 +164,44 @@ describe("runtime operational governance manifests", () => {
     expect(roundTripped).toEqual(manifest);
     expect(stableJsonStringify(roundTripped)).toBe(
       stableJsonStringify(manifest),
+    );
+  });
+
+  it("throws on empty manifestId", () => {
+    expect(() =>
+      composeRuntimeOperationalGovernanceManifest({
+        manifestId: "",
+        auditSnapshots: [],
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws on duplicate snapshotId across audit snapshots", () => {
+    expect(() =>
+      composeRuntimeOperationalGovernanceManifest({
+        manifestId: "operational:manifest:duplicate-snapshots",
+        auditSnapshots: [
+          buildPassedSnapshot("audit:snapshot:duplicate"),
+          buildPassedSnapshot("audit:snapshot:duplicate"),
+        ],
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws when an auditSnapshot carries a wrong schemaVersion", () => {
+    const snapshot = buildPassedSnapshot("audit:snapshot:baseline");
+    const driftedSnapshot = {
+      ...snapshot,
+      schemaVersion: "wrong@version",
+    } as unknown as typeof snapshot;
+
+    expect(() =>
+      composeRuntimeOperationalGovernanceManifest({
+        manifestId: "operational:manifest:schema-drift",
+        auditSnapshots: [driftedSnapshot],
+      }),
+    ).toThrow(
+      `[governance invariant] auditSnapshot schemaVersion must be ${RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION}`,
     );
   });
 

@@ -5,6 +5,7 @@ import {
   buildRuntimeCapabilityIntrospectionEnvelope,
   certifyRuntimeCapabilityManifest,
   composeRuntimeCapabilityManifest,
+  RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
 import type {
@@ -318,6 +319,40 @@ describe("runtime capability introspection envelopes", () => {
     });
 
     expect({ manifests, certifications, certificationSummary }).toEqual(before);
+  });
+
+  it("throws on empty trackingId", () => {
+    expect(() =>
+      buildRuntimeCapabilityIntrospectionEnvelope({
+        trackingId: "",
+        manifests: [],
+        certifications: [],
+        certificationSummary: buildRuntimeCapabilityCertificationSummary({
+          certifications: [],
+        }),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws when a manifest carries a wrong schemaVersion", () => {
+    const manifest = createManifest("runtime:manifest:baseline");
+    const driftedManifest = {
+      ...manifest,
+      schemaVersion: "wrong@version",
+    } as unknown as RuntimeCapabilityManifest;
+
+    expect(() =>
+      buildRuntimeCapabilityIntrospectionEnvelope({
+        trackingId: "runtime:introspection:schema-drift",
+        manifests: [driftedManifest],
+        certifications: [],
+        certificationSummary: buildRuntimeCapabilityCertificationSummary({
+          certifications: [],
+        }),
+      }),
+    ).toThrow(
+      `[governance invariant] manifest schemaVersion must be ${RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION}`,
+    );
   });
 
   it("keeps empty arrays immutable", () => {

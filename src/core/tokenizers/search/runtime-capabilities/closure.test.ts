@@ -8,6 +8,7 @@ import {
   composeRuntimeGovernanceClosure,
   composeRuntimeGovernanceProvenance,
   composeRuntimeOperationalGovernanceManifest,
+  RUNTIME_GOVERNANCE_PROVENANCE_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
 import type { RuntimeCapabilityCertificationArtifact } from "./contracts";
@@ -149,6 +150,32 @@ describe("runtime governance closure", () => {
     expect(closureA.evaluationTimestamp).toBeNull();
     expect(closureB.evaluationTimestamp).toBeNull();
     expect(stableJsonStringify(closureA)).toBe(stableJsonStringify(closureB));
+  });
+
+  it("throws on empty closureId", () => {
+    expect(() =>
+      composeRuntimeGovernanceClosure({
+        closureId: "",
+        provenance: buildPassedProvenance(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws when provenance carries a wrong schemaVersion", () => {
+    const provenance = buildPassedProvenance();
+    const driftedProvenance = {
+      ...provenance,
+      schemaVersion: "wrong@version",
+    } as unknown as typeof provenance;
+
+    expect(() =>
+      composeRuntimeGovernanceClosure({
+        closureId: "closure:schema-drift",
+        provenance: driftedProvenance,
+      }),
+    ).toThrow(
+      `[governance invariant] provenance schemaVersion must be ${RUNTIME_GOVERNANCE_PROVENANCE_SCHEMA_VERSION}`,
+    );
   });
 
   it("deep freeze enforcement prevents mutation of top-level artifact", () => {

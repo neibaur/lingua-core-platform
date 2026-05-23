@@ -25,6 +25,8 @@ export {
   type RuntimeCapabilityValidationResult,
 } from "./contracts";
 export {
+  assertNonEmptyIdentifier,
+  assertSchemaVersion,
   compareCapabilityDeclarations,
   compareRuntimeCapabilityDiagnostics,
   composeRuntimeCapabilityManifest,
