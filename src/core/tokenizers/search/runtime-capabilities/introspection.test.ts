@@ -349,6 +349,23 @@ describe("runtime capability introspection envelopes", () => {
     ).toThrow("[governance invariant]");
   });
 
+  it("throws on duplicate manifestId across manifests", () => {
+    const manifest = createManifest("runtime:manifest:duplicate");
+
+    expect(() =>
+      buildRuntimeCapabilityIntrospectionEnvelope({
+        trackingId: "runtime:introspection:duplicate-manifests",
+        manifests: [manifest, manifest],
+        certifications: [],
+        certificationSummary: buildRuntimeCapabilityCertificationSummary({
+          certifications: [],
+        }),
+      }),
+    ).toThrow(
+      "[governance invariant] manifest manifestId must be unique: runtime:manifest:duplicate",
+    );
+  });
+
   it("throws when a manifest carries a wrong schemaVersion", () => {
     const manifest = createManifest("runtime:manifest:baseline");
     const driftedManifest = {

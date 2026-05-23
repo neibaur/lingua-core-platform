@@ -13,6 +13,9 @@ export interface ComposeRuntimeCapabilityManifestInput {
 export function composeRuntimeCapabilityManifest(
   input: ComposeRuntimeCapabilityManifestInput,
 ): RuntimeCapabilityManifest {
+  assertNonEmptyIdentifier(input.metadata.manifestId, "metadata.manifestId");
+  assertNonEmptyIdentifier(input.metadata.runtimeName, "metadata.runtimeName");
+
   return deepFreezeStructure({
     schemaVersion: RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
     metadata: normalizeManifestMetadata(input.metadata),

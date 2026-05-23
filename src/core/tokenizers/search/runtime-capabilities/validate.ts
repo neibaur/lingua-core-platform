@@ -11,8 +11,9 @@ import {
   type RuntimeCapabilityCompatibilityResult,
 } from "./contracts";
 import {
-  composeRuntimeCapabilityManifest,
   compareRuntimeCapabilityDiagnostics,
+  composeRuntimeCapabilityManifest,
+  deepFreezeStructure,
 } from "./manifest";
 import { validateJsonSafeStructure } from "../query-snapshots";
 
@@ -122,7 +123,7 @@ export function evaluateRuntimeCapabilityCompatibility(
 
   const orderedDiagnostics = orderRuntimeCapabilityDiagnostics(diagnostics);
 
-  return Object.freeze({
+  return deepFreezeStructure({
     compatible: orderedDiagnostics.length === 0,
     requiredManifestId: requiredManifest.metadata.manifestId,
     providedManifestId: providedManifest.metadata.manifestId,

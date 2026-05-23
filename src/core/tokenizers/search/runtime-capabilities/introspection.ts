@@ -38,6 +38,17 @@ export const buildRuntimeCapabilityIntrospectionEnvelope = (
   }
 
   const manifests = orderRuntimeCapabilityManifests(input.manifests);
+
+  let previousManifestId: string | undefined;
+  for (const manifest of manifests) {
+    if (manifest.metadata.manifestId === previousManifestId) {
+      throw new Error(
+        `[governance invariant] manifest manifestId must be unique: ${manifest.metadata.manifestId}`,
+      );
+    }
+    previousManifestId = manifest.metadata.manifestId;
+  }
+
   const certifications = orderRuntimeCapabilityCertifications(
     input.certifications,
   );
