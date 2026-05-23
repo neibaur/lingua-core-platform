@@ -74,3 +74,11 @@ export {
   type RuntimeOperationalGovernanceManifestSchemaVersion,
   type RuntimeOperationalGovernanceStatus,
 } from "./operational-governance-manifest";
+export {
+  composeRuntimeGovernanceProvenance,
+  RUNTIME_GOVERNANCE_PROVENANCE_SCHEMA_VERSION,
+  type ComposeRuntimeGovernanceProvenanceInput,
+  type RuntimeGovernanceAttestationStatus,
+  type RuntimeGovernanceProvenance,
+  type RuntimeGovernanceProvenanceSchemaVersion,
+} from "./provenance";
