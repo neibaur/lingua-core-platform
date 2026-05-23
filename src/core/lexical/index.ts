@@ -40,5 +40,16 @@ export {
 } from "./index/lexical-index";
 export { composeLexicalLookup } from "./lookup/lexical-lookup";
 export { assertNoWhitespace } from "./normalization/assert-no-whitespace";
+export {
+  LEXICAL_DATASET_VALIDATION_RESULT_SCHEMA_VERSION,
+  validateLexicalDataset,
+  type LexicalDatasetValidationDiagnostic,
+  type LexicalDatasetValidationDiagnosticCode,
+  type LexicalDatasetValidationDiagnosticSeverity,
+  type LexicalDatasetValidationResult,
+  type LexicalDatasetValidationResultSchemaVersion,
+  type LexicalDatasetValidationStatus,
+  type ValidateLexicalDatasetInput,
+} from "./validation/lexical-dataset-validation";
 export { normalizeLexicalKey } from "./normalization/normalize-lexical-key";
 export { thaiToneMarkNormalizationRule } from "./normalization/thai-tone-mark-normalization-rule";
