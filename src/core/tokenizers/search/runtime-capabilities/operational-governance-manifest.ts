@@ -60,6 +60,11 @@ export function composeRuntimeOperationalGovernanceManifest(
     previousSnapshotId = snapshot.snapshotId;
   }
 
+  // Vacuous-pass: Array.prototype.every returns true for an empty array, so
+  // auditSnapshots: [] intentionally produces governanceStatus: "passed".
+  // Downstream layers (provenance, closure) must derive their status only from
+  // governanceStatus and must never re-evaluate auditSnapshots —
+  // Single-Layer Governance Derivation Law.
   const governanceStatus: RuntimeOperationalGovernanceStatus =
     auditSnapshots.every((snapshot) => snapshot.auditStatus === "passed")
       ? "passed"
