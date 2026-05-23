@@ -1,0 +1,79 @@
+import { deepFreezeStructure } from "../../tokenizers/search/runtime-capabilities/index";
+import {
+  LEXICAL_INDEX_SCHEMA_VERSION,
+  type LexicalEntry,
+  type LexicalIndex,
+} from "../contracts";
+import { normalizeLexicalKey } from "../normalization/normalize-lexical-key";
+
+export interface ComposeLexicalIndexInput {
+  readonly lexicalIndexId: string;
+  readonly entries: readonly LexicalEntry[];
+}
+
+function compareStrings(left: string, right: string): number {
+  if (left < right) {
+    return -1;
+  }
+  if (left > right) {
+    return 1;
+  }
+  return 0;
+}
+
+export function composeLexicalIndex(
+  input: ComposeLexicalIndexInput,
+): LexicalIndex {
+  if (input.lexicalIndexId.trim() === "") {
+    throw new Error(
+      "[lexical invariant] lexicalIndexId must be a non-empty string",
+    );
+  }
+
+  const sortedEntries = [...input.entries].sort((a, b) =>
+    compareStrings(
+      normalizeLexicalKey(a.headword),
+      normalizeLexicalKey(b.headword),
+    ),
+  );
+
+  const thaiToEnglish: Record<string, LexicalEntry> = {};
+  const englishToThaiBuilder: Record<string, LexicalEntry[] | undefined> = {};
+
+  for (const entry of sortedEntries) {
+    const canonicalThaiKey = normalizeLexicalKey(entry.headword);
+    thaiToEnglish[canonicalThaiKey] = entry;
+
+    for (const def of entry.definitions) {
+      const canonicalEnglishKey = def.definition.toLowerCase();
+      const bucket = englishToThaiBuilder[canonicalEnglishKey];
+      if (bucket === undefined) {
+        englishToThaiBuilder[canonicalEnglishKey] = [entry];
+      } else if (!bucket.includes(entry)) {
+        bucket.push(entry);
+      }
+    }
+  }
+
+  // Sort each bucket by canonical Thai headword and produce the final record.
+  const englishToThai: Record<string, LexicalEntry[]> = {};
+  for (const key of Object.keys(englishToThaiBuilder)) {
+    const bucket = englishToThaiBuilder[key] ?? [];
+    englishToThai[key] = [...bucket].sort((a, b) =>
+      compareStrings(
+        normalizeLexicalKey(a.headword),
+        normalizeLexicalKey(b.headword),
+      ),
+    );
+  }
+
+  return deepFreezeStructure({
+    schemaVersion: LEXICAL_INDEX_SCHEMA_VERSION,
+    lexicalIndexId: input.lexicalIndexId,
+    evaluationTimestamp: null,
+    entryCount: sortedEntries.length,
+    entries: sortedEntries,
+    thaiToEnglish,
+    englishToThai,
+  });
+}
