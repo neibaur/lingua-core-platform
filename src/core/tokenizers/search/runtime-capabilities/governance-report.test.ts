@@ -33,7 +33,7 @@ describe("runtime capability governance reports", () => {
 
     expect(report.generatedFrom).toBe("runtime-capability-governance-report");
     expect(report.schemaVersion).toBe(
-      "lingua-core-platform:runtime-capability-governance-report@phase9",
+      "lingua-core-platform:runtime-governance-report@phase9",
     );
     expect(report.evaluationTimestamp).toBeNull();
   });

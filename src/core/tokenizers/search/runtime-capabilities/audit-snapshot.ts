@@ -1,11 +1,11 @@
 import type { RuntimeCapabilityGovernanceReport } from "./governance-report";
 import { deepFreezeStructure } from "./manifest";
 
-export const RUNTIME_CAPABILITY_AUDIT_SNAPSHOT_SCHEMA_VERSION =
-  "lingua-core-platform:runtime-capability-certification-audit-snapshot@phase9";
+export const RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION =
+  "lingua-core-platform:runtime-certification-audit-snapshot@phase9";
 
 export type RuntimeCapabilityAuditSnapshotSchemaVersion =
-  typeof RUNTIME_CAPABILITY_AUDIT_SNAPSHOT_SCHEMA_VERSION;
+  typeof RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION;
 
 export type RuntimeCapabilityAuditSnapshotStatus = "passed" | "failed";
 
@@ -35,7 +35,7 @@ export function composeRuntimeCapabilityCertificationAuditSnapshot(
   return deepFreezeStructure({
     snapshotId: input.snapshotId,
     generatedFrom: AUDIT_SNAPSHOT_GENERATED_FROM,
-    schemaVersion: RUNTIME_CAPABILITY_AUDIT_SNAPSHOT_SCHEMA_VERSION,
+    schemaVersion: RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION,
     evaluationTimestamp: null,
     governanceReport: input.governanceReport,
     auditStatus,

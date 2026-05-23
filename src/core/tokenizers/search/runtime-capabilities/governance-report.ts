@@ -1,11 +1,11 @@
 import type { RuntimeCapabilityIntrospectionEnvelope } from "./contracts";
 import { deepFreezeStructure } from "./manifest";
 
-export const RUNTIME_CAPABILITY_GOVERNANCE_REPORT_SCHEMA_VERSION =
-  "lingua-core-platform:runtime-capability-governance-report@phase9";
+export const RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION =
+  "lingua-core-platform:runtime-governance-report@phase9";
 
 export type RuntimeCapabilityGovernanceReportSchemaVersion =
-  typeof RUNTIME_CAPABILITY_GOVERNANCE_REPORT_SCHEMA_VERSION;
+  typeof RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION;
 
 export type RuntimeCapabilityGovernanceReportStatus = "passed" | "failed";
 
@@ -38,7 +38,7 @@ export function composeRuntimeCapabilityGovernanceReport(
   return deepFreezeStructure({
     reportId: input.reportId,
     generatedFrom: GOVERNANCE_REPORT_GENERATED_FROM,
-    schemaVersion: RUNTIME_CAPABILITY_GOVERNANCE_REPORT_SCHEMA_VERSION,
+    schemaVersion: RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION,
     evaluationTimestamp: null,
     introspectionEnvelope: input.introspectionEnvelope,
     reportStatus,
