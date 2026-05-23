@@ -176,6 +176,15 @@ describe("runtime operational governance manifests", () => {
     ).toThrow("[governance invariant]");
   });
 
+  it("throws on whitespace-only manifestId", () => {
+    expect(() =>
+      composeRuntimeOperationalGovernanceManifest({
+        manifestId: "   ",
+        auditSnapshots: [],
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
   it("throws on duplicate snapshotId across audit snapshots", () => {
     expect(() =>
       composeRuntimeOperationalGovernanceManifest({

@@ -99,6 +99,23 @@ describe("runtime governance provenance", () => {
     );
   });
 
+  it("derives attestationStatus passed from vacuous-pass manifest without re-evaluating audit snapshots", () => {
+    const emptyManifest = composeRuntimeOperationalGovernanceManifest({
+      manifestId: "operational:manifest:vacuous-pass",
+      auditSnapshots: [],
+    });
+
+    expect(emptyManifest.auditSnapshots).toHaveLength(0);
+    expect(emptyManifest.governanceStatus).toBe("passed");
+
+    const provenance = composeRuntimeGovernanceProvenance({
+      provenanceId: "provenance:vacuous-pass-derivation",
+      operationalManifest: emptyManifest,
+    });
+
+    expect(provenance.attestationStatus).toBe("passed");
+  });
+
   it("preserves the embedded operational manifest structurally", () => {
     const manifest = buildPassedManifest();
     const provenance = composeRuntimeGovernanceProvenance({
@@ -175,6 +192,15 @@ describe("runtime governance provenance", () => {
     expect(() =>
       composeRuntimeGovernanceProvenance({
         provenanceId: "",
+        operationalManifest: buildPassedManifest(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws on whitespace-only provenanceId", () => {
+    expect(() =>
+      composeRuntimeGovernanceProvenance({
+        provenanceId: "   ",
         operationalManifest: buildPassedManifest(),
       }),
     ).toThrow("[governance invariant]");

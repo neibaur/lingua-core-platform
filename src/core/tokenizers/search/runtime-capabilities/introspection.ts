@@ -1,5 +1,6 @@
 import {
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
   RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
   type RuntimeCapabilityCertificationArtifact,
   type RuntimeCapabilityCertificationSummary,
@@ -29,6 +30,12 @@ export const buildRuntimeCapabilityIntrospectionEnvelope = (
 ): RuntimeCapabilityIntrospectionEnvelope => {
   assertNonEmptyIdentifier(input.trackingId, "trackingId");
 
+  assertSchemaVersion(
+    input.certificationSummary.schemaVersion,
+    RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
+    "certificationSummary",
+  );
+
   for (const manifest of input.manifests) {
     assertSchemaVersion(
       manifest.schemaVersion,
@@ -38,6 +45,17 @@ export const buildRuntimeCapabilityIntrospectionEnvelope = (
   }
 
   const manifests = orderRuntimeCapabilityManifests(input.manifests);
+
+  let previousManifestId: string | undefined;
+  for (const manifest of manifests) {
+    if (manifest.metadata.manifestId === previousManifestId) {
+      throw new Error(
+        `[governance invariant] manifest manifestId must be unique: ${manifest.metadata.manifestId}`,
+      );
+    }
+    previousManifestId = manifest.metadata.manifestId;
+  }
+
   const certifications = orderRuntimeCapabilityCertifications(
     input.certifications,
   );
@@ -60,7 +78,7 @@ export const buildRuntimeCapabilityIntrospectionEnvelope = (
 export function orderRuntimeCapabilityManifests(
   manifests: ReadonlyArray<RuntimeCapabilityManifest>,
 ): ReadonlyArray<RuntimeCapabilityManifest> {
-  return Object.freeze(
+  return deepFreezeStructure(
     manifests
       .map((manifest) => ({
         schemaVersion: manifest.schemaVersion,
@@ -79,7 +97,7 @@ export function orderRuntimeCapabilityManifests(
 export function orderRuntimeCapabilityCertifications(
   certifications: ReadonlyArray<RuntimeCapabilityCertificationArtifact>,
 ): ReadonlyArray<RuntimeCapabilityCertificationArtifact> {
-  return Object.freeze(
+  return deepFreezeStructure(
     certifications
       .map((certification) => ({
         status: certification.status,
@@ -96,6 +114,7 @@ function normalizeCertificationSummary(
   certificationSummary: RuntimeCapabilityCertificationSummary,
 ): RuntimeCapabilityCertificationSummary {
   return {
+    schemaVersion: certificationSummary.schemaVersion,
     trackingId: certificationSummary.trackingId,
     totalCapabilitiesEvaluated: certificationSummary.totalCapabilitiesEvaluated,
     globalStatus: certificationSummary.globalStatus,

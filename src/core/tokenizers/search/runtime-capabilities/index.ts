@@ -1,5 +1,6 @@
 export {
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
   RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
   type RuntimeCapabilityCertificationArtifact,
   type RuntimeCapabilityCertificationDiagnosticCode,
@@ -8,6 +9,7 @@ export {
   type RuntimeCapabilityCertificationResult,
   type RuntimeCapabilityCertificationSummary,
   type RuntimeCapabilityCertificationSummaryMismatch,
+  type RuntimeCapabilityCertificationSummarySchemaVersion,
   type RuntimeCapabilityCertificationStatus,
   type RuntimeCapabilityCompatibilityResult,
   type RuntimeCapabilityDeclaration,

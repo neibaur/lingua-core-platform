@@ -13,6 +13,9 @@ export interface ComposeRuntimeCapabilityManifestInput {
 export function composeRuntimeCapabilityManifest(
   input: ComposeRuntimeCapabilityManifestInput,
 ): RuntimeCapabilityManifest {
+  assertNonEmptyIdentifier(input.metadata.manifestId, "metadata.manifestId");
+  assertNonEmptyIdentifier(input.metadata.runtimeName, "metadata.runtimeName");
+
   return deepFreezeStructure({
     schemaVersion: RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
     metadata: normalizeManifestMetadata(input.metadata),
@@ -120,7 +123,7 @@ function compareStrings(left: string, right: string): number {
 }
 
 export function assertNonEmptyIdentifier(value: string, field: string): void {
-  if (value === "") {
+  if (value.trim() === "") {
     throw new Error(
       `[governance invariant] ${field} must be a non-empty string`,
     );

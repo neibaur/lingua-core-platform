@@ -1,7 +1,8 @@
-import type {
-  RuntimeCapabilityCertificationArtifact,
-  RuntimeCapabilityCertificationSummary,
-  RuntimeCapabilityCertificationSummaryMismatch,
+import {
+  RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
+  type RuntimeCapabilityCertificationArtifact,
+  type RuntimeCapabilityCertificationSummary,
+  type RuntimeCapabilityCertificationSummaryMismatch,
 } from "./contracts";
 import { deepFreezeStructure } from "./manifest";
 
@@ -30,6 +31,7 @@ export const buildRuntimeCapabilityCertificationSummary = (
   );
 
   return deepFreezeStructure({
+    schemaVersion: RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
     trackingId: RUNTIME_CERTIFICATION_SUMMARY_TRACKING_ID,
     totalCapabilitiesEvaluated: input.certifications.length,
     globalStatus:

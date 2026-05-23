@@ -81,6 +81,62 @@ describe("runtime capability manifests", () => {
     ]);
   });
 
+  it("throws on empty metadata.manifestId in composeRuntimeCapabilityManifest", () => {
+    expect(() =>
+      composeRuntimeCapabilityManifest({
+        metadata: {
+          manifestId: "",
+          runtimeName: "lingua-core-search-runtime",
+          runtimeVersion: "1.0.0",
+          manifestVersion: "1.0.0",
+        },
+        capabilities: [],
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws on whitespace-only metadata.manifestId in composeRuntimeCapabilityManifest", () => {
+    expect(() =>
+      composeRuntimeCapabilityManifest({
+        metadata: {
+          manifestId: "   ",
+          runtimeName: "lingua-core-search-runtime",
+          runtimeVersion: "1.0.0",
+          manifestVersion: "1.0.0",
+        },
+        capabilities: [],
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws on empty metadata.runtimeName in composeRuntimeCapabilityManifest", () => {
+    expect(() =>
+      composeRuntimeCapabilityManifest({
+        metadata: {
+          manifestId: "runtime:manifest:test",
+          runtimeName: "",
+          runtimeVersion: "1.0.0",
+          manifestVersion: "1.0.0",
+        },
+        capabilities: [],
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws on whitespace-only metadata.runtimeName in composeRuntimeCapabilityManifest", () => {
+    expect(() =>
+      composeRuntimeCapabilityManifest({
+        metadata: {
+          manifestId: "runtime:manifest:test",
+          runtimeName: "   ",
+          runtimeVersion: "1.0.0",
+          manifestVersion: "1.0.0",
+        },
+        capabilities: [],
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
   it("validates manifests without mutation and returns frozen canonical data", () => {
     const input = {
       schemaVersion: RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
@@ -207,6 +263,26 @@ describe("runtime capability manifests", () => {
     ]);
     expect(Object.isFrozen(result)).toBe(true);
     expect(Object.isFrozen(result.diagnostics)).toBe(true);
+  });
+
+  it("evaluateRuntimeCapabilityCompatibility returns a recursively immutable result", () => {
+    const required = composeRuntimeCapabilityManifest({
+      metadata: createMetadata("runtime:manifest:required"),
+      capabilities: [
+        createCapability("engine:tokenize:thai", "engine", "1.0.0"),
+      ],
+    });
+    const provided = composeRuntimeCapabilityManifest({
+      metadata: createMetadata("runtime:manifest:provided"),
+      capabilities: [],
+    });
+
+    const result = evaluateRuntimeCapabilityCompatibility(required, provided);
+
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(result.diagnostics)).toBe(true);
+    expect(Object.isFrozen(result.diagnostics[0])).toBe(true);
+    expect(Object.isFrozen(result.diagnostics[0]?.path)).toBe(true);
   });
 
   it("rejects metadata with whitespace-only manifestId", () => {
