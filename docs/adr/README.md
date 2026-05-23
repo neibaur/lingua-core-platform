@@ -30,3 +30,5 @@ Numbers are never reused. If a decision changes, create a new ADR and mark the o
 | [0003](0003-open-core-public-private-boundary.md) | Accepted | Use an open-core public/private repository boundary. |
 | [0004](0004-search-and-tokenization-abstraction.md) | Accepted | Treat search and tokenization as first-class language-agnostic abstractions. |
 | [0005](0005-deterministic-query-explainability-tracing.md) | Accepted | Add deterministic query explainability and execution tracing. |
+| [0006](0006-deterministic-replay-governance-architecture.md) | Accepted | Formalize deterministic replay governance as an architecture boundary. |
+| [0007](0007-deterministic-runtime-capability-governance.md) | Accepted | Formalize deterministic runtime capability governance as an architecture boundary. |
