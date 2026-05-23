@@ -110,3 +110,5 @@ Desktop.ini
 
 # Optional npm cache directory
 .npm/
+
+.claude/settings.local.json

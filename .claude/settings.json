@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "commands": {
+    "trusted": [
+      "pnpm format:check",
+      "pnpm lint",
+      "pnpm typecheck",
+      "pnpm test",
+      "pnpm test:coverage",
+      "pnpm validate",
+      "git status",
+      "git diff",
+      "git log"
+    ],
+    "blocked": ["git push origin main", "git push --force", "curl", "wget"]
+  },
+  "files": {
+    "ignore": [
+      "/.env",
+      "/.env.",
+      "/secrets/",
+      "/.pem",
+      "/*.key",
+      "/*.p12",
+      "/credentials.json",
+      "/service-account.json"
+    ]
+  }
+}
