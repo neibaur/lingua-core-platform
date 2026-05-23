@@ -5,6 +5,8 @@ import {
   buildRuntimeCapabilityIntrospectionEnvelope,
   certifyRuntimeCapabilityManifest,
   composeRuntimeCapabilityManifest,
+  orderRuntimeCapabilityCertifications,
+  orderRuntimeCapabilityManifests,
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
@@ -334,6 +336,19 @@ describe("runtime capability introspection envelopes", () => {
     ).toThrow("[governance invariant]");
   });
 
+  it("throws on whitespace-only trackingId", () => {
+    expect(() =>
+      buildRuntimeCapabilityIntrospectionEnvelope({
+        trackingId: "   ",
+        manifests: [],
+        certifications: [],
+        certificationSummary: buildRuntimeCapabilityCertificationSummary({
+          certifications: [],
+        }),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
   it("throws when a manifest carries a wrong schemaVersion", () => {
     const manifest = createManifest("runtime:manifest:baseline");
     const driftedManifest = {
@@ -353,6 +368,34 @@ describe("runtime capability introspection envelopes", () => {
     ).toThrow(
       `[governance invariant] manifest schemaVersion must be ${RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION}`,
     );
+  });
+
+  it("orderRuntimeCapabilityManifests individually freezes each manifest object, not only the array", () => {
+    const ordered = orderRuntimeCapabilityManifests([
+      createManifest("runtime:manifest:a"),
+    ]);
+
+    expect(Object.isFrozen(ordered)).toBe(true);
+    expect(Object.isFrozen(ordered[0])).toBe(true);
+    expect(Object.isFrozen(ordered[0]?.metadata)).toBe(true);
+    expect(Object.isFrozen(ordered[0]?.capabilities)).toBe(true);
+  });
+
+  it("orderRuntimeCapabilityCertifications individually freezes each certification object, not only the array", () => {
+    const ordered = orderRuntimeCapabilityCertifications([
+      createCertificationArtifact("rejected", [
+        {
+          stageIndex: 1,
+          objectPath: "$.a",
+          diagnosticCode: "CAPABILITY_MISMATCH",
+          message: "mismatch",
+        },
+      ]),
+    ]);
+
+    expect(Object.isFrozen(ordered)).toBe(true);
+    expect(Object.isFrozen(ordered[0])).toBe(true);
+    expect(Object.isFrozen(ordered[0]?.structuralMismatches)).toBe(true);
   });
 
   it("keeps empty arrays immutable", () => {

@@ -127,6 +127,15 @@ describe("runtime capability certification audit snapshots", () => {
     ).toThrow("[governance invariant]");
   });
 
+  it("throws on whitespace-only snapshotId", () => {
+    expect(() =>
+      composeRuntimeCapabilityCertificationAuditSnapshot({
+        snapshotId: "   ",
+        governanceReport: buildPassedGovernanceReport(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
   it("throws when governanceReport carries a wrong schemaVersion", () => {
     const report = buildPassedGovernanceReport();
     const driftedReport = {

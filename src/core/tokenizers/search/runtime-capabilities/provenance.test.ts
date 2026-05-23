@@ -180,6 +180,15 @@ describe("runtime governance provenance", () => {
     ).toThrow("[governance invariant]");
   });
 
+  it("throws on whitespace-only provenanceId", () => {
+    expect(() =>
+      composeRuntimeGovernanceProvenance({
+        provenanceId: "   ",
+        operationalManifest: buildPassedManifest(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
   it("throws when operationalManifest carries a wrong schemaVersion", () => {
     const manifest = buildPassedManifest();
     const driftedManifest = {

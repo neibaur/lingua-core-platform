@@ -161,6 +161,15 @@ describe("runtime governance closure", () => {
     ).toThrow("[governance invariant]");
   });
 
+  it("throws on whitespace-only closureId", () => {
+    expect(() =>
+      composeRuntimeGovernanceClosure({
+        closureId: "   ",
+        provenance: buildPassedProvenance(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
   it("throws when provenance carries a wrong schemaVersion", () => {
     const provenance = buildPassedProvenance();
     const driftedProvenance = {

@@ -120,7 +120,7 @@ function compareStrings(left: string, right: string): number {
 }
 
 export function assertNonEmptyIdentifier(value: string, field: string): void {
-  if (value === "") {
+  if (value.trim() === "") {
     throw new Error(
       `[governance invariant] ${field} must be a non-empty string`,
     );

@@ -119,6 +119,15 @@ describe("runtime capability governance reports", () => {
     ).toThrow("[governance invariant]");
   });
 
+  it("throws on whitespace-only reportId", () => {
+    expect(() =>
+      composeRuntimeCapabilityGovernanceReport({
+        reportId: "   ",
+        introspectionEnvelope: buildCertifiedEnvelope(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
   it("throws when introspectionEnvelope carries a wrong schemaVersion", () => {
     const envelope = buildCertifiedEnvelope();
     const driftedEnvelope = {

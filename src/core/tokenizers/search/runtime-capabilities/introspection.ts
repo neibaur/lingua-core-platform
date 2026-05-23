@@ -60,7 +60,7 @@ export const buildRuntimeCapabilityIntrospectionEnvelope = (
 export function orderRuntimeCapabilityManifests(
   manifests: ReadonlyArray<RuntimeCapabilityManifest>,
 ): ReadonlyArray<RuntimeCapabilityManifest> {
-  return Object.freeze(
+  return deepFreezeStructure(
     manifests
       .map((manifest) => ({
         schemaVersion: manifest.schemaVersion,
@@ -79,7 +79,7 @@ export function orderRuntimeCapabilityManifests(
 export function orderRuntimeCapabilityCertifications(
   certifications: ReadonlyArray<RuntimeCapabilityCertificationArtifact>,
 ): ReadonlyArray<RuntimeCapabilityCertificationArtifact> {
-  return Object.freeze(
+  return deepFreezeStructure(
     certifications
       .map((certification) => ({
         status: certification.status,
