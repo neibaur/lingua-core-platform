@@ -82,3 +82,11 @@ export {
   type RuntimeGovernanceProvenance,
   type RuntimeGovernanceProvenanceSchemaVersion,
 } from "./provenance";
+export {
+  composeRuntimeGovernanceClosure,
+  RUNTIME_GOVERNANCE_CLOSURE_SCHEMA_VERSION,
+  type ComposeRuntimeGovernanceClosureInput,
+  type RuntimeGovernanceClosure,
+  type RuntimeGovernanceClosureSchemaVersion,
+  type RuntimeGovernanceClosureStatus,
+} from "./closure";
