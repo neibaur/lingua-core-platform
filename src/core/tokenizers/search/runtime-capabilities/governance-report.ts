@@ -1,5 +1,12 @@
-import type { RuntimeCapabilityIntrospectionEnvelope } from "./contracts";
-import { deepFreezeStructure } from "./manifest";
+import {
+  RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
+  type RuntimeCapabilityIntrospectionEnvelope,
+} from "./contracts";
+import {
+  assertNonEmptyIdentifier,
+  assertSchemaVersion,
+  deepFreezeStructure,
+} from "./manifest";
 
 export const RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION =
   "lingua-core-platform:runtime-governance-report@phase9";
@@ -29,6 +36,14 @@ const GOVERNANCE_REPORT_GENERATED_FROM =
 export function composeRuntimeCapabilityGovernanceReport(
   input: ComposeRuntimeCapabilityGovernanceReportInput,
 ): RuntimeCapabilityGovernanceReport {
+  assertNonEmptyIdentifier(input.reportId, "reportId");
+
+  assertSchemaVersion(
+    input.introspectionEnvelope.schemaVersion,
+    RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
+    "introspectionEnvelope",
+  );
+
   const reportStatus: RuntimeCapabilityGovernanceReportStatus =
     input.introspectionEnvelope.certificationSummary.globalStatus ===
     "certified"

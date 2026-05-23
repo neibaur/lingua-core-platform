@@ -7,6 +7,7 @@ import {
   composeRuntimeCapabilityCertificationAuditSnapshot,
   composeRuntimeCapabilityGovernanceReport,
   composeRuntimeCapabilityManifest,
+  RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
 import type {
@@ -114,6 +115,32 @@ describe("runtime capability certification audit snapshots", () => {
     expect(roundTripped).toEqual(snapshot);
     expect(stableJsonStringify(roundTripped)).toBe(
       stableJsonStringify(snapshot),
+    );
+  });
+
+  it("throws on empty snapshotId", () => {
+    expect(() =>
+      composeRuntimeCapabilityCertificationAuditSnapshot({
+        snapshotId: "",
+        governanceReport: buildPassedGovernanceReport(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws when governanceReport carries a wrong schemaVersion", () => {
+    const report = buildPassedGovernanceReport();
+    const driftedReport = {
+      ...report,
+      schemaVersion: "wrong@version",
+    } as unknown as typeof report;
+
+    expect(() =>
+      composeRuntimeCapabilityCertificationAuditSnapshot({
+        snapshotId: "audit:snapshot:schema-drift",
+        governanceReport: driftedReport,
+      }),
+    ).toThrow(
+      `[governance invariant] governanceReport schemaVersion must be ${RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION}`,
     );
   });
 

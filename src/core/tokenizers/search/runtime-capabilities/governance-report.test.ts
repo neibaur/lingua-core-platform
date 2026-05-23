@@ -6,6 +6,7 @@ import {
   certifyRuntimeCapabilityManifest,
   composeRuntimeCapabilityGovernanceReport,
   composeRuntimeCapabilityManifest,
+  RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
 import type {
@@ -107,6 +108,32 @@ describe("runtime capability governance reports", () => {
 
     expect(roundTripped).toEqual(report);
     expect(stableJsonStringify(roundTripped)).toBe(stableJsonStringify(report));
+  });
+
+  it("throws on empty reportId", () => {
+    expect(() =>
+      composeRuntimeCapabilityGovernanceReport({
+        reportId: "",
+        introspectionEnvelope: buildCertifiedEnvelope(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws when introspectionEnvelope carries a wrong schemaVersion", () => {
+    const envelope = buildCertifiedEnvelope();
+    const driftedEnvelope = {
+      ...envelope,
+      schemaVersion: "wrong@version",
+    } as unknown as typeof envelope;
+
+    expect(() =>
+      composeRuntimeCapabilityGovernanceReport({
+        reportId: "governance:report:schema-drift",
+        introspectionEnvelope: driftedEnvelope,
+      }),
+    ).toThrow(
+      `[governance invariant] introspectionEnvelope schemaVersion must be ${RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION}`,
+    );
   });
 
   it("produces structurally equivalent output for repeated composition with identical input", () => {

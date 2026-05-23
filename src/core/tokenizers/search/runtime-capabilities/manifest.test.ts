@@ -209,6 +209,28 @@ describe("runtime capability manifests", () => {
     expect(Object.isFrozen(result.diagnostics)).toBe(true);
   });
 
+  it("rejects metadata with whitespace-only manifestId", () => {
+    const result = validateRuntimeCapabilityManifest({
+      schemaVersion: RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+      metadata: {
+        manifestId: "   ",
+        runtimeName: "lingua-core-search-runtime",
+        runtimeVersion: "1.0.0",
+        manifestVersion: "1.0.0",
+      },
+      capabilities: [],
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(
+        result.diagnostics.some(
+          (d) => d.code === "RUNTIME_CAPABILITY_METADATA_INVALID",
+        ),
+      ).toBe(true);
+    }
+  });
+
   it("rejects non-json-safe capability metadata", () => {
     const result = validateRuntimeCapabilityManifest({
       schemaVersion: RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,

@@ -7,6 +7,7 @@ import {
   composeRuntimeCapabilityGovernanceReport,
   composeRuntimeGovernanceProvenance,
   composeRuntimeOperationalGovernanceManifest,
+  RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION,
 } from ".";
 import { stableJsonStringify } from "../query-snapshots";
 import type { RuntimeCapabilityCertificationArtifact } from "./contracts";
@@ -167,6 +168,32 @@ describe("runtime governance provenance", () => {
     expect(provenanceB.evaluationTimestamp).toBeNull();
     expect(stableJsonStringify(provenanceA)).toBe(
       stableJsonStringify(provenanceB),
+    );
+  });
+
+  it("throws on empty provenanceId", () => {
+    expect(() =>
+      composeRuntimeGovernanceProvenance({
+        provenanceId: "",
+        operationalManifest: buildPassedManifest(),
+      }),
+    ).toThrow("[governance invariant]");
+  });
+
+  it("throws when operationalManifest carries a wrong schemaVersion", () => {
+    const manifest = buildPassedManifest();
+    const driftedManifest = {
+      ...manifest,
+      schemaVersion: "wrong@version",
+    } as unknown as typeof manifest;
+
+    expect(() =>
+      composeRuntimeGovernanceProvenance({
+        provenanceId: "provenance:schema-drift",
+        operationalManifest: driftedManifest,
+      }),
+    ).toThrow(
+      `[governance invariant] operationalManifest schemaVersion must be ${RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION}`,
     );
   });
 

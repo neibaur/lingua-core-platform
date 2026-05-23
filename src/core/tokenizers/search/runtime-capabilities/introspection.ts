@@ -1,11 +1,17 @@
 import {
+  RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
   RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
   type RuntimeCapabilityCertificationArtifact,
   type RuntimeCapabilityCertificationSummary,
   type RuntimeCapabilityIntrospectionEnvelope,
   type RuntimeCapabilityManifest,
 } from "./contracts";
-import { deepFreezeStructure, orderCapabilityDeclarations } from "./manifest";
+import {
+  assertNonEmptyIdentifier,
+  assertSchemaVersion,
+  deepFreezeStructure,
+  orderCapabilityDeclarations,
+} from "./manifest";
 import { orderCertificationMismatches } from "./certification";
 import { orderCertificationSummaryMismatches } from "./aggregation";
 
@@ -21,6 +27,16 @@ const RUNTIME_INTROSPECTION_GENERATED_FROM = "runtime-capability-introspection";
 export const buildRuntimeCapabilityIntrospectionEnvelope = (
   input: BuildRuntimeCapabilityIntrospectionEnvelopeInput,
 ): RuntimeCapabilityIntrospectionEnvelope => {
+  assertNonEmptyIdentifier(input.trackingId, "trackingId");
+
+  for (const manifest of input.manifests) {
+    assertSchemaVersion(
+      manifest.schemaVersion,
+      RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+      "manifest",
+    );
+  }
+
   const manifests = orderRuntimeCapabilityManifests(input.manifests);
   const certifications = orderRuntimeCapabilityCertifications(
     input.certifications,

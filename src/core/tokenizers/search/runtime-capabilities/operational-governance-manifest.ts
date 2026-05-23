@@ -1,5 +1,12 @@
-import type { RuntimeCapabilityCertificationAuditSnapshot } from "./audit-snapshot";
-import { deepFreezeStructure } from "./manifest";
+import {
+  RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION,
+  type RuntimeCapabilityCertificationAuditSnapshot,
+} from "./audit-snapshot";
+import {
+  assertNonEmptyIdentifier,
+  assertSchemaVersion,
+  deepFreezeStructure,
+} from "./manifest";
 
 export const RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION =
   "lingua-core-platform:runtime-operational-governance-manifest@phase9";
@@ -29,9 +36,29 @@ const OPERATIONAL_GOVERNANCE_MANIFEST_GENERATED_FROM =
 export function composeRuntimeOperationalGovernanceManifest(
   input: ComposeRuntimeOperationalGovernanceManifestInput,
 ): RuntimeOperationalGovernanceManifest {
+  assertNonEmptyIdentifier(input.manifestId, "manifestId");
+
+  for (const snapshot of input.auditSnapshots) {
+    assertSchemaVersion(
+      snapshot.schemaVersion,
+      RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION,
+      "auditSnapshot",
+    );
+  }
+
   const auditSnapshots = [...input.auditSnapshots].sort(
     compareAuditSnapshotsBySnapshotId,
   );
+
+  let previousSnapshotId: string | undefined;
+  for (const snapshot of auditSnapshots) {
+    if (snapshot.snapshotId === previousSnapshotId) {
+      throw new Error(
+        `[governance invariant] auditSnapshot snapshotId must be unique: ${snapshot.snapshotId}`,
+      );
+    }
+    previousSnapshotId = snapshot.snapshotId;
+  }
 
   const governanceStatus: RuntimeOperationalGovernanceStatus =
     auditSnapshots.every((snapshot) => snapshot.auditStatus === "passed")

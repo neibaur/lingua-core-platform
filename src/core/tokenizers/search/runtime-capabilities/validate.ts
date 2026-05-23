@@ -254,7 +254,7 @@ function validateNonEmptyString(
   value: unknown,
   path: readonly string[],
 ): readonly RuntimeCapabilityDiagnostic[] {
-  if (typeof value === "string" && value !== "") {
+  if (typeof value === "string" && value.trim() !== "") {
     return Object.freeze([]);
   }
 
