@@ -1,8 +1,9 @@
-import type {
-  RuntimeCapabilityCertificationArtifact,
-  RuntimeCapabilityCertificationSummary,
-  RuntimeCapabilityIntrospectionEnvelope,
-  RuntimeCapabilityManifest,
+import {
+  RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
+  type RuntimeCapabilityCertificationArtifact,
+  type RuntimeCapabilityCertificationSummary,
+  type RuntimeCapabilityIntrospectionEnvelope,
+  type RuntimeCapabilityManifest,
 } from "./contracts";
 import { deepFreezeStructure, orderCapabilityDeclarations } from "./manifest";
 import { orderCertificationMismatches } from "./certification";
@@ -15,8 +16,6 @@ export interface BuildRuntimeCapabilityIntrospectionEnvelopeInput {
   readonly certificationSummary: RuntimeCapabilityCertificationSummary;
 }
 
-const RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION =
-  "lingua-core-platform:runtime-introspection-envelope@phase9";
 const RUNTIME_INTROSPECTION_GENERATED_FROM = "runtime-capability-introspection";
 
 export const buildRuntimeCapabilityIntrospectionEnvelope = (

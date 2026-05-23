@@ -1,5 +1,6 @@
 export {
   RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
+  RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
   type RuntimeCapabilityCertificationArtifact,
   type RuntimeCapabilityCertificationDiagnosticCode,
   type RuntimeCapabilityCertificationInput,
@@ -15,6 +16,7 @@ export {
   type RuntimeCapabilityDiagnosticSeverity,
   type RuntimeCapabilityId,
   type RuntimeCapabilityIntrospectionEnvelope,
+  type RuntimeCapabilityIntrospectionEnvelopeSchemaVersion,
   type RuntimeCapabilityKind,
   type RuntimeCapabilityManifest,
   type RuntimeCapabilityManifestMetadata,
