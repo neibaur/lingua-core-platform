@@ -16,6 +16,25 @@ export {
 } from "./contracts";
 export { THAI_ENGLISH_FIXTURE_DATASET } from "./datasets/thai-english/thai-english-fixture-dataset";
 export {
+  createLexicalDiagnostic,
+  orderLexicalDiagnostics,
+} from "./diagnostics/lexical-diagnostic";
+export {
+  LEXICAL_LOOKUP_TRACE_SCHEMA_VERSION,
+  composeLexicalLookupTrace,
+  type ComposeLexicalLookupTraceInput,
+  type LexicalLookupResultStatus,
+  type LexicalLookupTrace,
+  type LexicalLookupTraceSchemaVersion,
+} from "./diagnostics/lexical-lookup-trace";
+export {
+  assertValidLexicalEntryId,
+  composeEntryId,
+  type ComposeEntryIdInput,
+  type LexicalEntryId,
+  type LexicalLanguageCode,
+} from "./identity/lexical-entry-id";
+export {
   composeLexicalIndex,
   type ComposeLexicalIndexInput,
 } from "./index/lexical-index";
