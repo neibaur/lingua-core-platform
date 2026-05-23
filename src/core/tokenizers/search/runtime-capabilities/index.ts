@@ -54,7 +54,7 @@ export {
 } from "./validate";
 export {
   composeRuntimeCapabilityGovernanceReport,
-  RUNTIME_CAPABILITY_GOVERNANCE_REPORT_SCHEMA_VERSION,
+  RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION,
   type ComposeRuntimeCapabilityGovernanceReportInput,
   type RuntimeCapabilityGovernanceReport,
   type RuntimeCapabilityGovernanceReportSchemaVersion,
@@ -62,7 +62,7 @@ export {
 } from "./governance-report";
 export {
   composeRuntimeCapabilityCertificationAuditSnapshot,
-  RUNTIME_CAPABILITY_AUDIT_SNAPSHOT_SCHEMA_VERSION,
+  RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION,
   type ComposeRuntimeCapabilityCertificationAuditSnapshotInput,
   type RuntimeCapabilityAuditSnapshotSchemaVersion,
   type RuntimeCapabilityAuditSnapshotStatus,

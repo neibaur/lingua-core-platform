@@ -36,7 +36,7 @@ describe("runtime capability certification audit snapshots", () => {
       "runtime-capability-certification-audit-snapshot",
     );
     expect(snapshot.schemaVersion).toBe(
-      "lingua-core-platform:runtime-capability-certification-audit-snapshot@phase9",
+      "lingua-core-platform:runtime-certification-audit-snapshot@phase9",
     );
     expect(snapshot.evaluationTimestamp).toBeNull();
   });
