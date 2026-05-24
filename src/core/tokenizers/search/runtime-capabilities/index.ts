@@ -54,6 +54,7 @@ export {
 export {
   evaluateRuntimeCapabilityCompatibility,
   orderRuntimeCapabilityDiagnostics,
+  validateLexicalInteropCapabilityDeclaration,
   validateRuntimeCapabilityManifest,
 } from "./validate";
 export {
@@ -96,3 +97,12 @@ export {
   type RuntimeGovernanceClosureSchemaVersion,
   type RuntimeGovernanceClosureStatus,
 } from "./closure";
+export {
+  composeLexicalInteropCapabilityDeclaration,
+  LEXICAL_INTEROP_CAPABILITY_DECLARATION_SCHEMA_VERSION,
+  type ComposeLexicalInteropCapabilityDeclarationInput,
+  type LexicalInteropCapabilityDeclaration,
+  type LexicalInteropCapabilityDeclarationEntry,
+  type LexicalInteropCapabilityDeclarationSchemaVersion,
+  type LexicalInteropCapabilityId,
+} from "./lexical-interop-capability-declaration";
