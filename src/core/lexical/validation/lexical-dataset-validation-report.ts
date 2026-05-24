@@ -7,7 +7,7 @@ import type {
 } from "./lexical-dataset-validation";
 
 export const LEXICAL_DATASET_VALIDATION_REPORT_SCHEMA_VERSION =
-  "lingua-core-platform:lexical-validation-report@phase10";
+  "lingua-core-platform:lexical-dataset-validation-report@phase10";
 
 export type LexicalDatasetValidationReportSchemaVersion =
   typeof LEXICAL_DATASET_VALIDATION_REPORT_SCHEMA_VERSION;
