@@ -404,7 +404,7 @@ function summarizeExecutionPlan(
 
   return {
     hasExecutionPlan: true,
-    formatVersion: executionPlan.formatVersion,
+    schemaVersion: executionPlan.schemaVersion,
     nodeCount: executionPlan.metadata.nodeCount,
     sourceSpan: summarizeSourceSpan(executionPlan.metadata.sourceSpan),
     root: summarizeExecutionPlanNode(executionPlan.root),

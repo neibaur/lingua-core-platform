@@ -436,7 +436,7 @@ describe("query snapshots", () => {
       artifactKind: "execution-plan",
       snapshotId: "query-snapshot-0",
       artifact: {
-        formatVersion: "query-execution-plan-v1",
+        schemaVersion: "lingua-core-platform:query-execution-plan@phase9",
       },
     });
 

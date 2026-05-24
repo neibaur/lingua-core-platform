@@ -3,7 +3,10 @@ import { describe, expect, it } from "vitest";
 import { parseQuery } from "../../query-parser";
 import { compileQueryAst } from "../../query-parser/query-planner";
 import { buildQueryExecutionPlan } from "../pipeline/build-query-execution-plan";
-import type { QueryExecutionPlan } from "../shared/query-execution-plan-types";
+import {
+  QUERY_EXECUTION_PLAN_SCHEMA_VERSION,
+  type QueryExecutionPlan,
+} from "../shared/query-execution-plan-types";
 
 const GIN = "\u0e01\u0e34\u0e19";
 const KHAO = "\u0e02\u0e49\u0e32\u0e27";
@@ -13,7 +16,7 @@ describe("buildQueryExecutionPlan", () => {
     const plan = buildQueryExecutionPlan(compilePlan(GIN));
 
     expect(plan).toEqual({
-      formatVersion: "query-execution-plan-v1",
+      schemaVersion: QUERY_EXECUTION_PLAN_SCHEMA_VERSION,
       root: {
         type: "token",
         id: "plan-node-0",
@@ -22,7 +25,7 @@ describe("buildQueryExecutionPlan", () => {
         sourceSpan: { start: 0, end: 3 },
       },
       metadata: {
-        formatVersion: "query-execution-plan-v1",
+        schemaVersion: QUERY_EXECUTION_PLAN_SCHEMA_VERSION,
         nodeCount: 1,
         sourceSpan: { start: 0, end: 3 },
       },

@@ -322,7 +322,7 @@ function validateArtifactShape(
     case "execution-plan":
       return validateRequiredProperties(
         artifact,
-        ["formatVersion", "root", "metadata", "diagnostics"],
+        ["schemaVersion", "root", "metadata", "diagnostics"],
         path,
       );
     case "query-explanation":
