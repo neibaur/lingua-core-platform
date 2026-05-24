@@ -17,3 +17,10 @@ export {
   type LexicalQueryEnrichmentReportSchemaVersion,
   type LexicalQueryEnrichmentStatus,
 } from "./reporting/lexical-enrichment-report-types";
+export { composeLexicalQueryReport } from "./query-reporting/compose-lexical-query-report";
+export {
+  LEXICAL_QUERY_REPORT_SCHEMA_VERSION,
+  type ComposeLexicalQueryReportInput,
+  type LexicalQueryReport,
+  type LexicalQueryReportSchemaVersion,
+} from "./query-reporting/lexical-query-report-types";
