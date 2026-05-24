@@ -10,6 +10,7 @@ export type DeepReadonlySerializable<T> = T extends
       ? { readonly [K in keyof T]: DeepReadonlySerializable<T[K]> }
       : never;
 
+// Returns DeepReadonlySerializable<T> rather than T — intentionally distinct from deepFreezeStructure in runtime-capabilities.
 export function deepFreeze<T>(value: T): DeepReadonlySerializable<T> {
   return freezeValue(value) as DeepReadonlySerializable<T>;
 }
