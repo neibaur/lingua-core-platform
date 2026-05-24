@@ -15,6 +15,13 @@ import {
   composeRuntimeCapabilityManifest,
   deepFreezeStructure,
 } from "./manifest";
+import {
+  composeLexicalInteropCapabilityDeclaration,
+  LEXICAL_INTEROP_CAPABILITY_DECLARATION_SCHEMA_VERSION,
+  type LexicalInteropCapabilityDeclaration,
+  type LexicalInteropCapabilityDeclarationEntry,
+  type LexicalInteropCapabilityId,
+} from "./lexical-interop-capability-declaration";
 import { validateJsonSafeStructure } from "../query-snapshots";
 
 const CAPABILITY_ID_PATTERN =
@@ -131,6 +138,81 @@ export function evaluateRuntimeCapabilityCompatibility(
   });
 }
 
+export function validateLexicalInteropCapabilityDeclaration(
+  value: unknown,
+): RuntimeCapabilityValidationResult<LexicalInteropCapabilityDeclaration> {
+  const diagnostics: RuntimeCapabilityDiagnostic[] = [];
+
+  if (!isJsonObject(value)) {
+    return createRuntimeCapabilityFailure([
+      createRuntimeCapabilityDiagnostic(
+        0,
+        "RUNTIME_CAPABILITY_MANIFEST_MALFORMED",
+        ["$"],
+        "Lexical interop capability declaration must be a plain object.",
+      ),
+    ]);
+  }
+
+  if (
+    value.schemaVersion !==
+    LEXICAL_INTEROP_CAPABILITY_DECLARATION_SCHEMA_VERSION
+  ) {
+    diagnostics.push(
+      createRuntimeCapabilityDiagnostic(
+        0,
+        "RUNTIME_CAPABILITY_MANIFEST_MALFORMED",
+        ["$", "schemaVersion"],
+        `Lexical interop capability declaration schemaVersion must be ${LEXICAL_INTEROP_CAPABILITY_DECLARATION_SCHEMA_VERSION}.`,
+      ),
+    );
+  }
+
+  diagnostics.push(
+    ...validateNonEmptyString(value.declarationId, ["$", "declarationId"]),
+  );
+
+  if (!Array.isArray(value.capabilities)) {
+    diagnostics.push(
+      createRuntimeCapabilityDiagnostic(
+        1,
+        "RUNTIME_CAPABILITY_MANIFEST_MALFORMED",
+        ["$", "capabilities"],
+        "Lexical interop capability declaration capabilities must be an array.",
+      ),
+    );
+  } else {
+    diagnostics.push(
+      ...validateLexicalInteropCapabilityCount(
+        value.capabilityCount,
+        value.capabilities,
+      ),
+    );
+    value.capabilities.forEach((capability, index) => {
+      diagnostics.push(
+        ...validateLexicalInteropCapabilityEntry(capability, [
+          "$",
+          "capabilities",
+          `[${String(index)}]`,
+        ]),
+      );
+    });
+    diagnostics.push(...validateDuplicateCapabilities(value.capabilities));
+  }
+
+  if (diagnostics.length > 0) {
+    return createRuntimeCapabilityFailure(diagnostics);
+  }
+
+  return createRuntimeCapabilitySuccess(
+    composeLexicalInteropCapabilityDeclaration({
+      declarationId: value.declarationId as string,
+      capabilities:
+        value.capabilities as readonly LexicalInteropCapabilityDeclarationEntry[],
+    }),
+  );
+}
+
 export function orderRuntimeCapabilityDiagnostics(
   diagnostics: readonly RuntimeCapabilityDiagnostic[],
 ): readonly RuntimeCapabilityDiagnostic[] {
@@ -217,6 +299,63 @@ function validateCapabilityDeclaration(
   return Object.freeze(diagnostics);
 }
 
+function validateLexicalInteropCapabilityCount(
+  value: unknown,
+  capabilities: readonly unknown[],
+): readonly RuntimeCapabilityDiagnostic[] {
+  if (
+    Number.isInteger(value) &&
+    typeof value === "number" &&
+    value >= 0 &&
+    value === capabilities.length
+  ) {
+    return deepFreezeStructure([]);
+  }
+
+  return deepFreezeStructure([
+    createRuntimeCapabilityDiagnostic(
+      1,
+      "RUNTIME_CAPABILITY_MANIFEST_MALFORMED",
+      ["$", "capabilityCount"],
+      "Lexical interop capability declaration capabilityCount must equal capabilities.length.",
+    ),
+  ]);
+}
+
+function validateLexicalInteropCapabilityEntry(
+  value: unknown,
+  path: readonly string[],
+): readonly RuntimeCapabilityDiagnostic[] {
+  const diagnostics: RuntimeCapabilityDiagnostic[] = [];
+
+  if (!isJsonObject(value)) {
+    return deepFreezeStructure([
+      createRuntimeCapabilityDiagnostic(
+        1,
+        "RUNTIME_CAPABILITY_MANIFEST_MALFORMED",
+        path,
+        "Lexical interop capability entry must be a plain object.",
+      ),
+    ]);
+  }
+
+  diagnostics.push(
+    ...validateLexicalInteropCapabilityId(value.capabilityId, [
+      ...path,
+      "capabilityId",
+    ]),
+  );
+  diagnostics.push(...validateCapabilityKind(value.kind, [...path, "kind"]));
+  diagnostics.push(
+    ...validateSemanticVersion(value.version, [...path, "version"], 1),
+  );
+  diagnostics.push(
+    ...validateCapabilityStability(value.stability, [...path, "stability"]),
+  );
+
+  return deepFreezeStructure(diagnostics);
+}
+
 function validateDuplicateCapabilities(
   capabilities: readonly unknown[],
 ): readonly RuntimeCapabilityDiagnostic[] {
@@ -283,6 +422,24 @@ function validateCapabilityId(
       "RUNTIME_CAPABILITY_ID_INVALID",
       path,
       "Runtime capabilityId must use domain:action:target token syntax.",
+    ),
+  ]);
+}
+
+function validateLexicalInteropCapabilityId(
+  value: unknown,
+  path: readonly string[],
+): readonly RuntimeCapabilityDiagnostic[] {
+  if (isLexicalInteropCapabilityId(value)) {
+    return deepFreezeStructure([]);
+  }
+
+  return deepFreezeStructure([
+    createRuntimeCapabilityDiagnostic(
+      1,
+      "RUNTIME_CAPABILITY_ID_INVALID",
+      path,
+      "Runtime capabilityId must be a supported lexical interop capability.",
     ),
   ]);
 }
@@ -481,6 +638,19 @@ function isRuntimeCapabilityStability(
   switch (value) {
     case "stable":
     case "experimental":
+      return true;
+    default:
+      return false;
+  }
+}
+
+function isLexicalInteropCapabilityId(
+  value: unknown,
+): value is LexicalInteropCapabilityId {
+  switch (value) {
+    case "query:enrich:lexical":
+    case "query:report:lexical_enrichment":
+    case "query:report:lexical_query":
       return true;
     default:
       return false;

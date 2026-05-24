@@ -54,6 +54,7 @@ export {
 export {
   evaluateRuntimeCapabilityCompatibility,
   orderRuntimeCapabilityDiagnostics,
+  validateLexicalInteropCapabilityDeclaration,
   validateRuntimeCapabilityManifest,
 } from "./validate";
 export {
