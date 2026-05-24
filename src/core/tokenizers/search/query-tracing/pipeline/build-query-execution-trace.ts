@@ -3,10 +3,11 @@ import type {
   QueryPipelineDiagnostic,
   QueryPipelineStage,
 } from "../../query-pipeline";
-import type {
-  QueryExecutionTrace,
-  QueryExecutionTraceMetadata,
-  QueryExecutionTraceStep,
+import {
+  QUERY_EXECUTION_TRACE_SCHEMA_VERSION,
+  type QueryExecutionTrace,
+  type QueryExecutionTraceMetadata,
+  type QueryExecutionTraceStep,
 } from "../shared/query-tracing-types";
 import { deepFreeze } from "../shared/serialization-safe";
 
@@ -32,6 +33,7 @@ export function buildQueryExecutionTrace(
   ).map((stage, index) => buildStep(index, stage, input));
 
   return deepFreeze({
+    schemaVersion: QUERY_EXECUTION_TRACE_SCHEMA_VERSION,
     traceId: input.traceId,
     stepCount: steps.length,
     steps,
