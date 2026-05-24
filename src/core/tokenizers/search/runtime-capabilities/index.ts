@@ -106,3 +106,5 @@ export {
   type LexicalInteropCapabilityDeclarationSchemaVersion,
   type LexicalInteropCapabilityId,
 } from "./lexical-interop-capability-declaration";
+export { composeManifestFromLexicalInteropDeclaration } from "./manifest.js";
+export type { ComposeManifestFromLexicalInteropDeclarationInput } from "./manifest.js";
