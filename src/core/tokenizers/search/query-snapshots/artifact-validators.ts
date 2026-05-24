@@ -295,9 +295,9 @@ function validateExplanationShape(
   diagnostics.push(
     ...validateLiteralField(
       artifact,
-      "formatVersion",
-      "query-explanation-v1",
-      `${path}.formatVersion`,
+      "schemaVersion",
+      "lingua-core-platform:query-explanation@phase9",
+      `${path}.schemaVersion`,
     ),
   );
 

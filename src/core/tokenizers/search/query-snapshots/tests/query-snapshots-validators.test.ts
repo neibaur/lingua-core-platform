@@ -100,7 +100,7 @@ describe("query snapshot artifact validators", () => {
 
   it("rejects invalid query explanations with ordered diagnostics", () => {
     const result = validateQueryExplanationArtifact({
-      formatVersion: "query-explanation-v1",
+      schemaVersion: "lingua-core-platform:query-explanation@phase9",
       success: true,
       stages: [
         {
@@ -268,7 +268,7 @@ describe("query snapshot artifact validators", () => {
 
   it("aggregates final target validator diagnostics deterministically", () => {
     const invalidExplanation = validateQueryExplanationArtifact({
-      formatVersion: "query-explanation-v1",
+      schemaVersion: "lingua-core-platform:query-explanation@phase9",
       success: true,
       stages: [
         {
@@ -325,7 +325,7 @@ function buildValidTrace() {
 
 function buildValidExplanation() {
   return {
-    formatVersion: "query-explanation-v1",
+    schemaVersion: "lingua-core-platform:query-explanation@phase9",
     success: true,
     stages: [
       {

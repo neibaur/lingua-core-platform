@@ -147,6 +147,7 @@ function createSnapshotId(sequenceId: number): QuerySnapshotId {
   return "query-snapshot-0";
 }
 
+// Local deepFreeze: runtime-capabilities/contracts.ts imports JsonObject from query-snapshots, making deepFreezeStructure import circular.
 function deepFreeze<T>(value: T): T {
   return freezeValue(value) as T;
 }

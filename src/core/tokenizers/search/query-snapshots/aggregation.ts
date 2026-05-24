@@ -93,6 +93,7 @@ function classifyAggregationSeverity(
   return diagnosticCount > 0 ? "error" : "none";
 }
 
+// indexOf returns -1 for unknown stages/artifacts, sorting them before all known values (numerically lowest).
 function getStageOrder(stage: ReplayAggregationStage): number {
   return AGGREGATION_STAGE_ORDER.indexOf(stage);
 }

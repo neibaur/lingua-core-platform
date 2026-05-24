@@ -55,7 +55,8 @@ export function composeLexicalIndex(
     }
   }
 
-  // Sort each bucket by canonical Thai headword and produce the final record.
+  // englishToThai keys are in insertion order from sorted-entry traversal, not sorted by key.
+  // Callers requiring canonical equivalence must use stableJsonStringify, not key-order comparison.
   const englishToThai: Record<string, LexicalEntry[]> = {};
   for (const key of Object.keys(englishToThaiBuilder)) {
     const bucket = englishToThaiBuilder[key] ?? [];
