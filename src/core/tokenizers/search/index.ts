@@ -53,6 +53,8 @@ export {
 export {
   buildQueryExecutionTrace,
   buildQueryExplanation,
+  QUERY_EXECUTION_TRACE_SCHEMA_VERSION,
+  QUERY_EXPLANATION_SCHEMA_VERSION,
 } from "./query-tracing";
 export {
   buildRuntimeCapabilityCertificationSummary,
@@ -118,6 +120,7 @@ export type {
   QueryExecutionPlanMetadata,
   QueryExecutionPlanNode,
   QueryExecutionPlanNodeType,
+  QueryExecutionPlanSchemaVersion,
   TokenExecutionPlanNode,
 } from "./query-ir";
 export type {
@@ -235,12 +238,14 @@ export type {
 export type {
   QueryExecutionTrace,
   QueryExecutionTraceMetadata,
+  QueryExecutionTraceSchemaVersion,
   QueryExecutionTraceStage,
   QueryExecutionTraceStatus,
   QueryExecutionTraceStep,
   QueryExplanation,
   QueryExplanationArtifact,
   QueryExplanationArtifactType,
+  QueryExplanationSchemaVersion,
   QueryExplanationStage,
   QueryTraceMetadataPrimitive,
 } from "./query-tracing";
