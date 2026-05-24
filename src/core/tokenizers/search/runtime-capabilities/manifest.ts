@@ -4,6 +4,7 @@ import {
   type RuntimeCapabilityManifest,
   type RuntimeCapabilityManifestMetadata,
 } from "./contracts";
+import type { LexicalInteropCapabilityDeclaration } from "./lexical-interop-capability-declaration";
 
 export interface ComposeRuntimeCapabilityManifestInput {
   readonly metadata: RuntimeCapabilityManifestMetadata;
@@ -160,4 +161,50 @@ function freezeValue(value: unknown): unknown {
   }
 
   return value;
+}
+
+export interface ComposeManifestFromLexicalInteropDeclarationInput {
+  readonly manifestId: string;
+  readonly runtimeName: string;
+  readonly runtimeVersion: string;
+  readonly manifestVersion: string;
+  readonly declaration: LexicalInteropCapabilityDeclaration;
+}
+
+export function composeManifestFromLexicalInteropDeclaration(
+  input: ComposeManifestFromLexicalInteropDeclarationInput,
+): RuntimeCapabilityManifest {
+  if (input.manifestId.trim() === "") {
+    throw new Error(
+      "[lexical-interop-manifest-bridge invariant] manifestId must be a non-empty string",
+    );
+  }
+
+  if (input.runtimeName.trim() === "") {
+    throw new Error(
+      "[lexical-interop-manifest-bridge invariant] runtimeName must be a non-empty string",
+    );
+  }
+
+  if (input.runtimeVersion.trim() === "") {
+    throw new Error(
+      "[lexical-interop-manifest-bridge invariant] runtimeVersion must be a non-empty string",
+    );
+  }
+
+  if (input.manifestVersion.trim() === "") {
+    throw new Error(
+      "[lexical-interop-manifest-bridge invariant] manifestVersion must be a non-empty string",
+    );
+  }
+
+  return composeRuntimeCapabilityManifest({
+    metadata: {
+      manifestId: input.manifestId,
+      runtimeName: input.runtimeName,
+      runtimeVersion: input.runtimeVersion,
+      manifestVersion: input.manifestVersion,
+    },
+    capabilities: input.declaration.capabilities,
+  });
 }
