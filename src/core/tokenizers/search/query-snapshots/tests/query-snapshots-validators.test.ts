@@ -3,12 +3,89 @@ import { describe, expect, it } from "vitest";
 import { aggregateReplayDiagnostics } from "../aggregation";
 import {
   validateQueryExplanationArtifact,
+  validateQueryExecutionTraceArtifact,
   validateQueryPipelineArtifact,
   validateReplayArtifactByKind,
 } from "../artifact-validators";
 import { stableJsonStringify } from "../stable-json";
 
 describe("query snapshot artifact validators", () => {
+  it("accepts valid query execution trace artifacts", () => {
+    const trace = buildValidTrace();
+    const result = validateQueryExecutionTraceArtifact(trace);
+
+    expect(result).toEqual({
+      success: true,
+      data: trace,
+    });
+    expect(Object.isFrozen(result)).toBe(true);
+  });
+
+  it("rejects a trace with missing stepCount", () => {
+    const result = validateQueryExecutionTraceArtifact({
+      traceId: "query-trace-0",
+      steps: [
+        {
+          stepId: "query-trace-step-0",
+          stage: "lex",
+          status: "success",
+          timestamp: null,
+          metadata: { diagnosticCount: 0 },
+        },
+      ],
+    });
+
+    expect(result.success).toBe(false);
+    if (result.success) {
+      return;
+    }
+    expect(
+      result.diagnostics.some(
+        (d) =>
+          d.path === "$.stepCount" &&
+          d.code === "SNAPSHOT_INVALID_ARTIFACT_SHAPE",
+      ),
+    ).toBe(true);
+  });
+
+  it("rejects a trace where stepCount does not match steps.length", () => {
+    const result = validateQueryExecutionTraceArtifact({
+      traceId: "query-trace-0",
+      stepCount: 99,
+      steps: [
+        {
+          stepId: "query-trace-step-0",
+          stage: "lex",
+          status: "success",
+          timestamp: null,
+          metadata: { diagnosticCount: 0 },
+        },
+      ],
+    });
+
+    expect(result.success).toBe(false);
+    if (result.success) {
+      return;
+    }
+    expect(
+      result.diagnostics.some(
+        (d) =>
+          d.path === "$.stepCount" &&
+          d.message ===
+            "Query execution trace stepCount must match steps length.",
+      ),
+    ).toBe(true);
+  });
+
+  it("dispatches query-execution-trace target via validateReplayArtifactByKind", () => {
+    const traceResult = validateReplayArtifactByKind({
+      target: "query-execution-trace",
+      artifact: buildValidTrace(),
+    });
+
+    expect(traceResult.success).toBe(true);
+  });
+
   it("accepts valid query explanation artifacts", () => {
     const explanation = buildValidExplanation();
     const result = validateQueryExplanationArtifact(explanation);
@@ -229,6 +306,22 @@ describe("query snapshot artifact validators", () => {
     );
   });
 });
+
+function buildValidTrace() {
+  return {
+    traceId: "query-trace-0",
+    stepCount: 1,
+    steps: [
+      {
+        stepId: "query-trace-step-0",
+        stage: "lex",
+        status: "success",
+        timestamp: null,
+        metadata: { diagnosticCount: 0 },
+      },
+    ],
+  };
+}
 
 function buildValidExplanation() {
   return {

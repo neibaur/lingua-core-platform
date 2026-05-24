@@ -59,6 +59,8 @@ describe("query tracing", () => {
 
     expect(trace).toEqual(buildQueryExecutionTrace(result));
     expect(trace.traceId).toBe("query-trace-0");
+    expect(trace.stepCount).toBe(5);
+    expect(trace.stepCount).toBe(trace.steps.length);
     expect(trace.steps).toEqual([
       {
         stepId: "query-trace-step-0",
@@ -178,6 +180,10 @@ describe("query tracing", () => {
     });
 
     expect(result.success).toBe(false);
+    expect(result.executionTrace?.stepCount).toBe(2);
+    expect(result.executionTrace?.stepCount).toBe(
+      result.executionTrace?.steps.length,
+    );
     expect(result.executionTrace?.steps).toEqual([
       {
         stepId: "query-trace-step-0",

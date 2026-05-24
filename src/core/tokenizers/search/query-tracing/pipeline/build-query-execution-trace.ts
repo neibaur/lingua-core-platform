@@ -21,11 +21,14 @@ const TRACE_STAGE_ORDER: readonly QueryPipelineStage[] = [
 export function buildQueryExecutionTrace(
   input: Readonly<ExecuteQueryPipelineResult>,
 ): QueryExecutionTrace {
+  const steps = TRACE_STAGE_ORDER.filter((stage) =>
+    didReachStage(stage, input),
+  ).map((stage, index) => buildStep(index, stage, input));
+
   return deepFreeze({
     traceId: "query-trace-0",
-    steps: TRACE_STAGE_ORDER.filter((stage) => didReachStage(stage, input)).map(
-      (stage, index) => buildStep(index, stage, input),
-    ),
+    stepCount: steps.length,
+    steps,
   });
 }
 

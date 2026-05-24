@@ -25,6 +25,7 @@ export interface QueryExecutionTraceStep {
 
 export interface QueryExecutionTrace {
   readonly traceId: string;
+  readonly stepCount: number;
   readonly steps: readonly QueryExecutionTraceStep[];
 }
 
