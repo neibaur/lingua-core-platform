@@ -43,9 +43,11 @@ export { aggregateReplayDiagnostics } from "./aggregation";
 export {
   composeReplayAuditReport,
   REPLAY_AUDIT_REPORT_KIND,
+  REPLAY_AUDIT_REPORT_SCHEMA_VERSION,
   verifyAuditReportOrderingInvariants,
   type ComposeReplayAuditReportInput,
   type ReplayAuditReport,
+  type ReplayAuditReportSchemaVersion,
 } from "./audit-report";
 export {
   validateExecutionPlanArtifact,
@@ -74,13 +76,14 @@ export {
 } from "./equivalence";
 export {
   buildReplayGovernanceReport,
-  REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION,
+  REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION,
   type BuildReplayGovernanceReportInput,
   type ReplayGovernanceArtifactSummary,
   type ReplayGovernanceDiagnosticItem,
   type ReplayGovernanceMismatchItem,
   type ReplayGovernanceReport,
   type ReplayGovernanceReportCompatibility,
+  type ReplayGovernanceReportSchemaVersion,
   type ReplayGovernanceReportSummary,
   type ReplayGovernanceValidationBlock,
 } from "./governance-report";

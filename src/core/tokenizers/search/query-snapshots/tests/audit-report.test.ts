@@ -4,6 +4,7 @@ import { aggregateReplayDiagnostics } from "../aggregation";
 import {
   composeReplayAuditReport,
   REPLAY_AUDIT_REPORT_KIND,
+  REPLAY_AUDIT_REPORT_SCHEMA_VERSION,
   verifyAuditReportOrderingInvariants,
   type ReplayAuditReport,
 } from "../audit-report";
@@ -53,7 +54,10 @@ describe("replay audit reports", () => {
     });
 
     expect(auditReport).toMatchObject({
+      schemaVersion: REPLAY_AUDIT_REPORT_SCHEMA_VERSION,
+      evaluationTimestamp: null,
       auditId: "audit:manual:query-snapshot-0:query-snapshot-1:3",
+      generatedFrom: "replay-audit-report",
       sourceSnapshotId: "query-snapshot-0",
       targetSnapshotId: "query-snapshot-1",
       reportKind: REPLAY_AUDIT_REPORT_KIND,
@@ -170,7 +174,10 @@ describe("replay audit reports", () => {
   it("rejects diagnostics that violate stage, path, and code ordering", () => {
     const governanceReport = createGovernanceReport();
     const unsortedReport: ReplayAuditReport = {
+      schemaVersion: REPLAY_AUDIT_REPORT_SCHEMA_VERSION,
+      evaluationTimestamp: null,
       auditId: "audit:unsorted-diagnostics",
+      generatedFrom: "replay-audit-report",
       sourceSnapshotId: "query-snapshot-0",
       targetSnapshotId: "query-snapshot-1",
       reportKind: REPLAY_AUDIT_REPORT_KIND,

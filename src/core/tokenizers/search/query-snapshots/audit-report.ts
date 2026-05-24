@@ -7,8 +7,19 @@ import type {
 
 export const REPLAY_AUDIT_REPORT_KIND = "REPLAY_AUDIT_REPORT";
 
+export const REPLAY_AUDIT_REPORT_SCHEMA_VERSION =
+  "lingua-core-platform:replay-audit-report@phase9";
+
+export type ReplayAuditReportSchemaVersion =
+  typeof REPLAY_AUDIT_REPORT_SCHEMA_VERSION;
+
+const AUDIT_REPORT_GENERATED_FROM = "replay-audit-report" as const;
+
 export interface ReplayAuditReport {
+  readonly schemaVersion: ReplayAuditReportSchemaVersion;
+  readonly evaluationTimestamp: null;
   readonly auditId: string;
+  readonly generatedFrom: typeof AUDIT_REPORT_GENERATED_FROM;
   readonly sourceSnapshotId: string;
   readonly targetSnapshotId: string;
   readonly reportKind: typeof REPLAY_AUDIT_REPORT_KIND;
@@ -30,6 +41,8 @@ export function composeReplayAuditReport(
   assertComposedAtSequence(input.composedAtSequence);
 
   return deepFreeze({
+    schemaVersion: REPLAY_AUDIT_REPORT_SCHEMA_VERSION,
+    evaluationTimestamp: null,
     auditId:
       input.auditId ??
       createCanonicalAuditId(
@@ -37,6 +50,7 @@ export function composeReplayAuditReport(
         input.targetSnapshotId,
         input.composedAtSequence,
       ),
+    generatedFrom: AUDIT_REPORT_GENERATED_FROM,
     sourceSnapshotId: input.sourceSnapshotId,
     targetSnapshotId: input.targetSnapshotId,
     reportKind: REPLAY_AUDIT_REPORT_KIND,

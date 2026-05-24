@@ -2,7 +2,8 @@ import type { ExecuteQueryPipelineResult } from "../query-pipeline";
 import type { QueryExecutionPlan } from "../query-ir";
 import type { QueryExecutionTrace, QueryExplanation } from "../query-tracing";
 
-export const QUERY_SNAPSHOT_SCHEMA_VERSION = "query-snapshot-v1";
+export const QUERY_SNAPSHOT_SCHEMA_VERSION =
+  "lingua-core-platform:query-snapshot@phase9";
 
 export type QuerySnapshotSchemaVersion = typeof QUERY_SNAPSHOT_SCHEMA_VERSION;
 

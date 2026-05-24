@@ -3,10 +3,11 @@ import { describe, expect, it } from "vitest";
 import { CorpusIndexer } from "../../index-primitives";
 import type { SearchCorpus } from "../../index-primitives";
 import { executeQueryPipeline } from "../../query-pipeline";
-import type {
-  ExecutionPlanSnapshot,
-  JsonObject,
-  QueryExecutionTraceSnapshot,
+import {
+  QUERY_SNAPSHOT_SCHEMA_VERSION,
+  type ExecutionPlanSnapshot,
+  type JsonObject,
+  type QueryExecutionTraceSnapshot,
 } from "../contracts";
 import { aggregateReplayDiagnostics } from "../aggregation";
 import {
@@ -67,7 +68,7 @@ describe("query snapshots", () => {
           code: "SNAPSHOT_INVALID_SCHEMA_VERSION",
           severity: "error",
           path: "$.schemaVersion",
-          message: "Snapshot schemaVersion must be query-snapshot-v1.",
+          message: `Snapshot schemaVersion must be ${QUERY_SNAPSHOT_SCHEMA_VERSION}.`,
         },
         {
           code: "SNAPSHOT_INVALID_ARTIFACT_KIND",
@@ -94,7 +95,7 @@ describe("query snapshots", () => {
 
   it("rejects non-json-safe structures without throwing", () => {
     const result = validateQueryReplaySnapshot({
-      schemaVersion: "query-snapshot-v1",
+      schemaVersion: QUERY_SNAPSHOT_SCHEMA_VERSION,
       artifactKind: "execution-plan",
       snapshotId: "query-snapshot-0",
       artifact: {
@@ -117,7 +118,7 @@ describe("query snapshots", () => {
 
   it("rejects circular structures deterministically", () => {
     const circularValue: Record<string, unknown> = {
-      schemaVersion: "query-snapshot-v1",
+      schemaVersion: QUERY_SNAPSHOT_SCHEMA_VERSION,
       artifactKind: "execution-plan",
       snapshotId: "query-snapshot-0",
       artifact: {},
@@ -431,7 +432,7 @@ describe("query snapshots", () => {
       buildExecutionPlanSnapshot(),
     );
     const invalidResult = validateQueryReplaySnapshotWithArtifacts({
-      schemaVersion: "query-snapshot-v1",
+      schemaVersion: QUERY_SNAPSHOT_SCHEMA_VERSION,
       artifactKind: "execution-plan",
       snapshotId: "query-snapshot-0",
       artifact: {
@@ -850,7 +851,7 @@ describe("query snapshots", () => {
     const result = validateReplayArtifactByKind({
       target: "snapshot-envelope",
       artifact: {
-        schemaVersion: "query-snapshot-v1",
+        schemaVersion: QUERY_SNAPSHOT_SCHEMA_VERSION,
         artifactKind: "execution-plan",
         snapshotId: "runtime-id",
         artifact: {},
