@@ -55,10 +55,15 @@ describe("query tracing", () => {
       corpus: buildCorpus(),
     });
 
-    const trace = buildQueryExecutionTrace(result);
+    const trace = buildQueryExecutionTrace({
+      traceId: "trace-stable-order",
+      ...result,
+    });
 
-    expect(trace).toEqual(buildQueryExecutionTrace(result));
-    expect(trace.traceId).toBe("query-trace-0");
+    expect(trace).toEqual(
+      buildQueryExecutionTrace({ traceId: "trace-stable-order", ...result }),
+    );
+    expect(trace.traceId).toBe("trace-stable-order");
     expect(trace.stepCount).toBe(5);
     expect(trace.stepCount).toBe(trace.steps.length);
     expect(trace.steps).toEqual([
@@ -127,7 +132,11 @@ describe("query tracing", () => {
     const result = executeQueryPipeline({
       rawQuery: `${GIN} AND ${KHAO}`,
       corpus: buildCorpus(),
-      options: { explain: true, trace: true },
+      options: {
+        explain: true,
+        trace: true,
+        traceId: "trace-serialization-safe",
+      },
     });
 
     expect(result.queryExplanation).toBeDefined();
@@ -154,7 +163,11 @@ describe("query tracing", () => {
     const defaultResult = executeQueryPipeline(input);
     const explainedResult = executeQueryPipeline({
       ...input,
-      options: { explain: true, trace: true },
+      options: {
+        explain: true,
+        trace: true,
+        traceId: "trace-optional-artifacts",
+      },
     });
 
     expect(defaultResult.queryExplanation).toBeUndefined();
@@ -176,7 +189,11 @@ describe("query tracing", () => {
     const result = executeQueryPipeline({
       rawQuery: `${GIN} ${KHAO}`,
       corpus: buildCorpus(),
-      options: { explain: true, trace: true },
+      options: {
+        explain: true,
+        trace: true,
+        traceId: "trace-parse-short-circuit",
+      },
     });
 
     expect(result.success).toBe(false);
@@ -230,7 +247,7 @@ describe("query tracing", () => {
     const result = executeQueryPipeline({
       rawQuery: `(${GIN} OR ${RUE_YANG}) AND ${KHAO}`,
       corpus: buildCorpus(),
-      options: { explain: true, trace: true },
+      options: { explain: true, trace: true, traceId: "trace-nested-boolean" },
     });
 
     const astArtifact = result.queryExplanation?.artifacts.find(
@@ -286,6 +303,28 @@ describe("query tracing", () => {
         ],
       },
     });
+  });
+
+  it("throws on empty traceId with the exact invariant error literal", () => {
+    const result = executeQueryPipeline({
+      rawQuery: GIN,
+      corpus: buildCorpus(),
+    });
+
+    expect(() => {
+      buildQueryExecutionTrace({ traceId: "", ...result });
+    }).toThrow("[query-tracing invariant] traceId must be a non-empty string");
+  });
+
+  it("throws on whitespace-only traceId with the exact invariant error literal", () => {
+    const result = executeQueryPipeline({
+      rawQuery: GIN,
+      corpus: buildCorpus(),
+    });
+
+    expect(() => {
+      buildQueryExecutionTrace({ traceId: "   ", ...result });
+    }).toThrow("[query-tracing invariant] traceId must be a non-empty string");
   });
 });
 

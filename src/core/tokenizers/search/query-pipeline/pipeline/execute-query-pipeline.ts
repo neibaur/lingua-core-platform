@@ -146,7 +146,12 @@ function createPipelineResult(
       ? { queryExplanation: buildQueryExplanation(baseResult) }
       : {}),
     ...(options.trace === true
-      ? { executionTrace: buildQueryExecutionTrace(baseResult) }
+      ? {
+          executionTrace: buildQueryExecutionTrace({
+            traceId: options.traceId,
+            ...baseResult,
+          }),
+        }
       : {}),
   });
 }

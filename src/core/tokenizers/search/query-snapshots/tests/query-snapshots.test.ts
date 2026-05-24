@@ -1033,7 +1033,11 @@ function buildExecutionPlanSnapshot(): ExecutionPlanSnapshot {
   const result = executeQueryPipeline({
     rawQuery: `${GIN} AND ${KHAO}`,
     corpus: buildCorpus(),
-    options: { explain: true, trace: true },
+    options: {
+      explain: true,
+      trace: true,
+      traceId: "query-snapshots:execution-plan-snapshot",
+    },
   });
   const snapshot = createQueryReplaySnapshot(
     "execution-plan",
@@ -1056,7 +1060,11 @@ function buildTraceSnapshot(): QueryExecutionTraceSnapshot {
   const result = executeQueryPipeline({
     rawQuery: `${GIN} AND ${KHAO}`,
     corpus: buildCorpus(),
-    options: { explain: true, trace: true },
+    options: {
+      explain: true,
+      trace: true,
+      traceId: "query-snapshots:trace-snapshot",
+    },
   });
   const snapshot = createQueryReplaySnapshot(
     "query-execution-trace",
