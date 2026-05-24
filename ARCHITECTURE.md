@@ -175,3 +175,31 @@ performance profilers, metrics systems, tracing SDK integrations, adaptive
 runtime infrastructure, or optimization signals. Trace identifiers and step
 identifiers must be deterministic, timestamps must remain absent or explicitly
 null, and metadata must be serialization-safe primitive data only.
+
+## Architectural Roadmap
+
+This roadmap is directional, not an implementation mandate. Each phase must be derived repository-first, assessed before implementation, and captured in ADRs when it introduces binding architecture decisions.
+
+Phase 10 — Lexical Foundation and Interoperability
+Deterministic lexical interop contracts, query enrichment, runtime capability declaration, and manifest bridge. COMPLETE.
+
+Phase 11 — Dictionary Data Boundary
+Canonical dictionary entry contracts, source provenance, licensing boundaries, and deterministic ingestion-ready shapes.
+
+Phase 12 — Reading and Writing Learning Surface
+Deterministic reading and writing practice primitives, spelling and orthography representation, and learner-facing content structures.
+
+Phase 13 — Search-to-Learning Integration
+Connect deterministic query and search outputs to dictionary, reading, and writing learning experiences without introducing heuristic runtime behavior.
+
+Phase 14 — UI/API Delivery Boundary
+Public application routes, API contracts, static and SEO-first rendering, and browser-native fallbacks.
+
+Phase 15 — Tenant and Content Configuration
+Tenant and language configuration, feature boundaries, branding, and content visibility controls.
+
+Phase 16 — AI-Assisted Private Envelope
+Optional private-envelope AI workflows for explanation, generation, tutoring, or enrichment. AI must not become a core runtime dependency.
+
+Phase 17 — Multilingual Expansion
+Extend the deterministic language substrate beyond Thai-first support, including Mandarin and future language modules.
