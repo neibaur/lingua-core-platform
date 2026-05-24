@@ -96,3 +96,11 @@ export {
   type RuntimeGovernanceClosureSchemaVersion,
   type RuntimeGovernanceClosureStatus,
 } from "./closure";
+export {
+  LEXICAL_INTEROP_CAPABILITY_DECLARATION_SCHEMA_VERSION,
+  type ComposeLexicalInteropCapabilityDeclarationInput,
+  type LexicalInteropCapabilityDeclaration,
+  type LexicalInteropCapabilityDeclarationEntry,
+  type LexicalInteropCapabilityDeclarationSchemaVersion,
+  type LexicalInteropCapabilityId,
+} from "./lexical-interop-capability-declaration";
