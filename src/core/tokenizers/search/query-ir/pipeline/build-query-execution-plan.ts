@@ -1,7 +1,7 @@
 import type { Query } from "../../query-engine";
 import type { CompiledQueryPlan } from "../../query-parser";
 import {
-  QUERY_EXECUTION_PLAN_FORMAT_VERSION,
+  QUERY_EXECUTION_PLAN_SCHEMA_VERSION,
   type QueryExecutionPlan,
   type QueryExecutionPlanNode,
 } from "../shared/query-execution-plan-types";
@@ -13,10 +13,10 @@ export function buildQueryExecutionPlan(
   const root = buildNode(compiledPlan, counter);
 
   return Object.freeze({
-    formatVersion: QUERY_EXECUTION_PLAN_FORMAT_VERSION,
+    schemaVersion: QUERY_EXECUTION_PLAN_SCHEMA_VERSION,
     root,
     metadata: Object.freeze({
-      formatVersion: QUERY_EXECUTION_PLAN_FORMAT_VERSION,
+      schemaVersion: QUERY_EXECUTION_PLAN_SCHEMA_VERSION,
       nodeCount: countNodes(root),
       sourceSpan: Object.freeze({ ...root.sourceSpan }),
     }),

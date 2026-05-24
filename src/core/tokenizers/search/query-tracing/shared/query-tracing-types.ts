@@ -4,6 +4,18 @@ import type {
   QueryPipelineStage,
 } from "../../query-pipeline";
 
+export const QUERY_EXPLANATION_SCHEMA_VERSION =
+  "lingua-core-platform:query-explanation@phase9";
+
+export type QueryExplanationSchemaVersion =
+  typeof QUERY_EXPLANATION_SCHEMA_VERSION;
+
+export const QUERY_EXECUTION_TRACE_SCHEMA_VERSION =
+  "lingua-core-platform:query-execution-trace@phase9";
+
+export type QueryExecutionTraceSchemaVersion =
+  typeof QUERY_EXECUTION_TRACE_SCHEMA_VERSION;
+
 export type QueryExecutionTraceStage = QueryPipelineStage;
 
 export type QueryExecutionTraceStatus = "success" | "diagnostic";
@@ -24,6 +36,7 @@ export interface QueryExecutionTraceStep {
 }
 
 export interface QueryExecutionTrace {
+  readonly schemaVersion: QueryExecutionTraceSchemaVersion;
   readonly traceId: string;
   readonly stepCount: number;
   readonly steps: readonly QueryExecutionTraceStep[];
@@ -56,7 +69,7 @@ export interface QueryExplanationArtifact {
 }
 
 export interface QueryExplanation {
-  readonly formatVersion: "query-explanation-v1";
+  readonly schemaVersion: QueryExplanationSchemaVersion;
   readonly success: boolean;
   readonly stages: readonly QueryExplanationStage[];
   readonly artifacts: readonly QueryExplanationArtifact[];

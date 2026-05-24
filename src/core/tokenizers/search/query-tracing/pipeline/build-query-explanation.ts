@@ -16,13 +16,14 @@ import type {
   QueryLexeme,
   SourceSpan,
 } from "../../query-parser";
-import type {
-  QueryExecutionTraceMetadata,
-  QueryExecutionTraceStatus,
-  QueryExplanation,
-  QueryExplanationArtifact,
-  QueryExplanationArtifactType,
-  QueryExplanationStage,
+import {
+  QUERY_EXPLANATION_SCHEMA_VERSION,
+  type QueryExecutionTraceMetadata,
+  type QueryExecutionTraceStatus,
+  type QueryExplanation,
+  type QueryExplanationArtifact,
+  type QueryExplanationArtifactType,
+  type QueryExplanationStage,
 } from "../shared/query-tracing-types";
 import { copySourceSpan, deepFreeze } from "../shared/serialization-safe";
 
@@ -43,7 +44,7 @@ export function buildQueryExplanation(
   );
 
   return deepFreeze({
-    formatVersion: "query-explanation-v1" as const,
+    schemaVersion: QUERY_EXPLANATION_SCHEMA_VERSION,
     success: input.success,
     stages,
     artifacts,
@@ -404,7 +405,7 @@ function summarizeExecutionPlan(
 
   return {
     hasExecutionPlan: true,
-    formatVersion: executionPlan.formatVersion,
+    schemaVersion: executionPlan.schemaVersion,
     nodeCount: executionPlan.metadata.nodeCount,
     sourceSpan: summarizeSourceSpan(executionPlan.metadata.sourceSpan),
     root: summarizeExecutionPlanNode(executionPlan.root),

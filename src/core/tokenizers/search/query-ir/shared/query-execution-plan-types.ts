@@ -1,6 +1,10 @@
 import type { SourceSpan } from "../../query-parser";
 
-export const QUERY_EXECUTION_PLAN_FORMAT_VERSION = "query-execution-plan-v1";
+export const QUERY_EXECUTION_PLAN_SCHEMA_VERSION =
+  "lingua-core-platform:query-execution-plan@phase9";
+
+export type QueryExecutionPlanSchemaVersion =
+  typeof QUERY_EXECUTION_PLAN_SCHEMA_VERSION;
 
 export type QueryExecutionPlanNodeType = "token" | "phrase" | "boolean";
 
@@ -43,7 +47,7 @@ export type BooleanExecutionPlanNode = Extract<
 >;
 
 export interface QueryExecutionPlanMetadata {
-  readonly formatVersion: typeof QUERY_EXECUTION_PLAN_FORMAT_VERSION;
+  readonly schemaVersion: QueryExecutionPlanSchemaVersion;
   readonly nodeCount: number;
   readonly sourceSpan: SourceSpan;
 }
@@ -56,7 +60,7 @@ export interface QueryExecutionPlanDiagnostic {
 }
 
 export interface QueryExecutionPlan {
-  readonly formatVersion: typeof QUERY_EXECUTION_PLAN_FORMAT_VERSION;
+  readonly schemaVersion: QueryExecutionPlanSchemaVersion;
   readonly root: QueryExecutionPlanNode;
   readonly metadata: QueryExecutionPlanMetadata;
   readonly diagnostics: readonly QueryExecutionPlanDiagnostic[];
