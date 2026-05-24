@@ -328,7 +328,7 @@ function validateArtifactShape(
     case "query-explanation":
       return validateRequiredProperties(
         artifact,
-        ["formatVersion", "success", "stages", "artifacts", "diagnostics"],
+        ["schemaVersion", "success", "stages", "artifacts", "diagnostics"],
         path,
       );
     case "query-execution-trace":

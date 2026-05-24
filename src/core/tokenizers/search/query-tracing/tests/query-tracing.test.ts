@@ -3,7 +3,11 @@ import { describe, expect, it } from "vitest";
 import { CorpusIndexer } from "../../index-primitives";
 import type { SearchCorpus } from "../../index-primitives";
 import { executeQueryPipeline } from "../../query-pipeline";
-import { buildQueryExecutionTrace, buildQueryExplanation } from "../index";
+import {
+  buildQueryExecutionTrace,
+  buildQueryExplanation,
+  QUERY_EXPLANATION_SCHEMA_VERSION,
+} from "../index";
 import type { QueryExecutionTraceMetadata } from "../index";
 
 const GIN = "\u0e01\u0e34\u0e19";
@@ -25,7 +29,9 @@ describe("query tracing", () => {
     const secondExplanation = buildQueryExplanation(secondResult);
 
     expect(firstExplanation).toEqual(secondExplanation);
-    expect(firstExplanation.formatVersion).toBe("query-explanation-v1");
+    expect(firstExplanation.schemaVersion).toBe(
+      QUERY_EXPLANATION_SCHEMA_VERSION,
+    );
     expect(firstExplanation.stages.map((stage) => stage.stage)).toEqual([
       "lex",
       "parse",
