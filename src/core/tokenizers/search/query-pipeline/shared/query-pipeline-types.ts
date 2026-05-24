@@ -24,7 +24,7 @@ export interface ExecuteQueryPipelineInput {
 export interface ExecuteQueryPipelineOptions {
   readonly explain?: boolean;
   readonly trace?: boolean;
-  readonly traceId?: string;
+  readonly traceId: string;
 }
 
 export type QueryPipelineStage =

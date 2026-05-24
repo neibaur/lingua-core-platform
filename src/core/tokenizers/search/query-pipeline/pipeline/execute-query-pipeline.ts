@@ -148,7 +148,7 @@ function createPipelineResult(
     ...(options.trace === true
       ? {
           executionTrace: buildQueryExecutionTrace({
-            traceId: options.traceId ?? "pipeline-execution-trace",
+            traceId: options.traceId,
             ...baseResult,
           }),
         }
