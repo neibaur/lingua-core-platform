@@ -2,6 +2,7 @@ import type {
   RuntimeCapabilityDeclaration,
   RuntimeCapabilityStability,
 } from "./contracts";
+import { deepFreezeStructure } from "./manifest";
 
 export const LEXICAL_INTEROP_CAPABILITY_DECLARATION_SCHEMA_VERSION =
   "lingua-core-platform:lexical-interop-capability-declaration@phase10" as const;
@@ -30,4 +31,78 @@ export interface LexicalInteropCapabilityDeclarationEntry {
 export interface ComposeLexicalInteropCapabilityDeclarationInput {
   readonly declarationId: string;
   readonly capabilities: readonly LexicalInteropCapabilityDeclarationEntry[];
+}
+
+export function composeLexicalInteropCapabilityDeclaration(
+  input: ComposeLexicalInteropCapabilityDeclarationInput,
+): LexicalInteropCapabilityDeclaration {
+  assertNonEmptyDeclarationId(input.declarationId);
+
+  const capabilities = input.capabilities.map((capability) => {
+    assertLexicalInteropCapabilityId(capability.capabilityId);
+
+    return {
+      capabilityId: capability.capabilityId,
+      kind: "query" as const,
+      version: capability.version,
+      stability: capability.stability,
+    };
+  });
+
+  const orderedCapabilities = orderLexicalInteropCapabilities(capabilities);
+
+  return deepFreezeStructure({
+    schemaVersion: LEXICAL_INTEROP_CAPABILITY_DECLARATION_SCHEMA_VERSION,
+    declarationId: input.declarationId,
+    capabilityCount: orderedCapabilities.length,
+    capabilities: orderedCapabilities,
+  });
+}
+
+function orderLexicalInteropCapabilities(
+  capabilities: readonly RuntimeCapabilityDeclaration[],
+): readonly RuntimeCapabilityDeclaration[] {
+  return [...capabilities].sort(compareLexicalInteropCapabilityDeclarations);
+}
+
+function compareLexicalInteropCapabilityDeclarations(
+  left: RuntimeCapabilityDeclaration,
+  right: RuntimeCapabilityDeclaration,
+): number {
+  return compareStrings(left.capabilityId, right.capabilityId);
+}
+
+function compareStrings(left: string, right: string): number {
+  if (left < right) {
+    return -1;
+  }
+
+  if (left > right) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function assertNonEmptyDeclarationId(declarationId: string): void {
+  if (declarationId.trim() === "") {
+    throw new Error(
+      "[runtime-capabilities invariant] declarationId must be a non-empty string",
+    );
+  }
+}
+
+function assertLexicalInteropCapabilityId(
+  capabilityId: LexicalInteropCapabilityId,
+): void {
+  switch (capabilityId) {
+    case "query:enrich:lexical":
+    case "query:report:lexical_enrichment":
+    case "query:report:lexical_query":
+      return;
+    default:
+      throw new Error(
+        "[runtime-capabilities invariant] capabilityId must be a supported lexical interop capability",
+      );
+  }
 }
