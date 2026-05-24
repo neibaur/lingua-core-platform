@@ -71,7 +71,6 @@ export function composeLexicalIndex(
   return deepFreezeStructure({
     schemaVersion: LEXICAL_INDEX_SCHEMA_VERSION,
     lexicalIndexId: input.lexicalIndexId,
-    evaluationTimestamp: null,
     entryCount: sortedEntries.length,
     entries: sortedEntries,
     thaiToEnglish,

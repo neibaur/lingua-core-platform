@@ -40,7 +40,6 @@ export interface LexicalEntry {
 export interface LexicalIndex {
   readonly schemaVersion: LexicalIndexSchemaVersion;
   readonly lexicalIndexId: string;
-  readonly evaluationTimestamp: null;
   readonly entryCount: number;
   readonly entries: readonly LexicalEntry[];
   readonly thaiToEnglish: Readonly<Record<string, LexicalEntry>>;
@@ -71,7 +70,6 @@ export interface LexicalLookupInput {
 
 export interface LexicalLookupResult {
   readonly schemaVersion: LexicalLookupResultSchemaVersion;
-  readonly evaluationTimestamp: null;
   readonly query: string;
   readonly direction: LexicalLanguageDirection;
   readonly entries: readonly LexicalEntry[];

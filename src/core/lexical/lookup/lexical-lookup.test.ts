@@ -30,19 +30,6 @@ describe("composeLexicalLookup", () => {
     );
   });
 
-  it("sets evaluationTimestamp to null", () => {
-    const result = composeLexicalLookup(
-      {
-        query: "กิน",
-        direction: "th→en",
-        lexicalIndexId: TEST_INDEX.lexicalIndexId,
-      },
-      TEST_INDEX,
-    );
-
-    expect(result.evaluationTimestamp).toBeNull();
-  });
-
   it("preserves query and direction in the result", () => {
     const result = composeLexicalLookup(
       {
