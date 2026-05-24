@@ -62,3 +62,10 @@ export {
   type LexicalDatasetValidationReport,
   type LexicalDatasetValidationReportSchemaVersion,
 } from "./validation/lexical-dataset-validation-report";
+export {
+  DICTIONARY_SOURCE_PROVENANCE_SCHEMA_VERSION,
+  composeDictionarySourceProvenance,
+  type ComposeDictionarySourceProvenanceInput,
+  type DictionarySourceProvenance,
+  type DictionarySourceProvenanceSchemaVersion,
+} from "./provenance/dictionary-source-provenance";
