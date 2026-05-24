@@ -215,7 +215,7 @@ export interface ReplayValidatorQueryExecutionTraceShape {
 
 export interface ReplayValidatorQueryExplanationShape {
   readonly artifactKind: "QUERY_EXPLANATION";
-  readonly formatVersion: "query-explanation-v1";
+  readonly schemaVersion: "lingua-core-platform:query-explanation@phase9";
   readonly success: boolean;
   readonly stages: readonly unknown[];
   readonly artifacts: readonly unknown[];
