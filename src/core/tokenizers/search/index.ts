@@ -35,7 +35,7 @@ export {
   reconstructQueryReplaySnapshot,
   reconstructQuerySnapshotBundle,
   replayQuerySnapshotBundle,
-  REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION,
+  REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION,
   stableJsonStringify,
   summarizeReplayCompatibility,
   summarizeReplayDiff,

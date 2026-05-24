@@ -11,7 +11,13 @@ import type {
   QuerySnapshotValidationResult,
 } from "./diagnostics";
 
-export const REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION = "1.0.0";
+export const REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION =
+  "lingua-core-platform:replay-governance-report@phase9";
+
+export type ReplayGovernanceReportSchemaVersion =
+  typeof REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION;
+
+const GOVERNANCE_REPORT_GENERATED_FROM = "replay-governance-report" as const;
 
 export type ReplayGovernanceReportCompatibility =
   | "PERFECT_MATCH"
@@ -66,7 +72,9 @@ export interface ReplayGovernanceMismatchItem {
 }
 
 export interface ReplayGovernanceReport {
-  readonly reportFormatVersion: typeof REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION;
+  readonly schemaVersion: ReplayGovernanceReportSchemaVersion;
+  readonly evaluationTimestamp: null;
+  readonly generatedFrom: typeof GOVERNANCE_REPORT_GENERATED_FROM;
   readonly isValid: boolean;
   readonly compatibility: ReplayGovernanceReportCompatibility;
   readonly summary: ReplayGovernanceReportSummary;
@@ -97,7 +105,9 @@ export function buildReplayGovernanceReport(
     compatibility !== "BREAKING_MISMATCH";
 
   return deepFreeze({
-    reportFormatVersion: REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION,
+    schemaVersion: REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION,
+    evaluationTimestamp: null,
+    generatedFrom: GOVERNANCE_REPORT_GENERATED_FROM,
     isValid,
     compatibility,
     summary: {

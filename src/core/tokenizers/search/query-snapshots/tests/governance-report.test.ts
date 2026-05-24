@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { aggregateReplayDiagnostics } from "../aggregation";
 import {
   buildReplayGovernanceReport,
-  REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION,
+  REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION,
 } from "../governance-report";
 import { stableJsonStringify } from "../stable-json";
 import type {
@@ -39,7 +39,9 @@ describe("replay governance reports", () => {
     });
 
     expect(report).toEqual({
-      reportFormatVersion: REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION,
+      schemaVersion: REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION,
+      evaluationTimestamp: null,
+      generatedFrom: "replay-governance-report",
       isValid: true,
       compatibility: "PERFECT_MATCH",
       summary: {

@@ -74,13 +74,14 @@ export {
 } from "./equivalence";
 export {
   buildReplayGovernanceReport,
-  REPLAY_GOVERNANCE_REPORT_FORMAT_VERSION,
+  REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION,
   type BuildReplayGovernanceReportInput,
   type ReplayGovernanceArtifactSummary,
   type ReplayGovernanceDiagnosticItem,
   type ReplayGovernanceMismatchItem,
   type ReplayGovernanceReport,
   type ReplayGovernanceReportCompatibility,
+  type ReplayGovernanceReportSchemaVersion,
   type ReplayGovernanceReportSummary,
   type ReplayGovernanceValidationBlock,
 } from "./governance-report";
