@@ -128,7 +128,9 @@ pnpm validate
 
 ## Current Phase Status
 
-Phase 9: ~95–98% complete
+Phase 9: COMPLETE
+
+Phase 10: COMPLETE — lexical interop contracts, query enrichment, runtime capability declaration, and manifest bridge. 575 tests passing, full chain green.
 
 ## Active Branch Conventions
 
