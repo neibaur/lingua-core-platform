@@ -6,6 +6,7 @@ import { executeQueryPipeline } from "../../query-pipeline";
 import {
   buildQueryExecutionTrace,
   buildQueryExplanation,
+  QUERY_EXECUTION_TRACE_SCHEMA_VERSION,
   QUERY_EXPLANATION_SCHEMA_VERSION,
 } from "../index";
 import type { QueryExecutionTraceMetadata } from "../index";
@@ -69,6 +70,7 @@ describe("query tracing", () => {
     expect(trace).toEqual(
       buildQueryExecutionTrace({ traceId: "trace-stable-order", ...result }),
     );
+    expect(trace.schemaVersion).toBe(QUERY_EXECUTION_TRACE_SCHEMA_VERSION);
     expect(trace.traceId).toBe("trace-stable-order");
     expect(trace.stepCount).toBe(5);
     expect(trace.stepCount).toBe(trace.steps.length);
