@@ -19,14 +19,20 @@ const TRACE_STAGE_ORDER: readonly QueryPipelineStage[] = [
 ];
 
 export function buildQueryExecutionTrace(
-  input: Readonly<ExecuteQueryPipelineResult>,
+  input: { readonly traceId: string } & Readonly<ExecuteQueryPipelineResult>,
 ): QueryExecutionTrace {
+  if (input.traceId.trim() === "") {
+    throw new Error(
+      "[query-tracing invariant] traceId must be a non-empty string",
+    );
+  }
+
   const steps = TRACE_STAGE_ORDER.filter((stage) =>
     didReachStage(stage, input),
   ).map((stage, index) => buildStep(index, stage, input));
 
   return deepFreeze({
-    traceId: "query-trace-0",
+    traceId: input.traceId,
     stepCount: steps.length,
     steps,
   });
