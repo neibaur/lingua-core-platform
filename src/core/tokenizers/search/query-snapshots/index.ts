@@ -43,9 +43,11 @@ export { aggregateReplayDiagnostics } from "./aggregation";
 export {
   composeReplayAuditReport,
   REPLAY_AUDIT_REPORT_KIND,
+  REPLAY_AUDIT_REPORT_SCHEMA_VERSION,
   verifyAuditReportOrderingInvariants,
   type ComposeReplayAuditReportInput,
   type ReplayAuditReport,
+  type ReplayAuditReportSchemaVersion,
 } from "./audit-report";
 export {
   validateExecutionPlanArtifact,
