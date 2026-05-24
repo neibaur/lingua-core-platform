@@ -108,6 +108,9 @@ describe("replay governance reports", () => {
       diffSummary: summarizeReplayDiff(diff),
     });
 
+    expect(report.schemaVersion).toBe(REPLAY_GOVERNANCE_REPORT_SCHEMA_VERSION);
+    expect(report.evaluationTimestamp).toBeNull();
+    expect(report.generatedFrom).toBe("replay-governance-report");
     expect(report.isValid).toBe(false);
     expect(report.compatibility).toBe("BREAKING_MISMATCH");
     expect(report.summary).toEqual({
