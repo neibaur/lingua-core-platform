@@ -593,6 +593,7 @@ with its source file path. Report each literal individually as CONFIRMED or
 CONFLICT.
 
 Perform bidirectional reconciliation against SESSION_STATE.md:
+
 - Every literal found in source must appear in SESSION_STATE.md
 - Every literal in SESSION_STATE.md must appear in source
 - Any discrepancy in either direction is a CONFLICT — do not resolve it
@@ -606,6 +607,7 @@ For every interface and builder function across the entire src/core/ tree
 or governance-reporting using the Artifact Classification Law from §3.
 
 Verify:
+
 - Every governance-reporting artifact has evaluationTimestamp: null on its
   interface and on every builder return path
 - Every governance-reporting artifact that is a derived or trace artifact has
