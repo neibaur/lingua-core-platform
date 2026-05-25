@@ -40,7 +40,6 @@ export function composeLexicalLookup(
 
     return deepFreezeStructure({
       schemaVersion: LEXICAL_LOOKUP_RESULT_SCHEMA_VERSION,
-      evaluationTimestamp: null,
       query: input.query,
       direction: input.direction,
       entries: [],
@@ -83,7 +82,6 @@ export function composeLexicalLookup(
 
   return deepFreezeStructure({
     schemaVersion: LEXICAL_LOOKUP_RESULT_SCHEMA_VERSION,
-    evaluationTimestamp: null,
     query: input.query,
     direction: input.direction,
     entries,

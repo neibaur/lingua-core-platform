@@ -31,7 +31,6 @@ export type LexicalDatasetValidationStatus =
 
 export interface LexicalDatasetValidationResult {
   readonly schemaVersion: LexicalDatasetValidationResultSchemaVersion;
-  readonly evaluationTimestamp: null;
   readonly datasetId: string;
   readonly entryCount: number;
   readonly validationStatus: LexicalDatasetValidationStatus;
@@ -180,7 +179,6 @@ export function validateLexicalDataset(
 
   return deepFreezeStructure({
     schemaVersion: LEXICAL_DATASET_VALIDATION_RESULT_SCHEMA_VERSION,
-    evaluationTimestamp: null,
     datasetId: input.datasetId,
     entryCount: input.entries.length,
     validationStatus,

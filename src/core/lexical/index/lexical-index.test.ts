@@ -24,15 +24,6 @@ describe("composeLexicalIndex", () => {
     expect(index.lexicalIndexId).toBe("test:index:caller-id");
   });
 
-  it("sets evaluationTimestamp to null", () => {
-    const index = composeLexicalIndex({
-      lexicalIndexId: "test:index:timestamp",
-      entries: [],
-    });
-
-    expect(index.evaluationTimestamp).toBeNull();
-  });
-
   it("sets entryCount to the number of supplied entries", () => {
     const index = composeLexicalIndex({
       lexicalIndexId: "test:index:count",

@@ -16,6 +16,7 @@ export type LexicalLookupResultStatus = "found" | "not-found" | "empty-index";
 export interface LexicalLookupTrace {
   readonly schemaVersion: LexicalLookupTraceSchemaVersion;
   readonly evaluationTimestamp: null;
+  readonly generatedFrom: "lexical-lookup-trace";
   readonly traceId: string;
   readonly query: string;
   readonly direction: LexicalLanguageDirection;
@@ -24,6 +25,8 @@ export interface LexicalLookupTrace {
   readonly diagnosticCount: number;
   readonly diagnostics: readonly LexicalLookupDiagnostic[];
 }
+
+const TRACE_GENERATED_FROM = "lexical-lookup-trace" as const;
 
 export interface ComposeLexicalLookupTraceInput {
   readonly traceId: string;
@@ -58,6 +61,7 @@ export function composeLexicalLookupTrace(
   return deepFreezeStructure({
     schemaVersion: LEXICAL_LOOKUP_TRACE_SCHEMA_VERSION,
     evaluationTimestamp: null,
+    generatedFrom: TRACE_GENERATED_FROM,
     traceId: input.traceId,
     query: input.result.query,
     direction: input.result.direction,

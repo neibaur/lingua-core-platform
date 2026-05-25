@@ -31,12 +31,6 @@ describe("validateLexicalDataset — schema and replay invariants", () => {
     );
   });
 
-  it("evaluationTimestamp is null", () => {
-    const result = validateLexicalDataset(validInput());
-
-    expect(result.evaluationTimestamp).toBeNull();
-  });
-
   it("maps datasetId from input", () => {
     const result = validateLexicalDataset(
       validInput({ datasetId: "my-dataset-v1" }),
@@ -68,7 +62,6 @@ describe("validateLexicalDataset — schema and replay invariants", () => {
 
     expect(roundTripped.schemaVersion).toBe(result.schemaVersion);
     expect(roundTripped.datasetId).toBe(result.datasetId);
-    expect(roundTripped.evaluationTimestamp).toBeNull();
     expect(roundTripped.validationStatus).toBe(result.validationStatus);
   });
 
