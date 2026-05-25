@@ -11,7 +11,11 @@ export interface ComposeEntryIdInput {
 }
 
 export function composeEntryId(input: ComposeEntryIdInput): LexicalEntryId {
-  assertPositiveInteger(input.version, "version");
+  if (!Number.isInteger(input.version) || input.version < 1) {
+    throw new Error(
+      `[lexical invariant] version must be a positive integer, got: ${String(input.version)}`,
+    );
+  }
 
   const canonicalKey = normalizeLexicalKey(input.headword);
 
@@ -76,14 +80,6 @@ export function assertValidLexicalEntryId(
   if (!Number.isInteger(versionNumber) || versionNumber < 1) {
     throw new Error(
       `[lexical invariant] LexicalEntryId version segment must be "v" followed by a positive integer: ${JSON.stringify(id)}`,
-    );
-  }
-}
-
-function assertPositiveInteger(value: number, field: string): void {
-  if (!Number.isInteger(value) || value < 1) {
-    throw new Error(
-      `[lexical invariant] ${field} must be a positive integer, got: ${String(value)}`,
     );
   }
 }
