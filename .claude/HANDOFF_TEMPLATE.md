@@ -134,7 +134,10 @@ direct equality comparisons or inline literal switch statements only. Lookup
 tables, Set membership checks (Set.has()), map-based dispatch, array scans
 (.includes()), dynamically derived validation registries, reflective
 validation, computed guard evaluation, or any form of runtime membership
-resolution are prohibited. The allowed forms are: direct === equality
+resolution are prohibited. Helper utilities or structural abstractions that
+mask iterative linear lookups are equally prohibited — all branch logic
+evaluating literal matches must be immediately transparent to static analysis
+without symbol cross-referencing. The allowed forms are: direct === equality
 comparisons and inline switch statements with explicit literal cases. No other
 form is architecturally legal regardless of whether it produces correct runtime
 behavior. Invariant guards validating entry properties or literal union fields
@@ -150,6 +153,9 @@ sub-routine itself uses only permitted guard forms. A guard of the form
 `if (validateX(input) === true)` where validateX contains the actual invariant
 logic is not compliant — it is a structural bypass of this law. The invariant
 logic itself must be present inline in the builder body.
+Builder scope: any deterministic compose/create/build function returning a
+structural or governance artifact is a builder for purposes of this law and
+all audit and assessment requirements that reference builders.
 
 NO SPECULATIVE EXTENSIBILITY LAW
 Do not introduce extensibility seams, generic abstractions, reusable validation
@@ -331,6 +337,10 @@ Dynamic capability membership resolution — no Set.has(), no .includes() over
 constructed lists, no reflective key enumeration, no lookup tables, no map-
 based dispatch, no computed guard evaluation — see INVARIANT GUARD FORM LAW
 in §3
+Helper utilities or structural abstractions that mask iterative linear lookups
+— all branch logic evaluating literal matches must be immediately transparent
+to static analysis without symbol cross-referencing — see INVARIANT GUARD FORM
+LAW in §3
 Delegated or extra-functional invariant validation — no private validation
 helpers, extracted predicate functions, or sub-routines that offload invariant
 logic out of the builder body, even if those sub-routines use only permitted
@@ -407,6 +417,30 @@ shapes. All contracts must be derived from actual repository state confirmed by
 file reads.
 
 §9 — REQUIRED OUTPUT FORMAT
+
+GLOBAL ASSESSMENT CONSTRAINTS
+The following constraints apply to every PA section without exception:
+
+Scan scope: All repository-wide file scans exclude node_modules, dist, build,
+coverage, .git, and all generated or hidden artifact directories unless
+explicitly stated otherwise.
+
+Scan exhaustiveness: The audit must not assume previously touched files are the
+only verification surface. Every assessment category applies repository-wide
+across all reachable files under the defined scope. File scans must evaluate
+all .ts files including those with suffix configurations such as .contracts.ts,
+.validators.ts, and .test.ts. Omission of any file type from a scan constitutes
+a validation failure.
+
+No-collapse rule: Every qualifying artifact — type, builder, validator, barrel
+export, schema literal — must be listed explicitly in its respective PA section.
+Do not collapse findings into grouped summaries, even when multiple artifacts
+share identical status. A grouped summary is a reporting violation.
+
+Builder scope: Any deterministic compose/create/build function returning a
+structural or governance artifact is a builder for purposes of all PA sections
+that reference builders.
+
 The pre-implementation assessment must begin with the exact token
 PRE-IMPLEMENTATION ASSESSMENT and must cover:
 
@@ -424,18 +458,21 @@ identify the precise input and output types using actual existing types read
 from the codebase.
 
 PA.3 — Schema version confirmation
-Search every TypeScript source file explicitly tracked under src/core/
-(ignoring node_modules, dist, build, .git, and any other hidden or generated
-directories). List every schema version literal found with its source file
-path. Confirm bidirectional consistency against SESSION_STATE.md: every
-literal found in source must appear in SESSION_STATE.md, and every literal
-in SESSION_STATE.md must appear in source. Any discrepancy in either
-direction is a PA.8 conflict — do not resolve it. For any @phase[N] constant
-appearing in a newer phase integration path, do not assume migration is
-required merely because the artifact participates in a newer phase. Only
-conclude migration is warranted if ARCHITECTURE.md explicitly defines
-phase-coupled schema migration semantics. Quote the relevant passage if such
-semantics exist; state their absence explicitly if they do not.
+Search every TypeScript source file under src/core/ (applying global scan
+scope and exhaustiveness constraints above). List every schema version literal
+found with its source file path. The scan must include all .ts files —
+including .contracts.ts, .validators.ts, and .test.ts files. Omission of any
+file type from the scan constitutes a validation failure.
+
+Confirm bidirectional consistency against SESSION_STATE.md: every literal found
+in source must appear in SESSION_STATE.md, and every literal in SESSION_STATE.md
+must appear in source. Any discrepancy in either direction is a PA.8 conflict —
+do not resolve it. For any @phase[N] constant appearing in a newer phase
+integration path, do not assume migration is required merely because the
+artifact participates in a newer phase. Only conclude migration is warranted if
+ARCHITECTURE.md explicitly defines phase-coupled schema migration semantics.
+Quote the relevant passage if such semantics exist; state their absence
+explicitly if they do not.
 For any schema version literal that will be introduced by the current slice,
 derive and state the predicted exact string value by applying the repository
 convention `lingua-core-platform:<kebab-case-artifact-slug>@<phase>` to the
@@ -465,12 +502,15 @@ cited to specific repository evidence must be explicitly rejected with a stated
 reason. Do not propose fields on the basis of domain conventions, general best
 practices, anticipated future use, prompt text, issue titles, or issue
 descriptions.
-List every invariant guard proposed for the builder function. For each guard:
-state the guard condition in full, confirm it executes directly and inline in
-the builder body without delegating to any sub-routine, confirm it uses only a
-direct === equality comparison or inline switch statement, and cite the
-repository evidence that makes the guard architecturally necessary. Reject any
-proposed guard that cannot be justified from repository evidence.
+List every invariant guard proposed for the builder function. Builder scope:
+any deterministic compose/create/build function returning a structural or
+governance artifact. For each guard: state the guard condition in full, confirm
+it executes directly and inline in the builder body without delegating to any
+sub-routine, confirm it uses only a direct === equality comparison or inline
+switch statement, confirm it does not use helper utilities or structural
+abstractions that mask iterative linear lookups, and cite the repository
+evidence that makes the guard architecturally necessary. Reject any proposed
+guard that cannot be justified from repository evidence.
 
 PA.6 — Files that must not be touched
 List every file that must not be modified, with the doctrinal reason.
@@ -493,11 +533,17 @@ that it completed successfully. State the total test count, total test file
 count, and statement coverage percentage from the pnpm test:coverage output.
 If any command is not fully green, document the exact failure output and STOP
 immediately — do not propose implementation, do not attempt to diagnose or
-repair pre-existing failures, and do not proceed to PA.8. If you are operating
-in a static sandbox without direct repository shell execution access, inspect
-the current test files to deduce the invariant requirements, and explicitly
-prompt the user to paste the real CLI output of pnpm validate before
-finalizing this step. Do not estimate or hallucinate pass counts.
+repair pre-existing failures, and do not proceed to PA.8. Exception: when this
+assessment is running as a phase-transition audit session (see PHASE-TRANSITION
+ASSESSMENT EXTENSION below), a validation failure is recorded and the audit
+continues across all remaining sections before the final verdict is issued —
+do not stop before the full audit report is complete. In all cases, do not
+speculate on remediation and do not produce implementation guidance.
+If you are operating in a static sandbox without direct repository shell
+execution access, inspect the current test files to deduce the invariant
+requirements, and explicitly prompt the user to paste the real CLI output of
+pnpm validate before finalizing this step. Do not estimate or hallucinate pass
+counts.
 
 PA.8 — Conflict surface
 If anything discovered during PA.1–PA.7 conflicts with any prescription in the
@@ -519,20 +565,113 @@ instructions, or prior conversation history.
 PHASE-TRANSITION ASSESSMENT EXTENSION
 When a pre-implementation assessment initiates a new phase (i.e., the current
 phase in SESSION_STATE.md is COMPLETE and the next phase has not yet been
-authorized), the following additional audit is required before PA.8 is
-produced.
+authorized), the following full audit is required before PA.8 is produced.
+Report all audit findings in a PA.6b section, inserted between PA.6 and PA.7.
 
-AUDIT E — Export Surface Governance Audit
-For every index.ts barrel file under src/core/ (at every nesting level): list
-every re-exported symbol and classify it as one of: boundary-safe structural
-contract, builder function, validator, schema version literal, or flag as
-potentially unsafe (test-only utility, internal helper, lower-layer
-implementation detail, or non-governance runtime internal). Any export that
-cannot be confirmed as intentionally boundary-safe is a PA.8 conflict. Report
-findings for every barrel file individually — do not summarize across files.
+The phase-transition audit is a confirmation pass and a discovery pass. Every
+finding must be reported as CONFIRMED CLEAN or CONFLICT — there is no
+assumed-clean default. All global assessment constraints defined above apply
+to every audit section without exception. Additionally:
 
-Report Audit E findings in a PA.6b section, inserted between PA.6 and PA.7
-in the assessment output.
+Halt rule: If any audit section produces a CONFLICT, continue gathering
+findings across all remaining audit sections before producing the final verdict.
+Do not speculate on remediation and do not produce implementation guidance in
+any section. The full audit report must be complete before any conflict response
+is issued.
+
+Path identity invariant: Every barrel file listed in Audit E must be identified
+by its absolute repository root path (e.g. src/core/lexical/index.ts,
+src/core/tokenizers/search/runtime-capabilities/index.ts). Do not refer to
+barrel files by short name alone. This prevents namespace collision or module
+masking in the reporting ledger.
+
+AUDIT A — Schema Version Literal Reconciliation
+Search every TypeScript source file under src/core/ (applying all global scan
+constraints, including the exhaustiveness clause requiring .contracts.ts,
+.validators.ts, and .test.ts files). List every schema version literal found
+with its source file path. Report each literal individually as CONFIRMED or
+CONFLICT.
+
+Perform bidirectional reconciliation against SESSION_STATE.md:
+
+- Every literal found in source must appear in SESSION_STATE.md
+- Every literal in SESSION_STATE.md must appear in source
+- Any discrepancy in either direction is a CONFLICT — do not resolve it
+
+State the total literal count found in source and the total count in
+SESSION_STATE.md. Final verdict: CONFIRMED CLEAN or CONFLICT(S) FOUND.
+
+AUDIT B — Artifact Classification
+For every interface and builder function across the entire src/core/ tree
+(applying all global scan constraints), classify each artifact as structural
+or governance-reporting using the Artifact Classification Law from §3.
+
+Verify:
+
+- Every governance-reporting artifact has evaluationTimestamp: null on its
+  interface and on every builder return path
+- Every governance-reporting artifact that is a derived or trace artifact has
+  an appropriate generatedFrom field on its interface and on every builder
+  return path
+- No structural artifact carries evaluationTimestamp or generatedFrom
+
+Report every artifact individually as CONFIRMED CLEAN or CONFLICT. Any artifact
+that cannot be unambiguously classified, or that violates the field prescription
+for its classification, is a CONFLICT. Final verdict: CONFIRMED CLEAN or
+CONFLICT(S) FOUND.
+
+AUDIT C — Typed Reference Law
+For every interface and structural type across the entire src/core/ tree
+(applying all global scan constraints), confirm that no field uses a raw string
+identifier (field: string) to reference a concept for which a backing structural
+type exists in the repository.
+
+Report every field under review individually as CONFIRMED CLEAN or CONFLICT.
+Any raw string identifier that references a typed concept is a CONFLICT.
+Final verdict: CONFIRMED CLEAN or CONFLICT(S) FOUND.
+
+AUDIT D — Invariant Guard Form
+For every builder function across the entire src/core/ tree (applying all
+global scan constraints), verify that all invariant guards:
+
+1. Execute directly and inline in the builder body — no delegation to private
+   helpers, extracted predicate functions, or external validation sub-routines
+2. Use only direct === equality comparisons or inline switch statements with
+   explicit literal cases
+3. Do not use: Set.has(), .includes(), lookup tables, map-based dispatch, array
+   scans, computed guard evaluation, reflective validation, string interpolation
+   inside guard conditions, or computed error message construction
+4. Do not use helper utilities or structural abstractions that mask iterative
+   linear lookups — all branch logic evaluating literal matches must be
+   immediately transparent to static analysis without symbol cross-referencing
+
+Builder scope: any deterministic compose/create/build function returning a
+structural or governance artifact.
+
+Report every builder individually as CONFIRMED CLEAN or CONFLICT. Any builder
+with a delegated guard or a non-compliant guard form is a CONFLICT.
+Final verdict: CONFIRMED CLEAN or CONFLICT(S) FOUND.
+
+AUDIT E — Export Surface Governance
+For every index.ts barrel file under src/core/ at every nesting level
+(applying all global scan constraints), list every re-exported symbol and
+classify each as one of:
+
+- boundary-safe structural contract
+- builder function
+- validator
+- schema version literal
+- UNSAFE (test-only utility, internal helper, lower-layer implementation
+  detail, or non-governance runtime internal)
+
+Classification default: if a symbol's boundary safety cannot be justified
+directly from repository doctrine or architectural layering, classify it as
+UNSAFE.
+
+Every barrel file must be identified by its absolute repository root path.
+Report findings for every barrel file individually — do not summarize across
+files. Any symbol classified as UNSAFE is a CONFLICT.
+Final verdict: CONFIRMED CLEAN or CONFLICT(S) FOUND.
 
 §10 — VALIDATION AND COMMIT GOVERNANCE
 Do not claim validation success unless actual CLI output was observed in the
@@ -616,7 +755,10 @@ Authorized Correction Exception Pattern
 Confirm that all invariant guards execute inline in the builder body — no
 delegation to private helpers, extracted predicates, or external validation
 sub-routines regardless of whether those sub-routines use only permitted guard
-forms
+forms; confirm that no guard uses helper utilities or structural abstractions
+that mask iterative linear lookups
+Treat any deterministic compose/create/build function returning a structural or
+governance artifact as a builder for all assessment and audit purposes
 Preserve the [N]-test baseline without modification to any existing test
 Treat every technically possible derivation as requiring explicit architectural
 justification before it is considered legally warranted
@@ -634,3 +776,5 @@ for the referenced concept
 Confirm the deferred scope list in SESSION_STATE.md before proposing any
 field or contract shape — do not implement anything belonging to a deferred
 phase or system
+Do not collapse findings into grouped summaries in any PA section — every
+qualifying artifact must be listed explicitly regardless of shared status
