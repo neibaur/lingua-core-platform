@@ -13,23 +13,16 @@ Cross-Session State Document | Updated After Each PR Cycle
 - All four Phase 11 concepts implemented; no further Phase 11 work is warranted
 - Phase 12 must be explicitly authorized before any Phase 12 work begins
 
-Repository-wide architectural audit deferred until Phase 12 authorization.
-Audit scope when triggered: (A) schema version literal bidirectional
-reconciliation against this file; (B) artifact classification audit across
-all structural and governance-reporting types; (C) Typed Reference Law audit
-across all identifier-bearing fields; (D) Invariant Guard Form audit across
-all builder functions; (E) export surface governance audit across all barrel
-files. Defined in .claude/HANDOFF_TEMPLATE.md §9 phase-transition assessment
-extension.
+Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 663
+- Tests passing: 662
 - Test files: 51
-- Statement coverage: 92.35%
+- Statement coverage: 92.42%
 - Full chain green: yes
 - Branch at time of last update: main
-- Commit at time of last update: 960de1c
+- Commit at time of last update: 6678763
 
 ## Completed Systems
 
@@ -63,6 +56,27 @@ extension.
 - fix/claude-md-phase11-status — corrected CLAUDE.md Phase 10 test count
   from 575 to 595; added Phase 11 IN PROGRESS entry; updated HANDOFF_TEMPLATE.md
   session state
+- fix/audit-a-session-state-schema-literals — added six missing @phase9
+  schema version literals to SESSION_STATE.md: query-snapshot,
+  query-explanation, query-execution-trace, query-execution-plan,
+  replay-governance-report, replay-audit-report
+- fix/audit-b-introspection-envelope-classification — added missing
+  evaluationTimestamp: null to RuntimeCapabilityIntrospectionEnvelope
+  interface and builder return; additive only
+- fix/audit-b-enrichment-result-classification — added missing
+  generatedFrom: "lexical-query-enrichment-result" to
+  LexicalQueryEnrichmentResult interface and both builder return paths;
+  additive only
+- fix/audit-c-typed-references-adr — renamed LexicalEntry.sourceId and
+  DictionaryLicensingBoundary.sourceId to provenance: DictionarySourceProvenance;
+  removed now-redundant string guard from composeDictionaryLicensingBoundary;
+  deleted two inapplicable guard tests; added ADR-0010
+- fix/audit-d-invariant-guard-inlining — inlined delegated invariant
+  guards in composeEntryId, composeLexicalLookup, and composeLexicalIndex;
+  replaced .includes() deduplication with compliant inline loop
+- fix/audit-e-barrel-export-hygiene — removed 19 internal symbols from
+  three public barrels (lexical/index.ts, runtime-capabilities/index.ts,
+  query-snapshots/index.ts); updated one consumer import path
 
 ## Active Scope and Derivation Surface
 
@@ -96,8 +110,10 @@ The following must NOT influence the current assessment or any implementation:
 - Ingestion pipelines, parsers, loaders, adapters, orchestration, or source
   synchronization systems — explicitly prohibited until proven immediately
   required by current repository topology
-- Repository-wide architectural audit — deferred until Phase 11 is fully
-  complete
+- Repository-wide architectural audit — COMPLETE (26 conflicts resolved
+  across five audit categories: schema literal reconciliation, artifact
+  classification, typed reference law, invariant guard form, export surface
+  governance)
 - Schema version migration for any existing @phase9 or @phase10 constants —
   not warranted; ARCHITECTURE.md defines no phase-coupled migration semantics
 
