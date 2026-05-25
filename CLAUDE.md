@@ -132,7 +132,7 @@ Phase 9: COMPLETE
 
 Phase 10: COMPLETE — lexical interop contracts, query enrichment, runtime capability declaration, and manifest bridge. 595 tests passing, full chain green.
 
-Phase 11: IN PROGRESS — first slice (DictionarySourceProvenance) complete and merged to main. Three concepts remain unimplemented: licensing boundary contracts, canonical dictionary entry shape, and deterministic ingestion-ready shapes.
+Phase 11: COMPLETE — canonical dictionary entry contracts, source provenance, licensing boundaries, and deterministic ingestion-ready shapes. 663 tests passing, full chain green.
 
 ## Active Branch Conventions
 

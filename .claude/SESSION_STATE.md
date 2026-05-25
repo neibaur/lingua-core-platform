@@ -5,27 +5,23 @@ Cross-Session State Document | Updated After Each PR Cycle
 ## Current Phase and Status
 
 - Current phase: Phase 11 — Dictionary Data Boundary
-- Phase 11 status: IN PROGRESS
+- Phase 11 status: COMPLETE
 - First slice complete: DictionarySourceProvenance (merged PR #69)
 - Second slice complete: DictionaryLicensingBoundary (Issue #73)
 - Third slice complete: CanonicalDictionaryEntry (Issue #74)
-- One concept remaining — not yet implemented, no stubs or placeholders exist:
-  - Deterministic ingestion-ready shapes (canonical frozen entry record;
-    contracts only — ingestion pipelines, parsers, loaders, and adapters
-    are explicitly out of scope)
-- No further Phase 11 slice is warranted from mechanical dependency alone;
-  remaining slices must be explicitly authorized before Phase 12 begins
-- Do not treat absence of a mechanical gap as authorization to skip to
-  Phase 12
+- Fourth slice complete: IngestionReadyDictionaryEntry (Issue #75)
+- All four Phase 11 concepts implemented; no further Phase 11 work is warranted
+- Phase 12 must be explicitly authorized before any Phase 12 work begins
+- Repository-wide architectural audit deferred until Phase 12 authorization
 
 ## Validation Baseline
 
-- Tests passing: 650
-- Test files: 50
-- Statement coverage: 92.34%
+- Tests passing: 663
+- Test files: 51
+- Statement coverage: 92.35%
 - Full chain green: yes
-- Branch at time of last update: feat/phase11-canonical-dictionary-entry
-- Commit at time of last update: 913335e
+- Branch at time of last update: feat/phase11-ingestion-ready-entry
+- Commit at time of last update: 6fa2885
 
 ## Completed Systems
 
@@ -53,6 +49,9 @@ Cross-Session State Document | Updated After Each PR Cycle
 - feat/phase11-canonical-dictionary-entry — introduced
   CanonicalDictionaryEntry structural type, CANONICAL_DICTIONARY_ENTRY_SCHEMA_VERSION
   (@phase11), composeCanonicalDictionaryEntry builder, 25 tests (Issue #74)
+- feat/phase11-ingestion-ready-entry — introduced IngestionReadyDictionaryEntry
+  structural type, INGESTION_READY_DICTIONARY_ENTRY_SCHEMA_VERSION (@phase11),
+  composeIngestionReadyDictionaryEntry builder, 13 tests (Issue #75)
 - fix/claude-md-phase11-status — corrected CLAUDE.md Phase 10 test count
   from 575 to 595; added Phase 11 IN PROGRESS entry; updated HANDOFF_TEMPLATE.md
   session state
@@ -117,6 +116,7 @@ The following must NOT influence the current assessment or any implementation:
 - "lingua-core-platform:dictionary-source-provenance@phase11"
 - "lingua-core-platform:dictionary-licensing-boundary@phase11"
 - "lingua-core-platform:canonical-dictionary-entry@phase11"
+- "lingua-core-platform:ingestion-ready-dictionary-entry@phase11"
 
 Phase label invariant: Phase labels are lineage identifiers, not lifecycle
 version indicators. No migration of any existing literal is warranted unless
