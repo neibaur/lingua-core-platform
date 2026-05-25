@@ -8,9 +8,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 11 status: IN PROGRESS
 - First slice complete: DictionarySourceProvenance (merged PR #69)
 - Second slice complete: DictionaryLicensingBoundary (Issue #73)
-- Two concepts remaining — not yet implemented, no stubs or placeholders exist:
-  - Canonical dictionary entry shape (typed canonical entry contract
-    integrating lexical content with provenance references)
+- Third slice complete: CanonicalDictionaryEntry (Issue #74)
+- One concept remaining — not yet implemented, no stubs or placeholders exist:
   - Deterministic ingestion-ready shapes (canonical frozen entry record;
     contracts only — ingestion pipelines, parsers, loaders, and adapters
     are explicitly out of scope)
@@ -21,12 +20,12 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 ## Validation Baseline
 
-- Tests passing: 625
-- Test files: 49
-- Statement coverage: 92.31%
+- Tests passing: 650
+- Test files: 50
+- Statement coverage: 92.34%
 - Full chain green: yes
-- Branch at time of last update: feat/phase11-dictionary-licensing-boundary
-- Commit at time of last update: 397a7f6
+- Branch at time of last update: feat/phase11-canonical-dictionary-entry
+- Commit at time of last update: 913335e
 
 ## Completed Systems
 
@@ -51,11 +50,18 @@ Cross-Session State Document | Updated After Each PR Cycle
 - feat/phase11-dictionary-licensing-boundary — introduced
   DictionaryLicensingBoundary structural type, DICTIONARY_LICENSING_BOUNDARY_SCHEMA_VERSION
   (@phase11), composeDictionaryLicensingBoundary builder, 30 tests (Issue #73)
+- feat/phase11-canonical-dictionary-entry — introduced
+  CanonicalDictionaryEntry structural type, CANONICAL_DICTIONARY_ENTRY_SCHEMA_VERSION
+  (@phase11), composeCanonicalDictionaryEntry builder, 25 tests (Issue #74)
 - fix/claude-md-phase11-status — corrected CLAUDE.md Phase 10 test count
   from 575 to 595; added Phase 11 IN PROGRESS entry; updated HANDOFF_TEMPLATE.md
   session state
 
 ## Active Scope and Derivation Surface
+
+Platform footprint: Thai-English (Phase 11 scope). Field derivation must
+reflect this footprint. Multilingual expansion is explicitly deferred to
+Phase 17 and must not influence current structural contracts.
 
 Authoritative derivation surface for Phase 11 continuation:
 
@@ -110,6 +116,7 @@ The following must NOT influence the current assessment or any implementation:
 - "lingua-core-platform:lexical-dataset-validation-report@phase10"
 - "lingua-core-platform:dictionary-source-provenance@phase11"
 - "lingua-core-platform:dictionary-licensing-boundary@phase11"
+- "lingua-core-platform:canonical-dictionary-entry@phase11"
 
 Phase label invariant: Phase labels are lineage identifiers, not lifecycle
 version indicators. No migration of any existing literal is warranted unless

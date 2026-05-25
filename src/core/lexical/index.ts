@@ -77,3 +77,10 @@ export {
   type DictionaryLicensingBoundarySchemaVersion,
   type DictionaryLicensingVerdict,
 } from "./provenance/dictionary-licensing-boundary";
+export {
+  CANONICAL_DICTIONARY_ENTRY_SCHEMA_VERSION,
+  composeCanonicalDictionaryEntry,
+  type CanonicalDictionaryEntry,
+  type CanonicalDictionaryEntrySchemaVersion,
+  type ComposeCanonicalDictionaryEntryInput,
+} from "./provenance/canonical-dictionary-entry";
