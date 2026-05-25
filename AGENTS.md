@@ -1,53 +1,64 @@
 # AI Coding Assistant Guidelines
 
-This repository is a governance-first, multi-tenant modular monolith platform engine for language learning and linguistic processing. It starts with Thai-English support and must remain extensible to Mandarin and other languages.
+Before performing any implementation work, read
+[.claude/HANDOFF_TEMPLATE.md](.claude/HANDOFF_TEMPLATE.md) in full. All
+doctrine laws in that file are active, enforced, and override any conflicting
+guidance in any other file. Do not proceed past this instruction until that
+file has been read.
 
-These guidelines apply to AI coding assistants, including Codex, Cursor, and similar tools.
+These guidelines apply to AI coding assistants, including Codex, Cursor, and
+similar tools.
 
-## 1. Architecture Style
+## Authoritative Session Documents
 
-Preserve a modular monolith architecture. Keep tenant domains, language domains, and platform capabilities in one coherent codebase with clear internal module boundaries.
+Read these before any implementation:
 
-Do not introduce premature microservice fragmentation, separate product repositories, or isolated codebases for multi-tenant domains unless an approved architecture decision record explicitly authorizes the change.
+- [.claude/SESSION_STATE.md](.claude/SESSION_STATE.md) — current phase
+  status, validation baseline, completed slices, deferred scope, and schema
+  version literals. Read this before any implementation to confirm the current
+  phase and what is explicitly deferred.
+- [.claude/ROADMAP.md](.claude/ROADMAP.md) — phase planning and directional
+  scope. Read this for phase sequencing context before proposing new work.
 
-## 2. Language Extensibility
+## Architecture and Design Boundaries
 
-All tokenizer and linguistic processing work must use a pluggable layer under `src/core/tokenizers/`.
+Before proposing architectural changes, read [ARCHITECTURE.md](ARCHITECTURE.md)
+in full. It is the canonical source for modular monolith principles, directory
+layout, public/private boundary, non-goals, and the content-first progression
+principle.
 
-Thai support is the first implementation priority, but the design must leave room for Mandarin and other languages without rewriting core platform logic. Language-specific rules, dictionaries, segmentation behavior, and normalization logic should be isolated behind stable interfaces.
+All tokenizer driver and search infrastructure work must use the pluggable
+layer under `src/core/tokenizers/`. Lexical infrastructure and dictionary data
+boundary contracts reside under `src/core/lexical/`. Refer to
+[ARCHITECTURE.md](ARCHITECTURE.md) for the confirmed current directory layout.
 
-## 3. Data Boundary Segregation
+Do not introduce microservice fragmentation, separate product repositories, or
+isolated codebases for multi-tenant domains unless an approved ADR in
+`docs/adr/` explicitly authorizes the change.
 
-Do not commit proprietary AI prompts, premium educational materials, monetization logic, analytics secrets, private configuration keys, vendor credentials, or tenant-specific data to this public repository.
+## ADR Discipline
 
-Use examples, fixtures, and documentation that are safe for public distribution. Redact sensitive data before creating commits, issues, pull requests, or generated artifacts.
+Document major architectural decisions in `docs/adr/` before making them
+binding. Create or update an ADR before changing: core module boundaries,
+tenant isolation strategy, tokenizer architecture, data ingestion policy,
+security posture, deployment topology, or language expansion strategy.
 
-## 4. Content-First Progression
+## Data Boundaries and Safe Licensing
 
-Prioritize durable content and discovery foundations before interactive multi-user features.
+Redact sensitive data before creating commits, issues, pull requests, or
+generated artifacts. Do not commit proprietary AI prompts, premium educational
+materials, monetization logic, analytics secrets, private configuration keys,
+vendor credentials, or tenant-specific data to this public repository.
 
-Prefer static content, SEO-friendly rendering, static rendering paths, browser-native fallback text-to-speech, dictionary foundations, and search foundations before adding real-time collaboration, social features, complex accounts, or other interactive multi-user components.
+Before ingesting or committing any linguistic dataset, read
+[DATA_SOURCES.md](DATA_SOURCES.md) in full. It is the canonical source for
+dataset governance principles, audit requirements, and licensing boundaries.
 
-## 5. Validation Discipline
+## Validation
 
-Before recommending merge, run the checks available for the current repository state. Typical checks include:
+Before recommending merge, read
+[.claude/HANDOFF_TEMPLATE.md](.claude/HANDOFF_TEMPLATE.md) §10 for the full
+validation chain required before every commit.
 
-- Type checking
-- Linting
-- Build verification
-- Security scanning
-- Dependency or lockfile validation
-
-If a check is unavailable, stubbed, or intentionally deferred, state that clearly in the final report instead of treating it as passing coverage.
-
-## 6. ADR Discipline
-
-Document major architectural decisions in `docs/adr/`.
-
-Create or update an ADR before changing core module boundaries, tenant isolation strategy, tokenizer architecture, data ingestion policy, security posture, deployment topology, or language expansion strategy.
-
-## 7. Safe Data Licensing
-
-All imported linguistic datasets must be documented before ingestion.
-
-Documentation must identify the source, license, permitted uses, attribution requirements, redistribution constraints, transformation steps, and any known risks. Do not ingest datasets with unclear licensing into this public repository.
+If a check is unavailable, stubbed, or intentionally deferred, state that
+clearly in the final report instead of treating it as passing coverage.
