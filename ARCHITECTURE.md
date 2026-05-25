@@ -2,7 +2,7 @@
 
 `lingua-core-platform` is a governance-first modular monolith platform engine for Thai-English linguistic tooling, tokenizer/search infrastructure, SEO-first educational content, and future multilingual expansion.
 
-This document defines the initial architecture direction before application/runtime code is added. It is intentionally high level. Detailed implementation choices, production migrations, and major architectural decisions should be captured later in `docs/adr/`.
+This document defines the platform principles: system identity, core architectural constraints, directory layout, public/private boundary, and the deterministic query explainability model. Major architectural decisions are captured in `docs/adr/`. The phase-by-phase implementation roadmap is at `.claude/ROADMAP.md`.
 
 ## System Overview
 
@@ -23,34 +23,62 @@ The central engine should own reusable infrastructure such as routing convention
 
 ## Directory Layout
 
-Current and intended high-level layout:
+Current high-level layout confirmed from working tree:
 
 ```text
 .
 ├── src/
-│   ├── core/
-│   │   └── tokenizers/
-│   │       ├── index.ts
-│   │       ├── thai/
-│   │       └── mandarin/
-│   ├── middleware.ts
-│   ├── database/
-│   ├── tenants/
-│   └── shared/
+│   └── core/
+│       ├── lexical/
+│       │   ├── contracts.ts
+│       │   ├── index.ts
+│       │   ├── datasets/
+│       │   │   └── thai-english/
+│       │   ├── diagnostics/
+│       │   ├── identity/
+│       │   ├── index/
+│       │   ├── lookup/
+│       │   ├── normalization/
+│       │   ├── provenance/
+│       │   └── validation/
+│       └── tokenizers/
+│           ├── index.ts
+│           ├── drivers/
+│           │   ├── dictionary/
+│           │   └── mock/
+│           ├── normalization/
+│           ├── pipeline/
+│           └── search/
+│               ├── index-primitives/
+│               ├── matching/
+│               ├── pipeline/
+│               ├── query-engine/
+│               ├── query-ir/
+│               ├── query-lexical-interop/
+│               ├── query-parser/
+│               ├── query-pipeline/
+│               ├── query-snapshots/
+│               ├── query-tracing/
+│               ├── runtime-capabilities/
+│               ├── shared/
+│               └── utils/
 ├── docs/
-│   └── adr/
+│   ├── adr/
+│   ├── architecture/
+│   └── validation/
 ├── ARCHITECTURE.md
 ├── DATA_SOURCES.md
-└── AGENTS.md
+├── AGENTS.md
+└── README.md
 ```
 
-Expected responsibilities:
+Directory responsibilities:
 
-- `src/core/tokenizers/`: tokenizer and linguistic processing interfaces, drivers, adapters, and language-specific implementations.
-- `src/middleware.ts`: conceptual entry point for hostname/domain-aware tenant resolution and request context setup.
-- `src/database/`: conceptual home for database access boundaries, query modules, schemas, and migration integration when selected by future ADRs.
-- `src/tenants/`: tenant configuration, feature boundaries, branding settings, routing metadata, and language/search settings.
-- `src/shared/`: cross-cutting utilities, shared types, validation helpers, and infrastructure that is not language- or tenant-specific.
+- `src/core/lexical/`: lexical identity contracts, dataset access, diagnostics, normalization rules, index, lookup, dictionary data boundary contracts (`provenance/`), and dataset validation.
+- `src/core/tokenizers/`: tokenizer driver interface and implementations (dictionary, mock), text normalization pipeline, tokenization pipeline, and the search subsystem — query parsing, query IR, query execution engine, query snapshots and replay governance, query tracing and explainability, runtime capability governance, and query-lexical interoperability.
+- `docs/adr/`: architecture decision records documenting durable platform decisions.
+- `docs/architecture/`: supplementary architecture reference documents covering ordering guarantees, replay governance lifecycle, and certification foundations.
+- `docs/validation/`: validation checklists and manual testing scenarios for tokenizer and search behavior.
 
 ## Multi-Tenant Routing Concept
 
@@ -175,31 +203,3 @@ performance profilers, metrics systems, tracing SDK integrations, adaptive
 runtime infrastructure, or optimization signals. Trace identifiers and step
 identifiers must be deterministic, timestamps must remain absent or explicitly
 null, and metadata must be serialization-safe primitive data only.
-
-## Architectural Roadmap
-
-This roadmap is directional, not an implementation mandate. Each phase must be derived repository-first, assessed before implementation, and captured in ADRs when it introduces binding architecture decisions.
-
-Phase 10 — Lexical Foundation and Interoperability
-Deterministic lexical interop contracts, query enrichment, runtime capability declaration, and manifest bridge. COMPLETE.
-
-Phase 11 — Dictionary Data Boundary
-Canonical dictionary entry contracts, source provenance, licensing boundaries, and deterministic ingestion-ready shapes.
-
-Phase 12 — Reading and Writing Learning Surface
-Deterministic reading and writing practice primitives, spelling and orthography representation, and learner-facing content structures.
-
-Phase 13 — Search-to-Learning Integration
-Connect deterministic query and search outputs to dictionary, reading, and writing learning experiences without introducing heuristic runtime behavior.
-
-Phase 14 — UI/API Delivery Boundary
-Public application routes, API contracts, static and SEO-first rendering, and browser-native fallbacks.
-
-Phase 15 — Tenant and Content Configuration
-Tenant and language configuration, feature boundaries, branding, and content visibility controls.
-
-Phase 16 — AI-Assisted Private Envelope
-Optional private-envelope AI workflows for explanation, generation, tutoring, or enrichment. AI must not become a core runtime dependency.
-
-Phase 17 — Multilingual Expansion
-Extend the deterministic language substrate beyond Thai-first support, including Mandarin and future language modules.
