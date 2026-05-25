@@ -26,4 +26,7 @@ two or three sentences.
 
 Do not discuss phase scope or generate any implementation prompt until
 we have confirmed shared understanding and discussed whether any
-deferred work or architectural audit should happen first.
+deferred work or architectural audit should happen first. If Session State shows the previous phase is COMPLETE and the next phase is
+PENDING AUTHORIZATION, flag the pre-authorization audit requirement before
+discussing any Phase N+1 scope. The audit scope is defined in
+.claude/HANDOFF_TEMPLATE.md §9 phase-transition assessment extension.
