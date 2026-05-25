@@ -7,12 +7,25 @@ import {
   type DictionaryLicensingBoundary,
   type DictionaryLicensingVerdict,
 } from "../dictionary-licensing-boundary";
+import { composeDictionarySourceProvenance } from "../dictionary-source-provenance";
+
+function makeProvenance() {
+  return composeDictionarySourceProvenance({
+    sourceId: "nectec:lexitron:v1",
+    displayName: "NECTEC LEXiTRON",
+    sourceUrl: "https://lexitron.nectec.or.th",
+    licenseType: "Academic",
+    licenseUrl: "https://lexitron.nectec.or.th/license",
+    attributionRequired: true,
+    attributionPayload: "NECTEC LEXiTRON Thai-English Dictionary",
+  });
+}
 
 function makeInput(
   overrides?: Partial<ComposeDictionaryLicensingBoundaryInput>,
 ): ComposeDictionaryLicensingBoundaryInput {
   return {
-    sourceId: "nectec:lexitron:v1",
+    provenance: makeProvenance(),
     isCommerciallyViable: "unknown",
     redistributionAllowed: "unknown",
     licenseType: "Academic",
@@ -45,10 +58,10 @@ describe("composeDictionaryLicensingBoundary — schema version", () => {
 // ─── field passthrough ────────────────────────────────────────────────────────
 
 describe("composeDictionaryLicensingBoundary — field passthrough", () => {
-  it("preserves sourceId", () => {
+  it("preserves provenance", () => {
     const boundary = composeDictionaryLicensingBoundary(makeInput());
 
-    expect(boundary.sourceId).toBe("nectec:lexitron:v1");
+    expect(boundary.provenance).toEqual(makeProvenance());
   });
 
   it("preserves isCommerciallyViable as unknown", () => {
@@ -183,7 +196,7 @@ describe("composeDictionaryLicensingBoundary — immutability", () => {
     ) as DictionaryLicensingBoundary;
 
     expect(roundTripped.schemaVersion).toBe(boundary.schemaVersion);
-    expect(roundTripped.sourceId).toBe(boundary.sourceId);
+    expect(roundTripped.provenance).toEqual(boundary.provenance);
     expect(roundTripped.isCommerciallyViable).toBe(
       boundary.isCommerciallyViable,
     );
@@ -235,18 +248,6 @@ describe("composeDictionaryLicensingBoundary — replay-safety", () => {
 // ─── invariant guards ─────────────────────────────────────────────────────────
 
 describe("composeDictionaryLicensingBoundary — invariant guards", () => {
-  it("throws on empty sourceId", () => {
-    expect(() => {
-      composeDictionaryLicensingBoundary(makeInput({ sourceId: "" }));
-    }).toThrow("[lexical invariant]");
-  });
-
-  it("throws on whitespace-only sourceId", () => {
-    expect(() => {
-      composeDictionaryLicensingBoundary(makeInput({ sourceId: "   " }));
-    }).toThrow("[lexical invariant]");
-  });
-
   it("accepts empty licenseType (unknown license label)", () => {
     expect(() => {
       composeDictionaryLicensingBoundary(makeInput({ licenseType: "" }));

@@ -32,7 +32,15 @@ function makeEntry() {
 
 function makeLicensingBoundary() {
   return composeDictionaryLicensingBoundary({
-    sourceId: "nectec:lexitron:v1",
+    provenance: composeDictionarySourceProvenance({
+      sourceId: "nectec:lexitron:v1",
+      displayName: "NECTEC LEXiTRON",
+      sourceUrl: "https://lexitron.nectec.or.th",
+      licenseType: "Academic",
+      licenseUrl: "https://lexitron.nectec.or.th/license",
+      attributionRequired: true,
+      attributionPayload: "NECTEC LEXiTRON Thai-English Dictionary",
+    }),
     isCommerciallyViable: "unknown",
     redistributionAllowed: "unknown",
     licenseType: "Academic",
@@ -112,10 +120,12 @@ describe("composeIngestionReadyDictionaryEntry — field passthrough", () => {
     );
   });
 
-  it("preserves licensingBoundary.sourceId", () => {
+  it("preserves licensingBoundary.provenance.sourceId", () => {
     const record = composeIngestionReadyDictionaryEntry(makeInput());
 
-    expect(record.licensingBoundary.sourceId).toBe("nectec:lexitron:v1");
+    expect(record.licensingBoundary.provenance.sourceId).toBe(
+      "nectec:lexitron:v1",
+    );
   });
 });
 
@@ -157,8 +167,8 @@ describe("composeIngestionReadyDictionaryEntry — immutability", () => {
 
     expect(roundTripped.schemaVersion).toBe(record.schemaVersion);
     expect(roundTripped.entry.entryId).toBe(record.entry.entryId);
-    expect(roundTripped.licensingBoundary.sourceId).toBe(
-      record.licensingBoundary.sourceId,
+    expect(roundTripped.licensingBoundary.provenance.sourceId).toBe(
+      record.licensingBoundary.provenance.sourceId,
     );
   });
 });

@@ -1,4 +1,5 @@
 import { deepFreezeStructure } from "../../tokenizers/search/runtime-capabilities/index";
+import type { DictionarySourceProvenance } from "./dictionary-source-provenance";
 
 export const DICTIONARY_LICENSING_BOUNDARY_SCHEMA_VERSION =
   "lingua-core-platform:dictionary-licensing-boundary@phase11";
@@ -10,7 +11,7 @@ export type DictionaryLicensingVerdict = boolean | "unknown";
 
 export interface DictionaryLicensingBoundary {
   readonly schemaVersion: DictionaryLicensingBoundarySchemaVersion;
-  readonly sourceId: string;
+  readonly provenance: DictionarySourceProvenance;
   readonly isCommerciallyViable: DictionaryLicensingVerdict;
   readonly redistributionAllowed: DictionaryLicensingVerdict;
   readonly licenseType: string;
@@ -19,7 +20,7 @@ export interface DictionaryLicensingBoundary {
 }
 
 export interface ComposeDictionaryLicensingBoundaryInput {
-  readonly sourceId: string;
+  readonly provenance: DictionarySourceProvenance;
   readonly isCommerciallyViable: DictionaryLicensingVerdict;
   readonly redistributionAllowed: DictionaryLicensingVerdict;
   readonly licenseType: string;
@@ -30,13 +31,9 @@ export interface ComposeDictionaryLicensingBoundaryInput {
 export function composeDictionaryLicensingBoundary(
   input: ComposeDictionaryLicensingBoundaryInput,
 ): DictionaryLicensingBoundary {
-  if (input.sourceId.trim() === "") {
-    throw new Error("[lexical invariant] sourceId must be a non-empty string");
-  }
-
   return deepFreezeStructure({
     schemaVersion: DICTIONARY_LICENSING_BOUNDARY_SCHEMA_VERSION,
-    sourceId: input.sourceId,
+    provenance: input.provenance,
     isCommerciallyViable: input.isCommerciallyViable,
     redistributionAllowed: input.redistributionAllowed,
     licenseType: input.licenseType,

@@ -1,4 +1,5 @@
 import type { LexicalEntryId } from "./identity/lexical-entry-id";
+import type { DictionarySourceProvenance } from "./provenance/dictionary-source-provenance";
 
 export const LEXICAL_INDEX_SCHEMA_VERSION =
   "lingua-core-platform:lexical-index@phase10";
@@ -31,7 +32,7 @@ export interface LexicalDefinition {
 
 export interface LexicalEntry {
   readonly entryId?: LexicalEntryId;
-  readonly sourceId?: string;
+  readonly provenance?: DictionarySourceProvenance;
   readonly headword: string;
   readonly romanized?: string;
   readonly definitions: readonly LexicalDefinition[];
