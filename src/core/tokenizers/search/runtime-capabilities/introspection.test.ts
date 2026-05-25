@@ -57,6 +57,7 @@ describe("runtime capability introspection envelopes", () => {
     expect(
       envelope.manifests.map((manifest) => manifest.metadata.manifestId),
     ).toEqual(["runtime:manifest:a", "runtime:manifest:z"]);
+    expect(envelope.evaluationTimestamp).toBeNull();
   });
 
   it("preserves explicit input tracking id without generation", () => {

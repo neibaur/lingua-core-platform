@@ -63,6 +63,7 @@ export const buildRuntimeCapabilityIntrospectionEnvelope = (
   return deepFreezeStructure({
     trackingId: input.trackingId,
     schemaVersion: RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
+    evaluationTimestamp: null,
     generatedFrom: RUNTIME_INTROSPECTION_GENERATED_FROM,
     manifestCount: manifests.length,
     certificationCount: certifications.length,

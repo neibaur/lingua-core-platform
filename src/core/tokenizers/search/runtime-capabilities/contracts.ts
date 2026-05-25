@@ -135,6 +135,7 @@ export interface RuntimeCapabilityCertificationSummary {
 export interface RuntimeCapabilityIntrospectionEnvelope {
   readonly trackingId: string;
   readonly schemaVersion: RuntimeCapabilityIntrospectionEnvelopeSchemaVersion;
+  readonly evaluationTimestamp: null;
   readonly generatedFrom: "runtime-capability-introspection";
   readonly manifestCount: number;
   readonly certificationCount: number;
