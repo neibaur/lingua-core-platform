@@ -7,8 +7,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Current phase: Phase 11 — Dictionary Data Boundary
 - Phase 11 status: IN PROGRESS
 - First slice complete: DictionarySourceProvenance (merged PR #69)
-- Three concepts remaining — not yet implemented, no stubs or placeholders exist:
-  - Licensing boundary contracts (DictionaryLicensingBoundary)
+- Second slice complete: DictionaryLicensingBoundary (Issue #73)
+- Two concepts remaining — not yet implemented, no stubs or placeholders exist:
   - Canonical dictionary entry shape (typed canonical entry contract
     integrating lexical content with provenance references)
   - Deterministic ingestion-ready shapes (canonical frozen entry record;
@@ -21,12 +21,12 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 ## Validation Baseline
 
-- Tests passing: 595
-- Test files: 48
-- Statement coverage: 92.29%
+- Tests passing: 625
+- Test files: 49
+- Statement coverage: 92.31%
 - Full chain green: yes
-- Branch at time of last update: main
-- Commit at time of last update: 739c9d37457edeb54ab2f3bfccf796b348842631
+- Branch at time of last update: feat/phase11-dictionary-licensing-boundary
+- Commit at time of last update: 397a7f6
 
 ## Completed Systems
 
@@ -48,6 +48,9 @@ Cross-Session State Document | Updated After Each PR Cycle
 - feat/phase11-dictionary-source-provenance — introduced
   DictionarySourceProvenance structural type, DICTIONARY_SOURCE_PROVENANCE_SCHEMA_VERSION
   (@phase11), composeDictionarySourceProvenance builder, 23 tests
+- feat/phase11-dictionary-licensing-boundary — introduced
+  DictionaryLicensingBoundary structural type, DICTIONARY_LICENSING_BOUNDARY_SCHEMA_VERSION
+  (@phase11), composeDictionaryLicensingBoundary builder, 30 tests (Issue #73)
 - fix/claude-md-phase11-status — corrected CLAUDE.md Phase 10 test count
   from 575 to 595; added Phase 11 IN PROGRESS entry; updated HANDOFF_TEMPLATE.md
   session state
@@ -106,6 +109,7 @@ The following must NOT influence the current assessment or any implementation:
 - "lingua-core-platform:lexical-dataset-validation-result@phase10"
 - "lingua-core-platform:lexical-dataset-validation-report@phase10"
 - "lingua-core-platform:dictionary-source-provenance@phase11"
+- "lingua-core-platform:dictionary-licensing-boundary@phase11"
 
 Phase label invariant: Phase labels are lineage identifiers, not lifecycle
 version indicators. No migration of any existing literal is warranted unless
