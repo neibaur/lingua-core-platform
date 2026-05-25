@@ -22,7 +22,7 @@ import {
   type LexicalInteropCapabilityDeclarationEntry,
   type LexicalInteropCapabilityId,
 } from "./lexical-interop-capability-declaration";
-import { validateJsonSafeStructure } from "../query-snapshots";
+import { validateJsonSafeStructure } from "../query-snapshots/validate";
 
 const CAPABILITY_ID_PATTERN =
   /^[a-z][a-z0-9_]*:[a-z][a-z0-9_]*:[a-z][a-z0-9_]*$/u;

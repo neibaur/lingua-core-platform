@@ -44,7 +44,6 @@ export {
   composeReplayAuditReport,
   REPLAY_AUDIT_REPORT_KIND,
   REPLAY_AUDIT_REPORT_SCHEMA_VERSION,
-  verifyAuditReportOrderingInvariants,
   type ComposeReplayAuditReportInput,
   type ReplayAuditReport,
   type ReplayAuditReportSchemaVersion,
@@ -60,10 +59,6 @@ export {
 export { evaluateQueryReplayCompatibility } from "./compatibility";
 export { diffJsonValues, diffQueryReplaySnapshots } from "./diff";
 export {
-  createQuerySnapshotDiagnostic,
-  createQuerySnapshotFailure,
-  createQuerySnapshotSuccess,
-  mergeQuerySnapshotDiagnostics,
   type QuerySnapshotDiagnostic,
   type QuerySnapshotDiagnosticCode,
   type QuerySnapshotDiagnosticSeverity,
@@ -97,17 +92,10 @@ export {
   replayQuerySnapshotBundle,
   type QuerySnapshotReconstructionResult,
 } from "./reconstruction";
+export { stableJsonStringify } from "./stable-json";
 export {
-  assertJsonValue,
-  canonicalizeJsonValue,
-  stableJsonParse,
-  stableJsonStringify,
-} from "./stable-json";
-export {
-  validateJsonSafeStructure,
   validateQueryReplaySnapshot,
   validateQueryReplaySnapshotWithArtifacts,
   validateQuerySnapshotBundle,
-  validateSnapshotEnvelope,
 } from "./validate";
 export { summarizeReplayCompatibility, summarizeReplayDiff } from "./summary";
