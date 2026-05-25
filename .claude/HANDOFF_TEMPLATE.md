@@ -1,5 +1,5 @@
 LINGUA-CORE-PLATFORM — SESSION HANDOFF ARTIFACT
-Cross-Session Continuity Document | Updated After Phase 11 — First Slice (DictionarySourceProvenance)
+Cross-Session Continuity Document | Updated After [PHASE AND SLICE NAME]
 
 §1 — REPOSITORY IDENTITY
 This repository is evolving into:
@@ -73,79 +73,13 @@ NO SILENT RENAMES LAW
 Field migrations must be minimal, explicit, and localized to authorized scope only. Repository-wide renames beyond explicitly authorized scope are forbidden.
 
 §4 — ACTIVE SCOPE
-Current phase: Phase 11 — Dictionary Data Boundary (IN PROGRESS)
-Status of documented integration path: DictionarySourceProvenance (first slice) complete and merged to main as PR #69 (commit 2904000). Three Phase 11 concepts remain unimplemented: licensing boundary contracts, canonical dictionary entry shape, and deterministic ingestion-ready shapes. No further slice is warranted from mechanical dependency alone; the phase is not complete. Do not skip to Phase 12 without explicitly authorizing and implementing remaining Phase 11 slices.
-
-What has NOT been assessed and may or may not exist:
-
-Licensing boundary contracts (DictionaryLicensingBoundary) — no structured type, no builder, not implemented
-Canonical dictionary entry shape — typed contract integrating lexical content with provenance references — not implemented
-Deterministic ingestion-ready shapes — canonical frozen entry record, contracts only, no ingestion pipeline — not implemented
-
-The next session must derive the warranted next slice from actual repository state — not from this handoff document alone.
-
-Authoritative derivation surface for any continuation:
-
-src/core/lexical/ — the entire directory
-src/core/tokenizers/search/runtime-capabilities/ — for understanding what deepFreezeStructure and the established capability layer provides
-
-Prohibited ancestry access:
-
-Do not reach through runtime-capabilities artifacts except through already-established import boundaries (deepFreezeStructure via src/core/tokenizers/search/runtime-capabilities/index)
-Do not import from src/core/tokenizers/search/query-lexical-interop into src/core/lexical/ except through established seam files
+See .claude/SESSION_STATE.md for current phase, active scope, and derivation surface.
 
 §5 — EXPLICITLY DEFERRED SCOPE
-The following must NOT influence the current architectural assessment or any implementation proposed by the next session:
-
-Phase 12 — Reading and Writing Learning Surface — do not begin until all Phase 11 slices are authorized and implemented
-Phase 13 and beyond — all subsequent phases
-Ingestion pipelines, parsers, loaders, adapters, orchestration, or source synchronization systems — forbidden unless immediately required by current repository topology
-Repository-wide architectural audit — not yet warranted; triggered after additional slice accumulation
-Any schema migration question — not yet assessed; requires ARCHITECTURE.md review before any determination; do not assume migration is warranted
+See .claude/SESSION_STATE.md for currently deferred scope.
 
 §6 — CURRENT ARCHITECTURAL STATUS
-Completed runtime and governance systems:
-
-Phase 9 — Full governance pipeline (manifest → certification → summary → introspection → governance-report → audit-snapshot → operational-manifest → provenance → closure): COMPLETE
-Phase 10 — Lexical Foundation and Interoperability (lexical interop contracts, query enrichment, runtime capability declaration, manifest bridge): COMPLETE, merged to main
-Phase 11 — Dictionary Data Boundary: IN PROGRESS — DictionarySourceProvenance (first slice) complete; three concepts remain unimplemented
-
-Completed slices (merged to main):
-
-feat/phase11-dictionary-source-provenance — introduced DictionarySourceProvenance structural type
-Introduced DictionarySourceProvenance interface and DICTIONARY_SOURCE_PROVENANCE_SCHEMA_VERSION = "lingua-core-platform:dictionary-source-provenance@phase11"
-Implemented composeDictionarySourceProvenance with deepFreezeStructure and invariant guards on sourceId and displayName
-Added src/core/lexical/provenance/tests/dictionary-source-provenance.test.ts (23 tests)
-Added provenance exports to src/core/lexical/index.ts
-Validation baseline after merge: 595 tests passing, full chain green
-
-fix/phase10-artifact-classification — remediated Artifact Classification Law violations in Phase 10 lexical contracts
-Removed evaluationTimestamp: null from LexicalIndex and LexicalLookupResult (structural artifacts)
-Removed evaluationTimestamp: null from LexicalDatasetValidationResult (structural artifact)
-Added generatedFrom: "lexical-lookup-trace" to LexicalLookupTrace to complete governance-reporting classification
-Removed stale evaluationTimestamp assertions from lexical-index.test.ts, lexical-lookup.test.ts, lexical-dataset-validation.test.ts
-Validation baseline after merge: 572 tests passing, full chain green
-
-Full integration path — confirmed status from last session:
-composeDictionarySourceProvenance(input: ComposeDictionarySourceProvenanceInput): DictionarySourceProvenance
-→ DictionarySourceProvenance EXISTS — src/core/lexical/provenance/dictionary-source-provenance.ts
-→ Exported from barrel — src/core/lexical/index.ts
-→ DICTIONARY_SOURCE_PROVENANCE_SCHEMA_VERSION EXISTS — "lingua-core-platform:dictionary-source-provenance@phase11"
-
-Important schema version literals — read directly from repository files:
-"lingua-core-platform:lexical-index@phase10" src/core/lexical/contracts.ts
-"lingua-core-platform:lexical-lookup-result@phase10" src/core/lexical/contracts.ts
-"lingua-core-platform:lexical-dataset-validation-result@phase10" src/core/lexical/validation/lexical-dataset-validation.ts
-"lingua-core-platform:lexical-dataset-validation-report@phase10" src/core/lexical/validation/lexical-dataset-validation-report.ts
-"lingua-core-platform:lexical-lookup-trace@phase10" src/core/lexical/diagnostics/lexical-lookup-trace.ts
-"lingua-core-platform:dictionary-source-provenance@phase11" src/core/lexical/provenance/dictionary-source-provenance.ts
-
-Phase label invariant: Phase labels in schema version literals are lineage identifiers, not lifecycle version indicators. Do not assume migration is warranted merely because an artifact participates in a newer phase. Migration is only warranted if ARCHITECTURE.md explicitly defines phase-coupled schema migration semantics.
-
-Convention: 'lingua-core-platform:<artifact-slug>@<phase>'
-
-Open doctrinal questions — do not assume an answer:
-No open doctrinal questions from Phase 11 first slice. Artifact Classification Law violations in Phase 10 were remediated in fix/phase10-artifact-classification. CLAUDE.md intro line (line 6 still reads "It is in late-stage Phase 9 stabilization") is a known documentation drift acknowledged in PA.8; it is not an architectural conflict. PA.8 conflict from prior session is resolved.
+See .claude/SESSION_STATE.md for completed systems, completed slices, integration path status, and schema version literals.
 
 §7 — IMPLEMENTATION CONSTRAINTS
 Strictly forbidden in all sessions:
@@ -249,7 +183,7 @@ Each commit must leave the validation chain green
 Additive architecture only — no deletion, no restructuring
 Branch naming: feat/[phase]-<descriptor>
 
-Current baseline: 595 tests passing (48 files), full chain green.
+See .claude/SESSION_STATE.md for current test baseline.
 Any new slice must result in ≥ 595 + (count of new tests) passing. Existing 595 must remain untouched.
 
 §11 — ARCHITECTURAL IDENTITY REINFORCEMENT
@@ -282,6 +216,6 @@ Derive the warranted next slice from actual file state — not from this handoff
 Stop after the assessment — implementation begins only after explicit authorization
 Apply the adopt / modify / reject framework to any proposed contract
 Enforce all doctrine laws without exception
-Preserve the 595-test baseline without modification to any existing test
+Preserve the baseline confirmed in SESSION_STATE.md without modification to any existing test
 Treat every technically possible derivation as requiring explicit architectural justification before it is considered legally warranted
 Do not propose future phases, speculative abstractions, generalized frameworks, or anticipated integration layers unless a concrete gap already exists in the current repository topology
