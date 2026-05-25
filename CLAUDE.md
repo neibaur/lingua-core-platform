@@ -2,98 +2,19 @@
 
 ## Project Identity
 
-This is a governance-first deterministic multilingual linguistic runtime platform.
-Phase 9 and Phase 10 are both complete. This is NOT a greenfield project.
+`lingua-core-platform` is a governance-first deterministic multilingual linguistic
+runtime platform built as a modular monolith. It is initialized for Thai-English
+and is currently at Phase 11 (complete), with all implementation residing in
+`src/core/`.
 
-The repository behaves like:
+## Authoritative Session Documents
 
-- deterministic compiler/runtime infrastructure
-- replay-safe execution architecture
-- canonical serialization platform
-- provenance-preserving governance system
-- deterministic replay certification engine
+Read these before any implementation:
 
-## Hard Non-Goals
-
-Do NOT introduce:
-
-- heuristic execution
-- semantic or vector search
-- ranking systems
-- optimizer behavior
-- distributed runtimes
-- plugin-hosting systems
-- runtime discovery
-- workflow engines
-- AI orchestration frameworks
-- new subsystems unless explicitly directed
-
-## Phase 9 Architectural Doctrine
-
-### Single-Layer Governance Derivation Law
-
-Every governance layer derives state ONLY from the immediately preceding governance layer.
-
-- closure derives only from `provenance.attestationStatus`
-- provenance derives only from `operationalManifest.governanceStatus`
-- operational manifests derive only from audit snapshots
-- audit snapshots derive only from governance reports
-
-STRICTLY FORBIDDEN:
-
-- lower-layer reach-through recomputation
-- re-walking lower governance structures
-- bypassing abstraction boundaries
-
-### Schema Version Doctrine
-
-Phase 9 schemaVersion values are deterministic domain literals, NOT semver.
-Pattern: `'lingua-core-platform:<artifact>@phase9'`
-
-### Immutability Law
-
-Readonly TypeScript is NOT sufficient. All externally exposed governance/runtime artifacts MUST pass through `deepFreezeStructure(...)` before return.
-
-### Deterministic Ordering Law
-
-- numerical ascending
-- lexicographical binary ordering
-- clone before sort
-- no `localeCompare`
-- no insertion-order assumptions
-- no unstable comparators
-
-### Replay-Safe Governance Law
-
-- `evaluationTimestamp: null` is the replay-safe timestamp sentinel
-- caller-supplied identifiers only
-
-STRICTLY FORBIDDEN:
-
-- UUID generation
-- hashing-based identifiers
-- `Date.now()`
-- `Math.random()`
-- crypto randomness
-
-### Static Resolution Law
-
-STRICTLY PROHIBITED:
-
-- plugin systems
-- runtime registries
-- ambient runtime discovery
-- DI containers
-- mutable singleton state
-- async orchestration
-
-Use:
-
-- explicit orchestration
-- static composition
-- deterministic layering
-- discriminated unions
-- readonly contracts
+- `.claude/SESSION_STATE.md` — current phase status, validation baseline,
+  completed slices, deferred scope, and schema version literals
+- `.claude/HANDOFF_TEMPLATE.md` — all doctrine laws, session governance
+  requirements, and the mandatory pre-implementation assessment format
 
 ## Toolchain
 
@@ -102,7 +23,9 @@ Use:
 - TypeScript 6
 - ES Modules
 
-Validation chain (run in order):
+## Validation Chain
+
+Run in this order before every commit:
 
 ```bash
 pnpm format:check
@@ -113,28 +36,7 @@ pnpm test:coverage
 pnpm validate
 ```
 
-## Implementation Cadence
-
-1. Define immutable readonly contracts
-2. Compose deterministic governance artifact
-3. Enforce canonical ordering
-4. Apply `deepFreezeStructure(...)`
-5. Add replay-safe deterministic tests
-6. Preserve additive architecture
-7. Update barrels minimally
-8. Run validation chain
-9. Merge to main
-10. Generate next additive slice
-
-## Current Phase Status
-
-Phase 9: COMPLETE
-
-Phase 10: COMPLETE — lexical interop contracts, query enrichment, runtime capability declaration, and manifest bridge. 595 tests passing, full chain green.
-
-Phase 11: COMPLETE — canonical dictionary entry contracts, source provenance, licensing boundaries, and deterministic ingestion-ready shapes. 663 tests passing, full chain green.
-
-## Active Branch Conventions
+## Branch Conventions
 
 - Feature/normalization work: `spike/<descriptor>`
 - Do not commit directly to main
