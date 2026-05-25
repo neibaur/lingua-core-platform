@@ -84,3 +84,10 @@ export {
   type CanonicalDictionaryEntrySchemaVersion,
   type ComposeCanonicalDictionaryEntryInput,
 } from "./provenance/canonical-dictionary-entry";
+export {
+  INGESTION_READY_DICTIONARY_ENTRY_SCHEMA_VERSION,
+  composeIngestionReadyDictionaryEntry,
+  type ComposeIngestionReadyDictionaryEntryInput,
+  type IngestionReadyDictionaryEntry,
+  type IngestionReadyDictionaryEntrySchemaVersion,
+} from "./provenance/ingestion-ready-dictionary-entry";
