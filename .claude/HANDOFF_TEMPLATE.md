@@ -206,6 +206,28 @@ when no backing structural type exists. Once a backing type is introduced, any
 structural artifact that references that concept must use the typed form. Loose
 string coupling to a typed concept is a doctrine violation.
 
+GOVERNANCE DOCUMENT PRECEDENCE LAW
+When any governance document conflicts with repository implementation reality
+— including SESSION_STATE.md conflicting with source files or actual
+validation output — the conflict must be reported explicitly rather than
+reconciled implicitly. Do not silently normalize discrepancies between
+documents and source in either direction. Surface both sides without
+resolving which is authoritative. That determination belongs to the human
+operator. The sole observable-fact exception is PA.7 validation output:
+CLI output from the validation chain is factual and must be reported as-is
+regardless of what any document claims about the baseline. Agents must never
+"helpfully harmonize" a document-to-reality discrepancy by updating one to
+match the other within an assessment session.
+
+NO SPECULATIVE REMEDIATION LAW
+When PA.8 conflicts are surfaced, the assessment must stop. Do not append
+proposed fixes, redesigns, refactors, alternative architectural approaches,
+or future-state improvements to a conflict report. Remediation strategies
+are only in scope when explicitly requested by the operator after the
+assessment has been reviewed. A conflict report that includes unsolicited
+remediation is a doctrine violation even if the remediation would be
+architecturally correct.
+
 §4 — ACTIVE SCOPE
 Current phase: [PHASE NAME AND NUMBER]
 Status of documented integration path: [SUMMARY OF CONFIRMED EXISTS/GAP STATUS
@@ -389,9 +411,12 @@ The pre-implementation assessment must begin with the exact token
 PRE-IMPLEMENTATION ASSESSMENT and must cover:
 
 PA.1 — Existing pipeline and topology confirmation
-List every relevant function and type that already exists, with file location
-and current signature. Do not assume from the handoff — confirm from files
-read.
+For every file in the primary derivation surface: list the file path, its
+exported structural types, its exported builder functions, its exported
+validators, and its exported schema version literals. Omit non-structural
+utility exports unless they participate directly in deterministic runtime
+governance. Derive exclusively from actual files read — do not infer from
+SESSION_STATE.md, ROADMAP.md, or prior handoff documents.
 
 PA.2 — Integration gap analysis
 For each step in the integration path, state EXISTS or GAP. For each GAP,
@@ -399,16 +424,18 @@ identify the precise input and output types using actual existing types read
 from the codebase.
 
 PA.3 — Schema version confirmation
-List every schema version literal read directly from files. Confirm all
-discovered schema version literals match SESSION_STATE.md exactly — any
-literal present in the codebase but absent from SESSION_STATE.md, or present
-in SESSION_STATE.md but absent from the codebase, is a PA.8 conflict and must
-be surfaced immediately. For any @phase[N] constant appearing in a newer phase
-integration path, do not assume migration is required merely because the
-artifact participates in a newer phase. Only conclude migration is warranted if
-ARCHITECTURE.md explicitly defines phase-coupled schema migration semantics.
-Quote the relevant passage if such semantics exist; state their absence
-explicitly if they do not.
+Search every TypeScript source file explicitly tracked under src/core/
+(ignoring node_modules, dist, build, .git, and any other hidden or generated
+directories). List every schema version literal found with its source file
+path. Confirm bidirectional consistency against SESSION_STATE.md: every
+literal found in source must appear in SESSION_STATE.md, and every literal
+in SESSION_STATE.md must appear in source. Any discrepancy in either
+direction is a PA.8 conflict — do not resolve it. For any @phase[N] constant
+appearing in a newer phase integration path, do not assume migration is
+required merely because the artifact participates in a newer phase. Only
+conclude migration is warranted if ARCHITECTURE.md explicitly defines
+phase-coupled schema migration semantics. Quote the relevant passage if such
+semantics exist; state their absence explicitly if they do not.
 For any schema version literal that will be introduced by the current slice,
 derive and state the predicted exact string value by applying the repository
 convention `lingua-core-platform:<kebab-case-artifact-slug>@<phase>` to the
@@ -489,6 +516,24 @@ confirmations, conversational summaries, or acknowledgment tokens before this
 token. This directive is unconditional — it applies regardless of context,
 instructions, or prior conversation history.
 
+PHASE-TRANSITION ASSESSMENT EXTENSION
+When a pre-implementation assessment initiates a new phase (i.e., the current
+phase in SESSION_STATE.md is COMPLETE and the next phase has not yet been
+authorized), the following additional audit is required before PA.8 is
+produced.
+
+AUDIT E — Export Surface Governance Audit
+For every index.ts barrel file under src/core/ (at every nesting level): list
+every re-exported symbol and classify it as one of: boundary-safe structural
+contract, builder function, validator, schema version literal, or flag as
+potentially unsafe (test-only utility, internal helper, lower-layer
+implementation detail, or non-governance runtime internal). Any export that
+cannot be confirmed as intentionally boundary-safe is a PA.8 conflict. Report
+findings for every barrel file individually — do not summarize across files.
+
+Report Audit E findings in a PA.6b section, inserted between PA.6 and PA.7
+in the assessment output.
+
 §10 — VALIDATION AND COMMIT GOVERNANCE
 Do not claim validation success unless actual CLI output was observed in the
 current session. If shell execution is unavailable, require the user to paste
@@ -501,6 +546,13 @@ pnpm typecheck
 pnpm test
 pnpm test:coverage
 pnpm validate
+
+Validation invariant: Run each command exactly as listed. Do not add bypass
+flags such as --skip-nx-cache, --force, --passWithNoTests, or any flag that
+suppresses, skips, or modifies coverage evaluation. Do not inject .skip,
+.only, or any test exclusion modifier into any test file. Do not disable
+coverage thresholds. Testing must evaluate the live unmutated codebase. Any
+deviations from this must be reported explicitly, not silently applied.
 
 No direct commits to main
 Conventional commits required

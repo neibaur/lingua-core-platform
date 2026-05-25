@@ -38,6 +38,8 @@ pnpm validate
 
 ## Branch Conventions
 
-- Feature/normalization work: `spike/<descriptor>`
+- Implementation slices: `feat/<phase>-<slice-name>` (e.g. feat/phase12-reading-primitive)
+- Documentation and status corrections: `fix/<descriptor>`
+- Investigation and architecture exploration: `spike/<descriptor>`
 - Do not commit directly to main
 - Conventional commits required

@@ -12,7 +12,15 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Fourth slice complete: IngestionReadyDictionaryEntry (Issue #75)
 - All four Phase 11 concepts implemented; no further Phase 11 work is warranted
 - Phase 12 must be explicitly authorized before any Phase 12 work begins
-- Repository-wide architectural audit deferred until Phase 12 authorization
+
+Repository-wide architectural audit deferred until Phase 12 authorization.
+Audit scope when triggered: (A) schema version literal bidirectional
+reconciliation against this file; (B) artifact classification audit across
+all structural and governance-reporting types; (C) Typed Reference Law audit
+across all identifier-bearing fields; (D) Invariant Guard Form audit across
+all builder functions; (E) export surface governance audit across all barrel
+files. Defined in .claude/HANDOFF_TEMPLATE.md §9 phase-transition assessment
+extension.
 
 ## Validation Baseline
 
