@@ -32,6 +32,7 @@ export type LexicalQueryEnrichmentOrigin = "execution-plan-ir";
 
 export interface LexicalQueryEnrichmentResult {
   readonly schemaVersion: LexicalQueryEnrichmentSchemaVersion;
+  readonly generatedFrom: "lexical-query-enrichment-result";
   readonly evaluationTimestamp: null;
   readonly enrichmentId: string;
   readonly lexicalIndexId: string;

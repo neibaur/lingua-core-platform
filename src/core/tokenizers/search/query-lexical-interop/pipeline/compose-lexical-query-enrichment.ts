@@ -58,6 +58,9 @@ function compareTerms(a: string, b: string): number {
   return 0;
 }
 
+const LEXICAL_QUERY_ENRICHMENT_GENERATED_FROM =
+  "lexical-query-enrichment-result" as const;
+
 export function composeLexicalQueryEnrichment(
   input: ComposeLexicalQueryEnrichmentInput,
 ): LexicalQueryEnrichmentResult {
@@ -72,6 +75,7 @@ export function composeLexicalQueryEnrichment(
   if (executionPlan === null) {
     return deepFreezeStructure({
       schemaVersion: LEXICAL_QUERY_ENRICHMENT_SCHEMA_VERSION,
+      generatedFrom: LEXICAL_QUERY_ENRICHMENT_GENERATED_FROM,
       evaluationTimestamp: null,
       enrichmentId: input.enrichmentId,
       lexicalIndexId: input.lexicalIndex.lexicalIndexId,
@@ -120,6 +124,7 @@ export function composeLexicalQueryEnrichment(
 
   return deepFreezeStructure({
     schemaVersion: LEXICAL_QUERY_ENRICHMENT_SCHEMA_VERSION,
+    generatedFrom: LEXICAL_QUERY_ENRICHMENT_GENERATED_FROM,
     evaluationTimestamp: null,
     enrichmentId: input.enrichmentId,
     lexicalIndexId: input.lexicalIndex.lexicalIndexId,

@@ -37,6 +37,7 @@ describe("composeLexicalQueryEnrichment", () => {
     });
 
     expect(result.schemaVersion).toBe(LEXICAL_QUERY_ENRICHMENT_SCHEMA_VERSION);
+    expect(result.generatedFrom).toBe("lexical-query-enrichment-result");
   });
 
   it("evaluationTimestamp is null", () => {
