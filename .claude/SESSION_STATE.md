@@ -59,6 +59,10 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 ## Active Scope and Derivation Surface
 
+Platform footprint: Thai-English (Phase 11 scope). Field derivation must
+reflect this footprint. Multilingual expansion is explicitly deferred to
+Phase 17 and must not influence current structural contracts.
+
 Authoritative derivation surface for Phase 11 continuation:
 
 - ARCHITECTURE.md Architectural Roadmap — directional only, not an
