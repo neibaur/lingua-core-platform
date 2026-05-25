@@ -14,7 +14,6 @@ export {
   type LexicalLookupResultSchemaVersion,
   type LexicalPartOfSpeech,
 } from "./contracts";
-export { THAI_ENGLISH_FIXTURE_DATASET } from "./datasets/thai-english/thai-english-fixture-dataset";
 export {
   createLexicalDiagnostic,
   orderLexicalDiagnostics,
@@ -39,7 +38,6 @@ export {
   type ComposeLexicalIndexInput,
 } from "./index/lexical-index";
 export { composeLexicalLookup } from "./lookup/lexical-lookup";
-export { assertNoWhitespace } from "./normalization/assert-no-whitespace";
 export {
   LEXICAL_DATASET_VALIDATION_RESULT_SCHEMA_VERSION,
   validateLexicalDataset,
@@ -51,8 +49,6 @@ export {
   type LexicalDatasetValidationStatus,
   type ValidateLexicalDatasetInput,
 } from "./validation/lexical-dataset-validation";
-export { normalizeLexicalKey } from "./normalization/normalize-lexical-key";
-export { thaiToneMarkNormalizationRule } from "./normalization/thai-tone-mark-normalization-rule";
 export {
   LEXICAL_DATASET_VALIDATION_REPORT_SCHEMA_VERSION,
   LEXICAL_DATASET_VALIDATION_RULE_CODES,
