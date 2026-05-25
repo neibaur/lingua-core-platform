@@ -32,3 +32,5 @@ Numbers are never reused. If a decision changes, create a new ADR and mark the o
 | [0005](0005-deterministic-query-explainability-tracing.md) | Accepted | Add deterministic query explainability and execution tracing. |
 | [0006](0006-deterministic-replay-governance-architecture.md) | Accepted | Formalize deterministic replay governance as an architecture boundary. |
 | [0007](0007-deterministic-runtime-capability-governance.md) | Accepted | Formalize deterministic runtime capability governance as an architecture boundary. |
+| [0008](0008-typed-structural-interoperability-seams.md) | Accepted | Formalize typed structural interoperability seams across lexical, query, and runtime boundaries. |
+| [0009](0009-contracts-only-dictionary-data-boundary.md) | Accepted | Establish a contracts-only dictionary data boundary with mandatory typed provenance embedding. |
