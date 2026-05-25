@@ -159,6 +159,31 @@ describe("composeLexicalIndex", () => {
     }).toThrow("[lexical invariant]");
   });
 
+  it("does not double-index the same entry when it has multiple definitions sharing the same English key", () => {
+    const entry = {
+      headword: "กิน",
+      definitions: [
+        {
+          definitionIndex: 0,
+          definition: "to eat",
+          partOfSpeech: "verb" as const,
+        },
+        {
+          definitionIndex: 1,
+          definition: "to eat",
+          partOfSpeech: "verb" as const,
+        },
+      ],
+    };
+
+    const index = composeLexicalIndex({
+      lexicalIndexId: "test:index:dedup",
+      entries: [entry],
+    });
+
+    expect(index.englishToThai["to eat"]).toHaveLength(1);
+  });
+
   it("accepts an empty entries array", () => {
     const index = composeLexicalIndex({
       lexicalIndexId: "test:index:empty",

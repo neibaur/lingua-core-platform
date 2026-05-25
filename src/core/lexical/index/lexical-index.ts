@@ -49,8 +49,17 @@ export function composeLexicalIndex(
       const bucket = englishToThaiBuilder[canonicalEnglishKey];
       if (bucket === undefined) {
         englishToThaiBuilder[canonicalEnglishKey] = [entry];
-      } else if (!bucket.includes(entry)) {
-        bucket.push(entry);
+      } else {
+        let isDuplicate = false;
+        for (let i = 0; i < bucket.length; i++) {
+          if (bucket[i] === entry) {
+            isDuplicate = true;
+            break;
+          }
+        }
+        if (!isDuplicate) {
+          bucket.push(entry);
+        }
       }
     }
   }

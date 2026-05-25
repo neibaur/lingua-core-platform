@@ -7,7 +7,6 @@ import {
   type LexicalLookupInput,
   type LexicalLookupResult,
 } from "../contracts";
-import { assertNoWhitespace } from "../normalization/assert-no-whitespace";
 import { normalizeLexicalKey } from "../normalization/normalize-lexical-key";
 
 function compareEntries(a: LexicalEntry, b: LexicalEntry): number {
@@ -26,7 +25,11 @@ export function composeLexicalLookup(
   input: LexicalLookupInput,
   index: LexicalIndex,
 ): LexicalLookupResult {
-  assertNoWhitespace(input.query, "query");
+  if (/\s/.test(input.query)) {
+    throw new Error(
+      `[lexical invariant] query must not contain whitespace: ${JSON.stringify(input.query)}`,
+    );
+  }
 
   const diagnostics: LexicalLookupDiagnostic[] = [];
 
