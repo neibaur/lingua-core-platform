@@ -28,8 +28,8 @@ extension.
 - Test files: 51
 - Statement coverage: 92.35%
 - Full chain green: yes
-- Branch at time of last update: feat/phase11-ingestion-ready-entry
-- Commit at time of last update: 6fa2885
+- Branch at time of last update: main
+- Commit at time of last update: 960de1c
 
 ## Completed Systems
 
@@ -111,6 +111,12 @@ The following must NOT influence the current assessment or any implementation:
 - "lingua-core-platform:runtime-operational-governance-manifest@phase9"
 - "lingua-core-platform:runtime-governance-provenance@phase9"
 - "lingua-core-platform:runtime-governance-closure@phase9"
+- "lingua-core-platform:query-snapshot@phase9"
+- "lingua-core-platform:query-explanation@phase9"
+- "lingua-core-platform:query-execution-trace@phase9"
+- "lingua-core-platform:query-execution-plan@phase9"
+- "lingua-core-platform:replay-governance-report@phase9"
+- "lingua-core-platform:replay-audit-report@phase9"
 - "lingua-core-platform:lexical-interop-capability-declaration@phase10"
 - "lingua-core-platform:lexical-interop-enrichment@phase10"
 - "lingua-core-platform:lexical-interop-report@phase10"
