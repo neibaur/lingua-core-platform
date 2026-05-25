@@ -69,3 +69,11 @@ export {
   type DictionarySourceProvenance,
   type DictionarySourceProvenanceSchemaVersion,
 } from "./provenance/dictionary-source-provenance";
+export {
+  DICTIONARY_LICENSING_BOUNDARY_SCHEMA_VERSION,
+  composeDictionaryLicensingBoundary,
+  type ComposeDictionaryLicensingBoundaryInput,
+  type DictionaryLicensingBoundary,
+  type DictionaryLicensingBoundarySchemaVersion,
+  type DictionaryLicensingVerdict,
+} from "./provenance/dictionary-licensing-boundary";
