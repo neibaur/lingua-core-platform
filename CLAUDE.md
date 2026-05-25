@@ -130,7 +130,9 @@ pnpm validate
 
 Phase 9: COMPLETE
 
-Phase 10: COMPLETE — lexical interop contracts, query enrichment, runtime capability declaration, and manifest bridge. 575 tests passing, full chain green.
+Phase 10: COMPLETE — lexical interop contracts, query enrichment, runtime capability declaration, and manifest bridge. 595 tests passing, full chain green.
+
+Phase 11: IN PROGRESS — first slice (DictionarySourceProvenance) complete and merged to main. Three concepts remain unimplemented: licensing boundary contracts, canonical dictionary entry shape, and deterministic ingestion-ready shapes.
 
 ## Active Branch Conventions
 
