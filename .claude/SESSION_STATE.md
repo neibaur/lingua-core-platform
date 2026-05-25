@@ -64,8 +64,7 @@ Phase 17 and must not influence current structural contracts.
 
 Authoritative derivation surface for Phase 11 continuation:
 
-- ARCHITECTURE.md Architectural Roadmap — directional only, not an
-  implementation mandate
+- .claude/ROADMAP.md — directional only, not an implementation mandate
 - DATA_SOURCES.md — source provenance and licensing boundary governance
   documentation; no TypeScript contracts exist yet for licensing concepts
 - src/core/lexical/ — entire directory; primary Phase 11 implementation domain
