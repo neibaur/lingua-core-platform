@@ -94,3 +94,10 @@ export {
   type SpellingEntry,
   type SpellingEntrySchemaVersion,
 } from "./spelling/spelling-entry";
+export {
+  READING_PRIMITIVE_SCHEMA_VERSION,
+  composeReadingPrimitive,
+  type ComposeReadingPrimitiveInput,
+  type ReadingPrimitive,
+  type ReadingPrimitiveSchemaVersion,
+} from "./reading/reading-primitive";
