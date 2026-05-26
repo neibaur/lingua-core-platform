@@ -101,3 +101,11 @@ export {
   type ReadingPrimitive,
   type ReadingPrimitiveSchemaVersion,
 } from "./reading/reading-primitive";
+export {
+  WRITING_PRIMITIVE_SCHEMA_VERSION,
+  composeWritingPrimitive,
+  type ComposeWritingPrimitiveInput,
+  type WritingPrimitive,
+  type WritingPrimitiveExerciseMode,
+  type WritingPrimitiveSchemaVersion,
+} from "./writing/writing-primitive";
