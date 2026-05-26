@@ -7,12 +7,7 @@ import {
   type RuntimeCapabilityIntrospectionEnvelope,
   type RuntimeCapabilityManifest,
 } from "./contracts";
-import {
-  assertNonEmptyIdentifier,
-  assertSchemaVersion,
-  deepFreezeStructure,
-  orderCapabilityDeclarations,
-} from "./manifest";
+import { deepFreezeStructure, orderCapabilityDeclarations } from "./manifest";
 import { orderCertificationMismatches } from "./certification";
 import { orderCertificationSummaryMismatches } from "./aggregation";
 
@@ -28,20 +23,30 @@ const RUNTIME_INTROSPECTION_GENERATED_FROM = "runtime-capability-introspection";
 export const buildRuntimeCapabilityIntrospectionEnvelope = (
   input: BuildRuntimeCapabilityIntrospectionEnvelopeInput,
 ): RuntimeCapabilityIntrospectionEnvelope => {
-  assertNonEmptyIdentifier(input.trackingId, "trackingId");
+  if (input.trackingId.trim() === "") {
+    throw new Error(
+      "[governance invariant] trackingId must be a non-empty string",
+    );
+  }
 
-  assertSchemaVersion(
-    input.certificationSummary.schemaVersion,
-    RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION,
-    "certificationSummary",
-  );
+  if (
+    (input.certificationSummary.schemaVersion as unknown) !==
+    RUNTIME_CERTIFICATION_SUMMARY_SCHEMA_VERSION
+  ) {
+    throw new Error(
+      "[governance invariant] certificationSummary schemaVersion must be lingua-core-platform:runtime-certification-summary@phase9",
+    );
+  }
 
   for (const manifest of input.manifests) {
-    assertSchemaVersion(
-      manifest.schemaVersion,
-      RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
-      "manifest",
-    );
+    if (
+      (manifest.schemaVersion as unknown) !==
+      RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION
+    ) {
+      throw new Error(
+        "[governance invariant] manifest schemaVersion must be lingua-core-platform:runtime-capability-manifest@phase9",
+      );
+    }
   }
 
   const manifests = orderRuntimeCapabilityManifests(input.manifests);

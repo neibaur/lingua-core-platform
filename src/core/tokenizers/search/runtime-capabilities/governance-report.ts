@@ -2,11 +2,7 @@ import {
   RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
   type RuntimeCapabilityIntrospectionEnvelope,
 } from "./contracts";
-import {
-  assertNonEmptyIdentifier,
-  assertSchemaVersion,
-  deepFreezeStructure,
-} from "./manifest";
+import { deepFreezeStructure } from "./manifest";
 
 export const RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION =
   "lingua-core-platform:runtime-governance-report@phase9";
@@ -36,13 +32,20 @@ const GOVERNANCE_REPORT_GENERATED_FROM =
 export function composeRuntimeCapabilityGovernanceReport(
   input: ComposeRuntimeCapabilityGovernanceReportInput,
 ): RuntimeCapabilityGovernanceReport {
-  assertNonEmptyIdentifier(input.reportId, "reportId");
+  if (input.reportId.trim() === "") {
+    throw new Error(
+      "[governance invariant] reportId must be a non-empty string",
+    );
+  }
 
-  assertSchemaVersion(
-    input.introspectionEnvelope.schemaVersion,
-    RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION,
-    "introspectionEnvelope",
-  );
+  if (
+    (input.introspectionEnvelope.schemaVersion as unknown) !==
+    RUNTIME_INTROSPECTION_ENVELOPE_SCHEMA_VERSION
+  ) {
+    throw new Error(
+      "[governance invariant] introspectionEnvelope schemaVersion must be lingua-core-platform:runtime-introspection-envelope@phase9",
+    );
+  }
 
   const reportStatus: RuntimeCapabilityGovernanceReportStatus =
     input.introspectionEnvelope.certificationSummary.globalStatus ===

@@ -2,11 +2,7 @@ import {
   RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION,
   type RuntimeOperationalGovernanceManifest,
 } from "./operational-governance-manifest";
-import {
-  assertNonEmptyIdentifier,
-  assertSchemaVersion,
-  deepFreezeStructure,
-} from "./manifest";
+import { deepFreezeStructure } from "./manifest";
 
 export const RUNTIME_GOVERNANCE_PROVENANCE_SCHEMA_VERSION =
   "lingua-core-platform:runtime-governance-provenance@phase9";
@@ -36,13 +32,20 @@ const GOVERNANCE_PROVENANCE_GENERATED_FROM =
 export function composeRuntimeGovernanceProvenance(
   input: ComposeRuntimeGovernanceProvenanceInput,
 ): RuntimeGovernanceProvenance {
-  assertNonEmptyIdentifier(input.provenanceId, "provenanceId");
+  if (input.provenanceId.trim() === "") {
+    throw new Error(
+      "[governance invariant] provenanceId must be a non-empty string",
+    );
+  }
 
-  assertSchemaVersion(
-    input.operationalManifest.schemaVersion,
-    RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION,
-    "operationalManifest",
-  );
+  if (
+    (input.operationalManifest.schemaVersion as unknown) !==
+    RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION
+  ) {
+    throw new Error(
+      "[governance invariant] operationalManifest schemaVersion must be lingua-core-platform:runtime-operational-governance-manifest@phase9",
+    );
+  }
 
   const attestationStatus: RuntimeGovernanceAttestationStatus =
     input.operationalManifest.governanceStatus === "passed"

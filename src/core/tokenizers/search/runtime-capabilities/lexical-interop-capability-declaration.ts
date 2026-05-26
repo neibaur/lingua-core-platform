@@ -36,10 +36,23 @@ export interface ComposeLexicalInteropCapabilityDeclarationInput {
 export function composeLexicalInteropCapabilityDeclaration(
   input: ComposeLexicalInteropCapabilityDeclarationInput,
 ): LexicalInteropCapabilityDeclaration {
-  assertNonEmptyDeclarationId(input.declarationId);
+  if (input.declarationId.trim() === "") {
+    throw new Error(
+      "[runtime-capabilities invariant] declarationId must be a non-empty string",
+    );
+  }
 
   const capabilities = input.capabilities.map((capability) => {
-    assertLexicalInteropCapabilityId(capability.capabilityId);
+    switch (capability.capabilityId) {
+      case "query:enrich:lexical":
+      case "query:report:lexical_enrichment":
+      case "query:report:lexical_query":
+        break;
+      default:
+        throw new Error(
+          "[runtime-capabilities invariant] capabilityId must be a supported lexical interop capability",
+        );
+    }
 
     return {
       capabilityId: capability.capabilityId,
@@ -82,27 +95,4 @@ function compareStrings(left: string, right: string): number {
   }
 
   return 0;
-}
-
-function assertNonEmptyDeclarationId(declarationId: string): void {
-  if (declarationId.trim() === "") {
-    throw new Error(
-      "[runtime-capabilities invariant] declarationId must be a non-empty string",
-    );
-  }
-}
-
-function assertLexicalInteropCapabilityId(
-  capabilityId: LexicalInteropCapabilityId,
-): void {
-  switch (capabilityId) {
-    case "query:enrich:lexical":
-    case "query:report:lexical_enrichment":
-    case "query:report:lexical_query":
-      return;
-    default:
-      throw new Error(
-        "[runtime-capabilities invariant] capabilityId must be a supported lexical interop capability",
-      );
-  }
 }

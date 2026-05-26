@@ -38,7 +38,15 @@ export interface ComposeReplayAuditReportInput {
 export function composeReplayAuditReport(
   input: ComposeReplayAuditReportInput,
 ): ReplayAuditReport {
-  assertComposedAtSequence(input.composedAtSequence);
+  if (
+    !Number.isFinite(input.composedAtSequence) ||
+    !Number.isInteger(input.composedAtSequence) ||
+    input.composedAtSequence < 0
+  ) {
+    throw new TypeError(
+      "Replay audit composedAtSequence must be a non-negative integer primitive.",
+    );
+  }
 
   return deepFreeze({
     schemaVersion: REPLAY_AUDIT_REPORT_SCHEMA_VERSION,
@@ -57,18 +65,6 @@ export function composeReplayAuditReport(
     composedAtSequence: input.composedAtSequence,
     governanceReport: input.governanceReport,
   });
-}
-
-function assertComposedAtSequence(composedAtSequence: number): void {
-  if (
-    !Number.isFinite(composedAtSequence) ||
-    !Number.isInteger(composedAtSequence) ||
-    composedAtSequence < 0
-  ) {
-    throw new TypeError(
-      "Replay audit composedAtSequence must be a non-negative integer primitive.",
-    );
-  }
 }
 
 export function verifyAuditReportOrderingInvariants(

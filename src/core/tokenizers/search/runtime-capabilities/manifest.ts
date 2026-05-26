@@ -14,8 +14,16 @@ export interface ComposeRuntimeCapabilityManifestInput {
 export function composeRuntimeCapabilityManifest(
   input: ComposeRuntimeCapabilityManifestInput,
 ): RuntimeCapabilityManifest {
-  assertNonEmptyIdentifier(input.metadata.manifestId, "metadata.manifestId");
-  assertNonEmptyIdentifier(input.metadata.runtimeName, "metadata.runtimeName");
+  if (input.metadata.manifestId.trim() === "") {
+    throw new Error(
+      "[governance invariant] metadata.manifestId must be a non-empty string",
+    );
+  }
+  if (input.metadata.runtimeName.trim() === "") {
+    throw new Error(
+      "[governance invariant] metadata.runtimeName must be a non-empty string",
+    );
+  }
 
   return deepFreezeStructure({
     schemaVersion: RUNTIME_CAPABILITY_MANIFEST_SCHEMA_VERSION,
@@ -121,26 +129,6 @@ function compareStrings(left: string, right: string): number {
   }
 
   return 0;
-}
-
-export function assertNonEmptyIdentifier(value: string, field: string): void {
-  if (value.trim() === "") {
-    throw new Error(
-      `[governance invariant] ${field} must be a non-empty string`,
-    );
-  }
-}
-
-export function assertSchemaVersion(
-  actual: unknown,
-  expected: string,
-  field: string,
-): void {
-  if (actual !== expected) {
-    throw new Error(
-      `[governance invariant] ${field} schemaVersion must be ${expected}`,
-    );
-  }
 }
 
 export function deepFreezeStructure<T>(value: T): T {
