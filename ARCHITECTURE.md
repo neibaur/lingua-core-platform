@@ -107,12 +107,13 @@ user input evaluation, and scoring are out of scope for this layer and are
 deferred to a later phase.
 
 ### Layer Position
-IngestionReadyDictionaryEntry   (Phase 11 — dictionary data boundary)
+
+IngestionReadyDictionaryEntry (Phase 11 — dictionary data boundary)
 ↓
-ReadingPrimitive              (Phase 12 — learning surface)
-WritingPrimitive              (Phase 12 — learning surface)
+ReadingPrimitive (Phase 12 — learning surface)
+WritingPrimitive (Phase 12 — learning surface)
 ↓
-[Phase 13 integration types]  (Phase 13 — search-to-learning)
+[Phase 13 integration types] (Phase 13 — search-to-learning)
 
 ### Scope Boundaries
 
