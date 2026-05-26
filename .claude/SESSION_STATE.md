@@ -6,20 +6,22 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 - Current phase: Phase 12 — Reading and Writing Learning Surface
 - Phase 11 status: COMPLETE (all four slices merged)
-- Phase 12 status: IN PROGRESS
+- Phase 12 status: COMPLETE (all three slices merged)
 - Phase 12 first slice complete: SpellingEntry (feat/phase12-spelling-entry)
 - Phase 12 second slice complete: ReadingPrimitive (feat/phase12-reading-primitive)
+- Phase 12 third slice complete: WritingPrimitive (feat/phase12-writing-primitive)
+- Phase 13 must be explicitly authorized before any Phase 13 work begins
 
 Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 695
-- Test files: 53
-- Statement coverage: 92.51%
+- Tests passing: 716
+- Test files: 54
+- Statement coverage: 92.55%
 - Full chain green: yes
-- Branch at time of last update: feat/phase12-reading-primitive
-- Commit at time of last update: 138c596
+- Branch at time of last update: feat/phase12-writing-primitive
+- Commit at time of last update: 86aad97
 
 ## Completed Systems
 
@@ -32,6 +34,8 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
   and manifest bridge: COMPLETE
 - Phase 10 artifact classification remediation: COMPLETE (PR fix/phase10-artifact-classification)
 - Phase 11 first slice — DictionarySourceProvenance: COMPLETE (PR #69)
+- Phase 12 Learning Surface Layer: COMPLETE (SpellingEntry, ReadingPrimitive,
+  WritingPrimitive — all three slices merged)
 
 ## Completed Slices (Merged to Main)
 
@@ -107,37 +111,31 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
   builder with inline invariant guards for entry.schemaVersion and
   readingPrimitiveId; 15 tests (695 total)
   Validation baseline after merge: 695 tests passing, full chain green
+- feat/phase12-writing-primitive — introduced WritingPrimitive structural
+  type, WritingPrimitiveExerciseMode literal union ("free-fill" |
+  "template-overlay"), WRITING_PRIMITIVE_SCHEMA_VERSION (@phase12),
+  composeWritingPrimitive builder with four inline invariant guards for
+  entry.schemaVersion, writingPrimitiveId, referenceCharacterForm, and
+  exerciseMode (inline switch); 21 tests (716 total)
+  Validation baseline after merge: 716 tests passing, full chain green
 
 ## Active Scope and Derivation Surface
 
-Platform footprint: Thai-English (Phase 12 scope). Field derivation must
-reflect this footprint. Multilingual expansion is explicitly deferred to
-Phase 17 and must not influence current structural contracts.
-
-Authoritative derivation surface for Phase 12 continuation:
-
-- .claude/ROADMAP.md — directional only, not an implementation mandate
-- DATA_SOURCES.md — source provenance, licensing, and intended usage
-  documentation; grounds phonetics/IPA and tone classification fields
-- src/core/lexical/ — entire directory; primary Phase 12 implementation domain
-- src/core/lexical/spelling/ — Phase 12 first slice; establishes structural
-  spelling/learning-surface contract pattern
-- src/core/lexical/reading/ — Phase 12 second slice; confirmed sibling
-  topology for WritingPrimitive directory placement
-
-Boundary invariant: All Phase 12 work must reside inside src/core/lexical/.
-No structural elements may cross into runtime-capabilities/ or
-query-lexical-interop/ boundaries.
+Phase 12 is COMPLETE. Phase 13 requires explicit authorization before
+any work begins. The authoritative derivation surface for Phase 13
+planning will be derived from repository-first assessment at the start
+of the next authorized phase session.
 
 ## Deferred Scope
 
-The following must NOT influence the current assessment or any implementation:
+The following must NOT influence any assessment or implementation until
+explicitly authorized:
 
-- Search-to-learning integration (Phase 13)
-- UI/API delivery boundary (Phase 14)
-- Tenant and content configuration (Phase 15)
-- AI-assisted private envelope (Phase 16)
-- Multilingual expansion beyond Thai-first (Phase 17)
+- Search-to-learning integration (Phase 13) — PENDING AUTHORIZATION
+- UI/API delivery boundary (Phase 14) — PENDING AUTHORIZATION
+- Tenant and content configuration (Phase 15) — PENDING AUTHORIZATION
+- AI-assisted private envelope (Phase 16) — PENDING AUTHORIZATION
+- Multilingual expansion beyond Thai-first (Phase 17) — PENDING AUTHORIZATION
 - Ingestion pipelines, parsers, loaders, adapters, orchestration, or source
   synchronization systems — explicitly prohibited until proven immediately
   required by current repository topology
@@ -149,8 +147,9 @@ The following must NOT influence the current assessment or any implementation:
   barrel-hygiene, fix/audit-a-test-fixture-reconciliation-scope, and
   fix/audit-d-phase9-guard-inlining; targeted re-audit confirmed
   repository clean; Phase 12 authorized to proceed)
-- Schema version migration for any existing @phase9 or @phase10 constants —
-  not warranted; ARCHITECTURE.md defines no phase-coupled migration semantics
+- Schema version migration for any existing @phase9, @phase10, @phase11,
+  or @phase12 constants — not warranted; ARCHITECTURE.md defines no
+  phase-coupled migration semantics
 
 ## Schema Version Literals (Confirmed from Repository Files)
 
@@ -183,6 +182,7 @@ The following must NOT influence the current assessment or any implementation:
 - "lingua-core-platform:ingestion-ready-dictionary-entry@phase11"
 - "lingua-core-platform:spelling-entry@phase12"
 - "lingua-core-platform:reading-primitive@phase12"
+- "lingua-core-platform:writing-primitive@phase12"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 
@@ -196,6 +196,7 @@ bidirectional reconciliation scope at all locations:
     lexical-interop-capability-declaration.test.ts:135
   - src/core/lexical/spelling/tests/spelling-entry.test.ts:169
   - src/core/lexical/reading/tests/reading-primitive.test.ts (line TBD)
+  - src/core/lexical/writing/tests/writing-primitive.test.ts (line TBD)
 
 Any future slice that introduces a schema-version rejection guard test
 is expected to use this same fixture literal. New occurrences are covered
