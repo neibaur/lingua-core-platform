@@ -77,18 +77,14 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 - fix/audit-e-barrel-export-hygiene — removed 19 internal symbols from
   three public barrels (lexical/index.ts, runtime-capabilities/index.ts,
   query-snapshots/index.ts); updated one consumer import path
-- fix/audit-d-phase9-guard-inlining — inlined delegated invariant guards in
-  nine Phase 9 builders (composeRuntimeCapabilityManifest,
-  composeRuntimeCapabilityGovernanceReport,
-  composeRuntimeCapabilityCertificationAuditSnapshot,
-  composeRuntimeGovernanceClosure, composeRuntimeGovernanceProvenance,
-  composeRuntimeOperationalGovernanceManifest,
-  composeLexicalInteropCapabilityDeclaration, composeReplayAuditReport,
-  buildRuntimeCapabilityIntrospectionEnvelope); deleted five zero-caller
-  helpers (assertNonEmptyIdentifier, assertSchemaVersion,
-  assertNonEmptyDeclarationId, assertLexicalInteropCapabilityId,
-  assertComposedAtSequence); identified by second pre-authorization audit
-  for Phase 12 (Audit D)
+- fix/audit-e-dictionary-driver-barrel-hygiene — removed THAI_FIXTURE_DICTIONARY
+  and ThaiFixtureDictionaryEntry from drivers/dictionary/index.ts; identified
+  by second pre-authorization audit for Phase 12 (Audit E)
+- fix/audit-a-test-fixture-reconciliation-scope — added Test Fixture Literals
+  subsection to SESSION_STATE.md Schema Version Literals section documenting
+  "lingua-core-platform:wrong@phase10" as excluded from bidirectional
+  reconciliation scope; resolves Audit A conflict from second pre-authorization
+  audit for Phase 12
 
 ## Active Scope and Derivation Surface
 
@@ -158,6 +154,14 @@ The following must NOT influence the current assessment or any implementation:
 - "lingua-core-platform:dictionary-licensing-boundary@phase11"
 - "lingua-core-platform:canonical-dictionary-entry@phase11"
 - "lingua-core-platform:ingestion-ready-dictionary-entry@phase11"
+
+### Test Fixture Literals — Excluded from Bidirectional Reconciliation
+
+- "lingua-core-platform:wrong@phase10" — intentionally invalid negative-case
+  fixture value at src/core/tokenizers/search/runtime-capabilities/tests/
+  lexical-interop-capability-declaration.test.ts:135. Used to assert schema
+  version rejection. Not a production schema version constant. Excluded from
+  bidirectional reconciliation scope.
 
 Phase label invariant: Phase labels are lineage identifiers, not lifecycle
 version indicators. No migration of any existing literal is warranted unless
