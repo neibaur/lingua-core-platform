@@ -80,6 +80,50 @@ Directory responsibilities:
 - `docs/architecture/`: supplementary architecture reference documents covering ordering guarantees, replay governance lifecycle, and certification foundations.
 - `docs/validation/`: validation checklists and manual testing scenarios for tokenizer and search behavior.
 
+## Learning Surface Layer
+
+The learning surface layer is the Phase 12 structural boundary positioned
+between the dictionary data boundary (Phase 11) and the search-to-learning
+integration layer (Phase 13).
+
+It introduces two structural types representing learner-facing projections
+of canonical dictionary entries. Both types embed `CanonicalDictionaryEntry`
+directly and are classified as structural (no `evaluationTimestamp`, no
+`generatedFrom`).
+
+### Types
+
+**`ReadingPrimitive`** — `src/core/lexical/reading/reading-primitive.ts`
+Represents a reading exercise unit. Contains the target dictionary entry
+and any licensed example usage content associated with it. Example sentence
+fields require a grounded candidate dataset in `DATA_SOURCES.md` with
+compatible licensing before they may be introduced.
+
+**`WritingPrimitive`** — `src/core/lexical/writing/writing-primitive.ts`
+Represents a writing exercise unit. Contains the target dictionary entry,
+the reference character form for the exercise, and the exercise mode
+(free fill or template overlay). Handwriting capture, stroke interpretation,
+user input evaluation, and scoring are out of scope for this layer and are
+deferred to a later phase.
+
+### Layer Position
+
+IngestionReadyDictionaryEntry (Phase 11 — dictionary data boundary)
+↓
+ReadingPrimitive (Phase 12 — learning surface)
+WritingPrimitive (Phase 12 — learning surface)
+↓
+[Phase 13 integration types] (Phase 13 — search-to-learning)
+
+### Scope Boundaries
+
+- Lesson grouping, sequencing, tenant-specific weighting, and curriculum
+  organization belong to Phase 15 (tenant and content configuration) and
+  must not appear in Phase 12 types.
+- Handwriting interpretation runtime belongs to a phase after Phase 13 and
+  must not appear in Phase 12 types.
+- These boundaries are governed by ADR-0011.
+
 ## Multi-Tenant Routing Concept
 
 Tenant routing should be resolved before business logic runs.

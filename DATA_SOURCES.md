@@ -49,6 +49,34 @@ The following sources are candidates only and require legal and licensing verifi
 | --- | --- | --- |
 | LEXITRON / NECTEC Thai-English vocabulary data | Thai-English lexical coverage, dictionary lookup, search enrichment, tokenizer evaluation. | Candidate / requires legal and licensing verification. |
 | Volubilis Dictionary Project data | Potential phonetics, romanization, IPA, tone classification, and dictionary enrichment if available and licensed compatibly. | Candidate / requires legal and licensing verification. |
+| Thai example sentence corpus (source TBD) | Reading example usage sentences, contextual usage annotations, and difficulty classification for ReadingPrimitive content fields. | Candidate / no source identified yet — requires source identification, legal and licensing verification before ingestion. |
+| Thai character reference dataset (source TBD) | Reference character forms for WritingPrimitive exercise scaffolding — stroke order, character shape, component breakdown. | Candidate / no source identified yet — requires source identification, legal and licensing verification before ingestion. |
+
+### Learning Surface Dataset Requirements
+
+**ReadingPrimitive** (`src/core/lexical/reading/reading-primitive.ts`)
+requires a candidate dataset row with `intended_usage` covering "reading
+examples" or "usage sentences" before any example sentence field may be
+introduced into the type under the Documentary Derivation Law. The row
+above satisfies this requirement at candidate status. Actual field
+implementation requires the candidate to reach `approved_for_ingestion`
+status or a compatible substitute to be identified and documented.
+
+**WritingPrimitive** (`src/core/lexical/writing/writing-primitive.ts`)
+requires a candidate dataset row with `intended_usage` covering "character
+reference" or "stroke data" before any reference form field beyond what
+`CanonicalDictionaryEntry` already carries may be introduced. The row
+above satisfies this requirement at candidate status. Actual field
+implementation requires the candidate to reach `approved_for_ingestion`
+status or a compatible substitute to be identified and documented.
+
+The `intended_usage` field description is expanded to include the following
+categories in addition to those previously listed:
+- **reading examples** — sentence-level usage examples associated with a
+  dictionary entry, for use in `ReadingPrimitive` content fields
+- **writing exercises** — character reference forms, stroke data, or
+  exercise scaffolding content for use in `WritingPrimitive` structural
+  fields
 
 No third-party dataset from these or any other sources should be committed until license compatibility, attribution requirements, redistribution rights, and intended usage are documented in an audit record.
 
