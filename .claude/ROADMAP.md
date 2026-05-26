@@ -16,7 +16,7 @@ Phase 12 and beyond must be explicitly authorized before any work begins.
 | Phase 9  | Deterministic runtime capability governance                                     | COMPLETE              |
 | Phase 10 | Lexical foundation and interoperability                                         | COMPLETE              |
 | Phase 11 | Dictionary data boundary                                                        | COMPLETE              |
-| Phase 12 | Reading and writing learning surface                                            | PENDING AUTHORIZATION |
+| Phase 12 | Reading and writing learning surface                                            | COMPLETE              |
 | Phase 13 | Search-to-learning integration                                                  | PENDING AUTHORIZATION |
 | Phase 14 | UI/API delivery boundary                                                        | PENDING AUTHORIZATION |
 | Phase 15 | Tenant and content configuration                                                | PENDING AUTHORIZATION |
@@ -49,7 +49,9 @@ contracts only, with deterministic builders and deepFreezeStructure throughout.
 
 **Phase 12** — Reading and writing learning surface. Deterministic reading and
 writing practice primitives, spelling and orthography representation, and
-learner-facing content structures. Requires explicit authorization.
+learner-faced content structures. Delivered SpellingEntry, ReadingPrimitive,
+and WritingPrimitive as independent structural types under `src/core/lexical/`.
+All three slices complete and merged.
 
 **Phase 13** — Search-to-learning integration. Connect deterministic query and
 search outputs to dictionary, reading, and writing learning experiences without
