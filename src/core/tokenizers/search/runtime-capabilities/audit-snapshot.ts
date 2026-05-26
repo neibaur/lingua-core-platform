@@ -2,11 +2,7 @@ import {
   RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION,
   type RuntimeCapabilityGovernanceReport,
 } from "./governance-report";
-import {
-  assertNonEmptyIdentifier,
-  assertSchemaVersion,
-  deepFreezeStructure,
-} from "./manifest";
+import { deepFreezeStructure } from "./manifest";
 
 export const RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION =
   "lingua-core-platform:runtime-certification-audit-snapshot@phase9";
@@ -36,13 +32,20 @@ const AUDIT_SNAPSHOT_GENERATED_FROM =
 export function composeRuntimeCapabilityCertificationAuditSnapshot(
   input: ComposeRuntimeCapabilityCertificationAuditSnapshotInput,
 ): RuntimeCapabilityCertificationAuditSnapshot {
-  assertNonEmptyIdentifier(input.snapshotId, "snapshotId");
+  if (input.snapshotId.trim() === "") {
+    throw new Error(
+      "[governance invariant] snapshotId must be a non-empty string",
+    );
+  }
 
-  assertSchemaVersion(
-    input.governanceReport.schemaVersion,
-    RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION,
-    "governanceReport",
-  );
+  if (
+    (input.governanceReport.schemaVersion as unknown) !==
+    RUNTIME_GOVERNANCE_REPORT_SCHEMA_VERSION
+  ) {
+    throw new Error(
+      "[governance invariant] governanceReport schemaVersion must be lingua-core-platform:runtime-governance-report@phase9",
+    );
+  }
 
   const auditStatus: RuntimeCapabilityAuditSnapshotStatus =
     input.governanceReport.reportStatus === "passed" ? "passed" : "failed";

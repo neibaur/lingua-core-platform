@@ -77,6 +77,18 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 - fix/audit-e-barrel-export-hygiene — removed 19 internal symbols from
   three public barrels (lexical/index.ts, runtime-capabilities/index.ts,
   query-snapshots/index.ts); updated one consumer import path
+- fix/audit-d-phase9-guard-inlining — inlined delegated invariant guards in
+  nine Phase 9 builders (composeRuntimeCapabilityManifest,
+  composeRuntimeCapabilityGovernanceReport,
+  composeRuntimeCapabilityCertificationAuditSnapshot,
+  composeRuntimeGovernanceClosure, composeRuntimeGovernanceProvenance,
+  composeRuntimeOperationalGovernanceManifest,
+  composeLexicalInteropCapabilityDeclaration, composeReplayAuditReport,
+  buildRuntimeCapabilityIntrospectionEnvelope); deleted five zero-caller
+  helpers (assertNonEmptyIdentifier, assertSchemaVersion,
+  assertNonEmptyDeclarationId, assertLexicalInteropCapabilityId,
+  assertComposedAtSequence); identified by second pre-authorization audit
+  for Phase 12 (Audit D)
 
 ## Active Scope and Derivation Surface
 
@@ -153,7 +165,18 @@ ARCHITECTURE.md explicitly defines phase-coupled migration semantics.
 
 ## Open Doctrinal Questions
 
-None currently open. All PA.8 conflicts from the last assessment are resolved:
+- INVARIANT GUARD FORM LAW compliance of Number.isFinite() / Number.isInteger()
+  predicate calls in composeReplayAuditReport (src/core/tokenizers/search/
+  query-snapshots/audit-report.ts). The inlined guard preserves the helper's
+  original predicate form per fix/audit-d-phase9-guard-inlining's semantic-
+  identity requirement, but the strict reading of the law allows only direct
+  === equality comparisons and inline switch statements with explicit literal
+  cases. Whether built-in JavaScript numeric type-predicate function calls
+  (Number.isFinite, Number.isInteger) qualify under or violate this restriction
+  is not yet resolved by ARCHITECTURE.md or HANDOFF_TEMPLATE.md. Defer to a
+  future session for explicit doctrinal ruling.
+
+Prior PA.8 conflicts (resolved):
 
 - CLAUDE.md stale phase status line: RESOLVED (fix/claude-md-phase11-status)
 - Phase 10 artifact classification violations: RESOLVED

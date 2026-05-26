@@ -2,11 +2,7 @@ import {
   RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION,
   type RuntimeCapabilityCertificationAuditSnapshot,
 } from "./audit-snapshot";
-import {
-  assertNonEmptyIdentifier,
-  assertSchemaVersion,
-  deepFreezeStructure,
-} from "./manifest";
+import { deepFreezeStructure } from "./manifest";
 
 export const RUNTIME_OPERATIONAL_GOVERNANCE_MANIFEST_SCHEMA_VERSION =
   "lingua-core-platform:runtime-operational-governance-manifest@phase9";
@@ -36,14 +32,21 @@ const OPERATIONAL_GOVERNANCE_MANIFEST_GENERATED_FROM =
 export function composeRuntimeOperationalGovernanceManifest(
   input: ComposeRuntimeOperationalGovernanceManifestInput,
 ): RuntimeOperationalGovernanceManifest {
-  assertNonEmptyIdentifier(input.manifestId, "manifestId");
+  if (input.manifestId.trim() === "") {
+    throw new Error(
+      "[governance invariant] manifestId must be a non-empty string",
+    );
+  }
 
   for (const snapshot of input.auditSnapshots) {
-    assertSchemaVersion(
-      snapshot.schemaVersion,
-      RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION,
-      "auditSnapshot",
-    );
+    if (
+      (snapshot.schemaVersion as unknown) !==
+      RUNTIME_CERTIFICATION_AUDIT_SNAPSHOT_SCHEMA_VERSION
+    ) {
+      throw new Error(
+        "[governance invariant] auditSnapshot schemaVersion must be lingua-core-platform:runtime-certification-audit-snapshot@phase9",
+      );
+    }
   }
 
   const auditSnapshots = [...input.auditSnapshots].sort(

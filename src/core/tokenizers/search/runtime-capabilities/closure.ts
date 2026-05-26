@@ -2,11 +2,7 @@ import {
   RUNTIME_GOVERNANCE_PROVENANCE_SCHEMA_VERSION,
   type RuntimeGovernanceProvenance,
 } from "./provenance";
-import {
-  assertNonEmptyIdentifier,
-  assertSchemaVersion,
-  deepFreezeStructure,
-} from "./manifest";
+import { deepFreezeStructure } from "./manifest";
 
 export const RUNTIME_GOVERNANCE_CLOSURE_SCHEMA_VERSION =
   "lingua-core-platform:runtime-governance-closure@phase9";
@@ -35,13 +31,20 @@ const GOVERNANCE_CLOSURE_GENERATED_FROM = "runtime-governance-closure" as const;
 export function composeRuntimeGovernanceClosure(
   input: ComposeRuntimeGovernanceClosureInput,
 ): RuntimeGovernanceClosure {
-  assertNonEmptyIdentifier(input.closureId, "closureId");
+  if (input.closureId.trim() === "") {
+    throw new Error(
+      "[governance invariant] closureId must be a non-empty string",
+    );
+  }
 
-  assertSchemaVersion(
-    input.provenance.schemaVersion,
-    RUNTIME_GOVERNANCE_PROVENANCE_SCHEMA_VERSION,
-    "provenance",
-  );
+  if (
+    (input.provenance.schemaVersion as unknown) !==
+    RUNTIME_GOVERNANCE_PROVENANCE_SCHEMA_VERSION
+  ) {
+    throw new Error(
+      "[governance invariant] provenance schemaVersion must be lingua-core-platform:runtime-governance-provenance@phase9",
+    );
+  }
 
   const closureStatus: RuntimeGovernanceClosureStatus =
     input.provenance.attestationStatus === "passed" ? "passed" : "failed";
