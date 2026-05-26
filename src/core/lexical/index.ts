@@ -87,3 +87,10 @@ export {
   type IngestionReadyDictionaryEntry,
   type IngestionReadyDictionaryEntrySchemaVersion,
 } from "./provenance/ingestion-ready-dictionary-entry";
+export {
+  SPELLING_ENTRY_SCHEMA_VERSION,
+  composeSpellingEntry,
+  type ComposeSpellingEntryInput,
+  type SpellingEntry,
+  type SpellingEntrySchemaVersion,
+} from "./spelling/spelling-entry";

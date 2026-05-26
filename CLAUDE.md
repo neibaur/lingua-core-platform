@@ -4,8 +4,8 @@
 
 `lingua-core-platform` is a governance-first deterministic multilingual linguistic
 runtime platform built as a modular monolith. It is initialized for Thai-English
-and is currently at Phase 11 (complete), with all implementation residing in
-`src/core/`.
+and is currently at Phase 12 (in progress), with all implementation residing in
+`src/core/`. Phase 11 is complete. Phase 12 first slice: SpellingEntry (680 tests).
 
 ## Authoritative Session Documents
 
