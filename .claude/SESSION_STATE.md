@@ -8,17 +8,18 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 11 status: COMPLETE (all four slices merged)
 - Phase 12 status: IN PROGRESS
 - Phase 12 first slice complete: SpellingEntry (feat/phase12-spelling-entry)
+- Phase 12 second slice complete: ReadingPrimitive (feat/phase12-reading-primitive)
 
 Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 680
-- Test files: 52
-- Statement coverage: 92.48%
+- Tests passing: 695
+- Test files: 53
+- Statement coverage: 92.51%
 - Full chain green: yes
-- Branch at time of last update: feat/phase12-spelling-entry
-- Commit at time of last update: 3f9eb4e
+- Branch at time of last update: feat/phase12-reading-primitive
+- Commit at time of last update: REPLACE_WITH_MERGE_COMMIT_HASH
 
 ## Completed Systems
 
@@ -101,6 +102,11 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
   inline invariant guards for entry.schemaVersion, phoneticNotation, and
   toneClassification; 18 tests (680 total)
   Validation baseline after merge: 680 tests passing, full chain green
+- feat/phase12-reading-primitive — introduced ReadingPrimitive structural
+  type, READING_PRIMITIVE_SCHEMA_VERSION (@phase12), composeReadingPrimitive
+  builder with inline invariant guards for entry.schemaVersion and
+  readingPrimitiveId; 15 tests (695 total)
+  Validation baseline after merge: 695 tests passing, full chain green
 
 ## Active Scope and Derivation Surface
 
@@ -116,6 +122,8 @@ Authoritative derivation surface for Phase 12 continuation:
 - src/core/lexical/ — entire directory; primary Phase 12 implementation domain
 - src/core/lexical/spelling/ — Phase 12 first slice; establishes structural
   spelling/learning-surface contract pattern
+- src/core/lexical/reading/ — Phase 12 second slice; confirmed sibling
+  topology for WritingPrimitive directory placement
 
 Boundary invariant: All Phase 12 work must reside inside src/core/lexical/.
 No structural elements may cross into runtime-capabilities/ or
@@ -174,14 +182,24 @@ The following must NOT influence the current assessment or any implementation:
 - "lingua-core-platform:canonical-dictionary-entry@phase11"
 - "lingua-core-platform:ingestion-ready-dictionary-entry@phase11"
 - "lingua-core-platform:spelling-entry@phase12"
+- "lingua-core-platform:reading-primitive@phase12"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 
-- "lingua-core-platform:wrong@phase10" — intentionally invalid negative-case
-  fixture value at src/core/tokenizers/search/runtime-capabilities/tests/
-  lexical-interop-capability-declaration.test.ts:135. Used to assert schema
-  version rejection. Not a production schema version constant. Excluded from
-  bidirectional reconciliation scope.
+The following literal appears in multiple test files as an intentionally
+invalid negative-case fixture value used to assert schema version rejection.
+It is not a production schema version constant and is excluded from
+bidirectional reconciliation scope at all locations:
+
+- "lingua-core-platform:wrong@phase10" — known locations:
+  - src/core/tokenizers/search/runtime-capabilities/tests/
+    lexical-interop-capability-declaration.test.ts:135
+  - src/core/lexical/spelling/tests/spelling-entry.test.ts:169
+  - src/core/lexical/reading/tests/reading-primitive.test.ts (line TBD)
+
+Any future slice that introduces a schema-version rejection guard test
+is expected to use this same fixture literal. New occurrences are covered
+by this class-based exclusion and do not require individual enumeration.
 
 Phase label invariant: Phase labels are lineage identifiers, not lifecycle
 version indicators. No migration of any existing literal is warranted unless
@@ -215,3 +233,7 @@ Prior PA.8 conflicts (resolved):
 - CLAUDE.md stale phase status line: RESOLVED (fix/claude-md-phase11-status)
 - Phase 10 artifact classification violations: RESOLVED
   (fix/phase10-artifact-classification)
+- SESSION_STATE.md test-fixture exclusion scope (single location enumerated,
+  two additional occurrences present in source): RESOLVED — exclusion note
+  restated as class-based exclusion covering all present and future
+  negative-case fixture occurrences of this literal
