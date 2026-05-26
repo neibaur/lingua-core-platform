@@ -4,25 +4,21 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 ## Current Phase and Status
 
-- Current phase: Phase 11 — Dictionary Data Boundary
-- Phase 11 status: COMPLETE
-- First slice complete: DictionarySourceProvenance (merged PR #69)
-- Second slice complete: DictionaryLicensingBoundary (Issue #73)
-- Third slice complete: CanonicalDictionaryEntry (Issue #74)
-- Fourth slice complete: IngestionReadyDictionaryEntry (Issue #75)
-- All four Phase 11 concepts implemented; no further Phase 11 work is warranted
-- Phase 12 must be explicitly authorized before any Phase 12 work begins
+- Current phase: Phase 12 — Reading and Writing Learning Surface
+- Phase 11 status: COMPLETE (all four slices merged)
+- Phase 12 status: IN PROGRESS
+- Phase 12 first slice complete: SpellingEntry (feat/phase12-spelling-entry)
 
 Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 662
-- Test files: 51
-- Statement coverage: 92.45%
+- Tests passing: 680
+- Test files: 52
+- Statement coverage: 92.48%
 - Full chain green: yes
-- Branch at time of last update: main
-- Commit at time of last update: 24fb430
+- Branch at time of last update: feat/phase12-spelling-entry
+- Commit at time of last update: 3f9eb4e
 
 ## Completed Systems
 
@@ -100,23 +96,28 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
   "lingua-core-platform:wrong@phase10" as excluded from bidirectional
   reconciliation scope; resolves Audit A conflict from second pre-authorization
   audit for Phase 12
+- feat/phase12-spelling-entry — introduced SpellingEntry structural type,
+  SPELLING_ENTRY_SCHEMA_VERSION (@phase12), composeSpellingEntry builder with
+  inline invariant guards for entry.schemaVersion, phoneticNotation, and
+  toneClassification; 18 tests (680 total)
+  Validation baseline after merge: 680 tests passing, full chain green
 
 ## Active Scope and Derivation Surface
 
-Platform footprint: Thai-English (Phase 11 scope). Field derivation must
+Platform footprint: Thai-English (Phase 12 scope). Field derivation must
 reflect this footprint. Multilingual expansion is explicitly deferred to
 Phase 17 and must not influence current structural contracts.
 
-Authoritative derivation surface for Phase 11 continuation:
+Authoritative derivation surface for Phase 12 continuation:
 
 - .claude/ROADMAP.md — directional only, not an implementation mandate
-- DATA_SOURCES.md — source provenance and licensing boundary governance
-  documentation; no TypeScript contracts exist yet for licensing concepts
-- src/core/lexical/ — entire directory; primary Phase 11 implementation domain
-- src/core/lexical/provenance/dictionary-source-provenance.ts — completed
-  Phase 11 first slice; establishes structural provenance contract pattern
+- DATA_SOURCES.md — source provenance, licensing, and intended usage
+  documentation; grounds phonetics/IPA and tone classification fields
+- src/core/lexical/ — entire directory; primary Phase 12 implementation domain
+- src/core/lexical/spelling/ — Phase 12 first slice; establishes structural
+  spelling/learning-surface contract pattern
 
-Boundary invariant: All Phase 11 work must reside inside src/core/lexical/.
+Boundary invariant: All Phase 12 work must reside inside src/core/lexical/.
 No structural elements may cross into runtime-capabilities/ or
 query-lexical-interop/ boundaries.
 
@@ -124,7 +125,6 @@ query-lexical-interop/ boundaries.
 
 The following must NOT influence the current assessment or any implementation:
 
-- Reading and writing learning surface (Phase 12)
 - Search-to-learning integration (Phase 13)
 - UI/API delivery boundary (Phase 14)
 - Tenant and content configuration (Phase 15)
@@ -173,6 +173,7 @@ The following must NOT influence the current assessment or any implementation:
 - "lingua-core-platform:dictionary-licensing-boundary@phase11"
 - "lingua-core-platform:canonical-dictionary-entry@phase11"
 - "lingua-core-platform:ingestion-ready-dictionary-entry@phase11"
+- "lingua-core-platform:spelling-entry@phase12"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 
