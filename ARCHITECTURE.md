@@ -40,7 +40,10 @@ Current high-level layout confirmed from working tree:
 │       │   ├── lookup/
 │       │   ├── normalization/
 │       │   ├── provenance/
-│       │   └── validation/
+│       │   ├── reading/
+│       │   ├── spelling/
+│       │   ├── validation/
+│       │   └── writing/
 │       └── tokenizers/
 │           ├── index.ts
 │           ├── drivers/
