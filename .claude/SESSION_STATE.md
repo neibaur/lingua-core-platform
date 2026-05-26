@@ -19,10 +19,10 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 - Tests passing: 662
 - Test files: 51
-- Statement coverage: 92.42%
+- Statement coverage: 92.45%
 - Full chain green: yes
 - Branch at time of last update: main
-- Commit at time of last update: 6678763
+- Commit at time of last update: 24fb430
 
 ## Completed Systems
 
@@ -77,6 +77,21 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 - fix/audit-e-barrel-export-hygiene — removed 19 internal symbols from
   three public barrels (lexical/index.ts, runtime-capabilities/index.ts,
   query-snapshots/index.ts); updated one consumer import path
+- fix/audit-d-phase9-guard-inlining — inlined delegated invariant guards
+  in nine Phase 9 builders (composeRuntimeCapabilityManifest,
+  composeRuntimeCapabilityGovernanceReport,
+  composeRuntimeCapabilityCertificationAuditSnapshot,
+  composeRuntimeGovernanceClosure, composeRuntimeGovernanceProvenance,
+  composeRuntimeOperationalGovernanceManifest,
+  composeLexicalInteropCapabilityDeclaration, composeReplayAuditReport,
+  buildRuntimeCapabilityIntrospectionEnvelope); deleted five zero-caller
+  helpers (assertNonEmptyIdentifier, assertSchemaVersion,
+  assertNonEmptyDeclarationId, assertLexicalInteropCapabilityId,
+  assertComposedAtSequence); cleaned six import statements; applied
+  as unknown cast at schema version comparison sites to satisfy ESLint
+  no-unnecessary-condition while preserving direct !== comparison form;
+  identified by second pre-authorization audit for Phase 12 (Audit D)
+  (PR #95)
 - fix/audit-e-dictionary-driver-barrel-hygiene — removed THAI_FIXTURE_DICTIONARY
   and ThaiFixtureDictionaryEntry from drivers/dictionary/index.ts; identified
   by second pre-authorization audit for Phase 12 (Audit E)
@@ -118,10 +133,14 @@ The following must NOT influence the current assessment or any implementation:
 - Ingestion pipelines, parsers, loaders, adapters, orchestration, or source
   synchronization systems — explicitly prohibited until proven immediately
   required by current repository topology
-- Repository-wide architectural audit — COMPLETE (26 conflicts resolved
-  across five audit categories: schema literal reconciliation, artifact
-  classification, typed reference law, invariant guard form, export surface
-  governance)
+- Repository-wide architectural audit — COMPLETE (first audit: 26
+  conflicts resolved across five audit categories: schema literal
+  reconciliation, artifact classification, typed reference law, invariant
+  guard form, export surface governance; second pre-authorization audit:
+  3 additional conflicts resolved across fix/audit-e-dictionary-driver-
+  barrel-hygiene, fix/audit-a-test-fixture-reconciliation-scope, and
+  fix/audit-d-phase9-guard-inlining; targeted re-audit confirmed
+  repository clean; Phase 12 authorized to proceed)
 - Schema version migration for any existing @phase9 or @phase10 constants —
   not warranted; ARCHITECTURE.md defines no phase-coupled migration semantics
 
@@ -179,6 +198,16 @@ ARCHITECTURE.md explicitly defines phase-coupled migration semantics.
   (Number.isFinite, Number.isInteger) qualify under or violate this restriction
   is not yet resolved by ARCHITECTURE.md or HANDOFF_TEMPLATE.md. Defer to a
   future session for explicit doctrinal ruling.
+
+Accepted patterns (not open questions — resolved by fix/audit-d-phase9-guard-inlining):
+
+- as unknown cast at schema version comparison sites: the pattern
+  (field.schemaVersion as unknown) !== SCHEMA_VERSION_CONSTANT is
+  explicitly accepted as compliant with the INVARIANT GUARD FORM LAW.
+  The cast is a TypeScript type system accommodation preventing ESLint
+  no-unnecessary-condition from flagging a structurally correct runtime
+  guard as dead code. The underlying guard form remains a direct !==
+  literal comparison. Do not flag this pattern in future audits.
 
 Prior PA.8 conflicts (resolved):
 
