@@ -157,6 +157,24 @@ Builder scope: any deterministic compose/create/build function returning a
 structural or governance artifact is a builder for purposes of this law and
 all audit and assessment requirements that reference builders.
 
+Accepted patterns — resolved by operator ruling and not subject to future
+audit challenge:
+
+- (field.schemaVersion as unknown) !== SCHEMA_VERSION_CONSTANT — the as
+  unknown cast is a TypeScript type system accommodation preventing ESLint
+  no-unnecessary-condition from flagging a structurally correct runtime guard
+  as dead code. The underlying guard form remains a direct !== literal
+  comparison. Do not flag this pattern in future audits.
+
+- String content checks — guards that test what a string value contains
+  (rather than whether a string value belongs to a set of permitted identity
+  values) are compliant. The law targets runtime membership resolution over
+  declared literal unions, not string content introspection. Accepted forms:
+  /\s/.test(input.query) (regex content check), canonicalKey.includes(":")
+  (single-character substring check), input.field.trim() === "" (empty-string
+  content check). The prohibition on Array.prototype.includes() and equivalent
+  literal-union membership resolution remains fully in force.
+
 NO SPECULATIVE EXTENSIBILITY LAW
 Do not introduce extensibility seams, generic abstractions, reusable validation
 frameworks, schema registries, plugin hooks, or future-oriented composition

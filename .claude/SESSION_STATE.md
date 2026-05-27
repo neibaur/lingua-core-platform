@@ -195,8 +195,8 @@ bidirectional reconciliation scope at all locations:
   - src/core/tokenizers/search/runtime-capabilities/tests/
     lexical-interop-capability-declaration.test.ts:135
   - src/core/lexical/spelling/tests/spelling-entry.test.ts:169
-  - src/core/lexical/reading/tests/reading-primitive.test.ts (line TBD)
-  - src/core/lexical/writing/tests/writing-primitive.test.ts (line TBD)
+  - src/core/lexical/reading/tests/reading-primitive.test.ts:165
+  - src/core/lexical/writing/tests/writing-primitive.test.ts:198
 
 Any future slice that introduces a schema-version rejection guard test
 is expected to use this same fixture literal. New occurrences are covered

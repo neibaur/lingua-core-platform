@@ -2,6 +2,10 @@
 
 ## Project Identity
 
+Available models: Claude Opus 4.7 and Claude Sonnet 4.6 — use Opus 4.7
+for implementation assessment prompts, Sonnet 4.6 for documentation
+corrections and targeted fix PRs.
+
 `lingua-core-platform` is a governance-first deterministic multilingual linguistic
 runtime platform built as a modular monolith. It is initialized for Thai-English
 and is currently at Phase 12 (complete) with Phase 13 pending authorization. All implementation
