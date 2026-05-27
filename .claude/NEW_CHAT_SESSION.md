@@ -14,7 +14,7 @@ Opus 4.7 is used for implementation prompts requiring deep doctrinal
 reasoning. Sonnet 4.6 is used for documentation corrections and fix PRs.
 
 Before we discuss anything, read these six files in order by fetching
-each URL directly.  Note this chat is likely to have the equivalent files attached, if attached
+each URL directly. Note this chat is likely to have the equivalent files attached, if attached
 the attachment is more authoritive than then raw.githubusercontent link:
 
 1. https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/.claude/HANDOFF_TEMPLATE.md
