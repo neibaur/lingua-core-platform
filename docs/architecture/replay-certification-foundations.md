@@ -1,4 +1,4 @@
-These are deep subsystem reference documents, not session-bootstrap governance files, and that they describe completed implementation contracts rather than active phase scope.  Last verified against source: Phase 9 complete.
+These are deep subsystem reference documents, not session-bootstrap governance files, and that they describe completed implementation contracts rather than active phase scope. Last verified against source: Phase 9 complete.
 
 Phase 9 is complete. This document served as the Phase 8→9 bridge and is retained as architectural history
 
