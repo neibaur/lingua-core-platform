@@ -9,8 +9,13 @@ I am continuing development on lingua-core-platform. This is a
 planning and prompt-generation session — not a coding session. Your
 role is architectural thinking partner and prompt generator only.
 
+Available models for this project: Claude Opus 4.7 and Claude Sonnet 4.6.
+Opus 4.7 is used for implementation prompts requiring deep doctrinal
+reasoning. Sonnet 4.6 is used for documentation corrections and fix PRs.
+
 Before we discuss anything, read these six files in order by fetching
-each URL directly:
+each URL directly.  Note this chat is likely to have the equivalent files attached, if attached
+the attachment is more authoritive than then raw.githubusercontent link:
 
 1. https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/.claude/HANDOFF_TEMPLATE.md
    — canonical doctrine, all laws enforced
