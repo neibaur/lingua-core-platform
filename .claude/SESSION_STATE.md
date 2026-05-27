@@ -11,6 +11,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 12 second slice complete: ReadingPrimitive (feat/phase12-reading-primitive)
 - Phase 12 third slice complete: WritingPrimitive (feat/phase12-writing-primitive)
 - Phase 13 must be explicitly authorized before any Phase 13 work begins
+- Phase 13 ADR: ADR-0012 DRAFTED (docs/adr/0012-search-to-learning-integration-boundary.md)
 
 Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
@@ -131,7 +132,7 @@ of the next authorized phase session.
 The following must NOT influence any assessment or implementation until
 explicitly authorized:
 
-- Search-to-learning integration (Phase 13) — PENDING AUTHORIZATION
+- Search-to-learning integration (Phase 13) — ADR DRAFTED, PENDING IMPLEMENTATION AUTHORIZATION
 - UI/API delivery boundary (Phase 14) — PENDING AUTHORIZATION
 - Tenant and content configuration (Phase 15) — PENDING AUTHORIZATION
 - AI-assisted private envelope (Phase 16) — PENDING AUTHORIZATION
@@ -228,6 +229,14 @@ Accepted patterns (not open questions — resolved by fix/audit-d-phase9-guard-i
   no-unnecessary-condition from flagging a structurally correct runtime
   guard as dead code. The underlying guard form remains a direct !==
   literal comparison. Do not flag this pattern in future audits.
+- String content checks: guards that test what a string value contains
+  (rather than whether it belongs to a set of permitted identity values)
+  are compliant. Accepted forms: /\s/.test(input.query) (regex content
+  check), canonicalKey.includes(":") (single-character substring check),
+  input.field.trim() === "" (already accepted; restated for completeness).
+  The prohibition on Array.prototype.includes() and equivalent literal-union
+  membership resolution remains fully in force. Resolved by
+  fix/audit-d-string-content-guard-ruling.
 
 Prior PA.8 conflicts (resolved):
 
