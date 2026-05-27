@@ -4,7 +4,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 ## Current Phase and Status
 
-- Current phase: Phase 12 — Reading and Writing Learning Surface
+- Current phase: Phase 13 — Search-to-Learning Integration
 - Phase 11 status: COMPLETE (all four slices merged)
 - Phase 12 status: COMPLETE (all three slices merged)
 - Phase 12 first slice complete: SpellingEntry (feat/phase12-spelling-entry)
@@ -17,12 +17,11 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 716
-- Test files: 54
-- Statement coverage: 92.55%
-- Full chain green: yes
-- Branch at time of last update: feat/phase12-writing-primitive
-- Commit at time of last update: 86aad97
+- Tests passing: 734
+- Test files: 55
+- Statement coverage: 92.58%
+- Branch at time of last update: feat/phase13-reading-primitive-search-projection
+- Commit at time of last update: 5c0693dc135e863a067b1f0308121436697be753
 
 ## Completed Systems
 
@@ -119,13 +118,17 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
   entry.schemaVersion, writingPrimitiveId, referenceCharacterForm, and
   exerciseMode (inline switch); 21 tests (716 total)
   Validation baseline after merge: 716 tests passing, full chain green
+- feat/phase13-reading-primitive-search-projection — introduced
+  ReadingPrimitiveSearchProjection structural type,
+  READING_PRIMITIVE_SEARCH_PROJECTION_SCHEMA_VERSION (@phase13),
+  composeReadingPrimitiveSearchProjection builder with three inline
+  invariant guards for enrichmentResult.schemaVersion,
+  readingPrimitive.schemaVersion, and projectionId; 18 tests (734 total)
+  Validation baseline after merge: 734 tests passing, full chain green
 
 ## Active Scope and Derivation Surface
 
-Phase 12 is COMPLETE. Phase 13 requires explicit authorization before
-any work begins. The authoritative derivation surface for Phase 13
-planning will be derived from repository-first assessment at the start
-of the next authorized phase session.
+- Search-to-learning integration (Phase 13) — IN PROGRESS (1 of 3 slices complete)
 
 ## Deferred Scope
 
@@ -184,6 +187,7 @@ explicitly authorized:
 - "lingua-core-platform:spelling-entry@phase12"
 - "lingua-core-platform:reading-primitive@phase12"
 - "lingua-core-platform:writing-primitive@phase12"
+- "lingua-core-platform:reading-primitive-search-projection@phase13"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 

@@ -1,5 +1,5 @@
 ADR-0012 — Search-to-Learning Integration Boundary
-Status: Proposed
+Status: Accepted
 Phase: Phase 13
 Supersedes: —
 Related: ADR-0011 (Learning Surface Scope Boundaries)
