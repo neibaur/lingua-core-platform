@@ -768,8 +768,9 @@ authorization
 Apply the adopt / modify / reject framework to any proposed contract
 Enforce all doctrine laws without exception — including the Invariant Guard
 Form Law, the No Speculative Extensibility Law, the No Opportunistic Cleanup
-Law, the Documentary Derivation Law, the Typed Reference Law, and the
-Authorized Correction Exception Pattern
+Law, the Documentary Derivation Law, the Typed Reference Law, the Governance
+Document Precedence Law, the No Speculative Remediation Law, and the Authorized
+Correction Exception Pattern
 Confirm that all invariant guards execute inline in the builder body — no
 delegation to private helpers, extracted predicates, or external validation
 sub-routines regardless of whether those sub-routines use only permitted guard

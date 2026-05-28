@@ -10,18 +10,18 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 12 first slice complete: SpellingEntry (feat/phase12-spelling-entry)
 - Phase 12 second slice complete: ReadingPrimitive (feat/phase12-reading-primitive)
 - Phase 12 third slice complete: WritingPrimitive (feat/phase12-writing-primitive)
-- Phase 13 must be explicitly authorized before any Phase 13 work begins
+- Phase 13 status: COMPLETE (all three slices merged)
 - Phase 13 ADR: ADR-0012 DRAFTED (docs/adr/0012-search-to-learning-integration-boundary.md)
 
 Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 752
-- Test files: 56
-- Statement coverage: 92.61%
-- Branch at time of last update: feat/phase13-writing-primitive-search-projection
-- Commit at time of last update: 55a7370e8db56058960fa757591db3c8d48b06a8
+- Tests passing: 770
+- Test files: 57
+- Statement coverage: 92.64%
+- Branch at time of last update: feat/phase13-spelling-entry-search-projection
+- Commit at time of last update: a267ab4d938f0b55ad1061a55759cade0051cb76
 
 ## Completed Systems
 
@@ -133,17 +133,24 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
   invariant guards for enrichmentResult.schemaVersion,
   writingPrimitive.schemaVersion, and projectionId; 18 tests (752 total)
   Validation baseline after merge: 752 tests passing, full chain green
+- feat/phase13-spelling-entry-search-projection — introduced
+  SpellingEntrySearchProjection structural type,
+  ComposeSpellingEntrySearchProjectionInput input interface,
+  SPELLING_ENTRY_SEARCH_PROJECTION_SCHEMA_VERSION (@phase13),
+  composeSpellingEntrySearchProjection builder with three inline
+  invariant guards for enrichmentResult.schemaVersion,
+  spellingEntry.schemaVersion, and projectionId; 18 tests (770 total)
+  Validation baseline after merge: 770 tests passing, full chain green
 
 ## Active Scope and Derivation Surface
 
-- Search-to-learning integration (Phase 13) — IN PROGRESS (2 of 3 slices complete)
+- Search-to-learning integration (Phase 13) — COMPLETE (all 3 slices merged)
 
 ## Deferred Scope
 
 The following must NOT influence any assessment or implementation until
 explicitly authorized:
 
-- Search-to-learning integration (Phase 13) — ADR DRAFTED, PENDING IMPLEMENTATION AUTHORIZATION
 - UI/API delivery boundary (Phase 14) — PENDING AUTHORIZATION
 - Tenant and content configuration (Phase 15) — PENDING AUTHORIZATION
 - AI-assisted private envelope (Phase 16) — PENDING AUTHORIZATION
@@ -197,6 +204,7 @@ explicitly authorized:
 - "lingua-core-platform:writing-primitive@phase12"
 - "lingua-core-platform:reading-primitive-search-projection@phase13"
 - "lingua-core-platform:writing-primitive-search-projection@phase13"
+- "lingua-core-platform:spelling-entry-search-projection@phase13"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 

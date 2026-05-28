@@ -116,7 +116,10 @@ IngestionReadyDictionaryEntry (Phase 11 — dictionary data boundary)
 ReadingPrimitive (Phase 12 — learning surface)
 WritingPrimitive (Phase 12 — learning surface)
 ↓
-[Phase 13 integration types] (Phase 13 — search-to-learning)
+ReadingPrimitiveSearchProjection
+WritingPrimitiveSearchProjection  
+SpellingEntrySearchProjection
+(Phase 13 — search-to-learning integration, query-learning-interop/)
 
 ### Scope Boundaries
 
