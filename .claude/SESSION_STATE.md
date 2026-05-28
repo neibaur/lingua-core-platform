@@ -17,11 +17,11 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 734
-- Test files: 55
-- Statement coverage: 92.58%
-- Branch at time of last update: feat/phase13-reading-primitive-search-projection
-- Commit at time of last update: 5c0693dc135e863a067b1f0308121436697be753
+- Tests passing: 752
+- Test files: 56
+- Statement coverage: 92.61%
+- Branch at time of last update: feat/phase13-writing-primitive-search-projection
+- Commit at time of last update: 55a7370e8db56058960fa757591db3c8d48b06a8
 
 ## Completed Systems
 
@@ -125,10 +125,18 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
   invariant guards for enrichmentResult.schemaVersion,
   readingPrimitive.schemaVersion, and projectionId; 18 tests (734 total)
   Validation baseline after merge: 734 tests passing, full chain green
+- feat/phase13-writing-primitive-search-projection — introduced
+  WritingPrimitiveSearchProjection structural type,
+  ComposeWritingPrimitiveSearchProjectionInput input interface,
+  WRITING_PRIMITIVE_SEARCH_PROJECTION_SCHEMA_VERSION (@phase13),
+  composeWritingPrimitiveSearchProjection builder with three inline
+  invariant guards for enrichmentResult.schemaVersion,
+  writingPrimitive.schemaVersion, and projectionId; 18 tests (752 total)
+  Validation baseline after merge: 752 tests passing, full chain green
 
 ## Active Scope and Derivation Surface
 
-- Search-to-learning integration (Phase 13) — IN PROGRESS (1 of 3 slices complete)
+- Search-to-learning integration (Phase 13) — IN PROGRESS (2 of 3 slices complete)
 
 ## Deferred Scope
 
@@ -188,6 +196,7 @@ explicitly authorized:
 - "lingua-core-platform:reading-primitive@phase12"
 - "lingua-core-platform:writing-primitive@phase12"
 - "lingua-core-platform:reading-primitive-search-projection@phase13"
+- "lingua-core-platform:writing-primitive-search-projection@phase13"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 
