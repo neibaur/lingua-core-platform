@@ -10,7 +10,8 @@ corrections and targeted fix PRs.
 runtime platform built as a modular monolith. It is initialized for Thai-English
 and is currently at Phase 13 (in progress, slice 1 of 3 complete) with Phase 14
 pending authorization. Phase 13 has delivered one slice:
-ReadingPrimitiveSearchProjection (734 tests, 92.58% coverage).
+ReadingPrimitiveSearchProjection and WritingPrimitiveSearchProjection
+(752 tests, 92.61% coverage).
 
 ## Authoritative Session Documents
 
