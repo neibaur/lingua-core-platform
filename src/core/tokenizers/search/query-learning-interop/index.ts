@@ -12,3 +12,10 @@ export {
   type WritingPrimitiveSearchProjection,
   type WritingPrimitiveSearchProjectionSchemaVersion,
 } from "./writing-primitive-search-projection";
+export {
+  SPELLING_ENTRY_SEARCH_PROJECTION_SCHEMA_VERSION,
+  composeSpellingEntrySearchProjection,
+  type ComposeSpellingEntrySearchProjectionInput,
+  type SpellingEntrySearchProjection,
+  type SpellingEntrySearchProjectionSchemaVersion,
+} from "./spelling-entry-search-projection";
