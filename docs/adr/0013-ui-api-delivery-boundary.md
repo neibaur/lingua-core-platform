@@ -50,6 +50,30 @@ Phase 14 schema version literals must follow the established repository conventi
 File placement deferred.
 The exact directory location and file topology for Phase 14 types must be derived from repository-first assessment at the start of each authorized implementation session, following existing sibling topology exactly. This ADR describes the architectural layer; it does not prescribe file placement (HANDOFF_TEMPLATE.md §2 — directory-topology derivation requirement; §12 — "Inspect directory topology before proposing any file placement").
 
+Structural Vocabulary
+
+The following concepts are established as grounding vocabulary for Phase 14 pre-implementation assessments. Each definition cites its grounding source by document name and section. No definition prescribes field names, interface members, builder parameters, or payload shapes; those are derived at assessment time under the DOCUMENTARY DERIVATION LAW and TYPED REFERENCE LAW.
+
+Chartered Delivery Categories
+
+ROADMAP.md Phase 14 summary names four delivery categories as the exhaustive chartered scope of this phase: "Public application routes, API contracts, static and SEO-first rendering, and browser-native fallbacks." Each category is a structural classification (ARTIFACT CLASSIFICATION LAW: no evaluationTimestamp, no generatedFrom). A Phase 14 delivery contract represents exactly one of these categories. No category outside this set is authorized at this phase.
+
+Public application route contract — a structural delivery shape connecting a Phase 13 search projection to a deterministic, statically resolvable application content address. Does not include runtime route resolution, pattern matching, path evaluation semantics, or tenant-specific resolution (STATIC RESOLUTION LAW; ADR-0013 Decision — No runtime resolution; tenant resolution deferred to Phase 15 per ARCHITECTURE.md — Multi-Tenant Routing Concept and ROADMAP.md — Phase 15 summary).
+
+API contract — a structural delivery shape connecting Phase 13 projection outputs to external programmatic consumption. Grounded in ROADMAP.md Phase 14 summary ("API contracts"). Does not include transport implementation, serialization implementation, authentication, or rate limiting (ADR-0013 Decision — Structural contracts only; ADR-0013 Prohibited Vocabulary).
+
+Static/SEO rendering contract — a structural delivery shape representing the deterministic content required to produce a statically rendered, SEO-durable page from a Phase 13 projection. Grounded in the platform preference for "static rendering, SEO durability" (ARCHITECTURE.md — Core Architectural Principles) and ROADMAP.md Phase 14 summary ("static and SEO-first rendering"). Does not include dynamic SEO mutation, metadata ranking, sitemap generation, or robots configuration (ADR-0013 Decision — Structural contracts only; ADR-0013 Prohibited Vocabulary).
+
+Browser-native fallback contract — a structural delivery shape representing content appropriate for direct browser consumption without service worker, bundle, or framework infrastructure. Grounded in the platform preference for "browser-native fallbacks before interactive multi-user features" (ARCHITECTURE.md — Core Architectural Principles) and ROADMAP.md Phase 14 summary ("browser-native fallbacks"). Does not include service worker implementation, bundle configuration, or offline storage semantics (ADR-0013 Decision — Structural contracts only; ADR-0013 Prohibited Vocabulary).
+
+Canonical Delivery Identity
+
+A canonical delivery identity is a caller-supplied identifier distinguishing one Phase 14 delivery contract instance from another within its category. Grounded in the REPLAY-SAFE GOVERNANCE LAW ("Caller-supplied identifiers only. No Date.now(), Math.random(), UUID generation, hash-derived identifiers, or crypto randomness at any step" — HANDOFF_TEMPLATE.md §3) and the projectionId: string pattern established in all three Phase 13 projection types (ReadingPrimitiveSearchProjection, WritingPrimitiveSearchProjection, SpellingEntrySearchProjection — confirmed from repository source files). The structural form of this identifier is determined at pre-implementation assessment time under the TYPED REFERENCE LAW: if a backing structural type for delivery identity exists in the repository at assessment time, the typed form is required; if no such type exists, a caller-supplied string primitive is warranted per that law.
+
+Static Content Address
+
+A static content address is a deterministic, immutable representation of a public-facing content location that can be resolved without runtime negotiation, pattern evaluation, or tenant-specific resolution. Grounded in the platform preference for "static rendering, SEO durability" (ARCHITECTURE.md — Core Architectural Principles) and the Phase 14 charter for "static and SEO-first rendering" (ROADMAP.md — Phase 14 summary). A static content address is not a dynamic route pattern, not a URL template with matching semantics, and not a tenant-resolved path (tenant resolution belongs to Phase 15 per ARCHITECTURE.md — Multi-Tenant Routing Concept and ROADMAP.md — Phase 15 summary; ADR-0013 Prohibited Vocabulary: router, middleware, tenant). The structural representation of a static content address is determined at pre-implementation assessment time under the TYPED REFERENCE LAW. No backing structural type for this concept exists in the current repository; the assessment must confirm that state before determining the warranted structural form.
+
 Consequences
 What becomes possible. A deterministic structural seam exists between the Phase 13 projection outputs and public-facing delivery shapes, expressed as typed delivery contracts and their deterministic builders. Phase 15 and beyond can consume these contracts without reaching through Phase 13 internals directly, preserving the single-layer derivation boundary (HANDOFF_TEMPLATE.md §3 — SINGLE-LAYER GOVERNANCE DERIVATION LAW) and the public-core/private-envelope separation and content-first progression described in ARCHITECTURE.md (Core Architectural Principles; Public Core And Future Private Envelope).
 
