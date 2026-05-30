@@ -36,6 +36,7 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 - Phase 11 first slice — DictionarySourceProvenance: COMPLETE (PR #69)
 - Phase 12 Learning Surface Layer: COMPLETE (SpellingEntry, ReadingPrimitive,
   WritingPrimitive — all three slices merged)
+- Search-to-learning integration (Phase 13) — COMPLETE (all 3 slices merged)
 
 ## Completed Slices (Merged to Main)
 
@@ -144,14 +145,13 @@ Repository-wide architectural audit complete — Phase 12 authorized to proceed.
 
 ## Active Scope and Derivation Surface
 
-- Search-to-learning integration (Phase 13) — COMPLETE (all 3 slices merged)
+- UI/API delivery boundary (Phase 14) — IN PROGRESS
 
 ## Deferred Scope
 
 The following must NOT influence any assessment or implementation until
 explicitly authorized:
 
-- UI/API delivery boundary (Phase 14) — PENDING AUTHORIZATION
 - Tenant and content configuration (Phase 15) — PENDING AUTHORIZATION
 - AI-assisted private envelope (Phase 16) — PENDING AUTHORIZATION
 - Multilingual expansion beyond Thai-first (Phase 17) — PENDING AUTHORIZATION
