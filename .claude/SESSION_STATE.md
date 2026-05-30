@@ -16,6 +16,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 14 ADR: ADR-0013 ACCEPTED (docs/adr/0013-ui-api-delivery-boundary.md)
 - fix/adr-0013-foundational-primitive-clarification — authorized foundational delivery primitive as structural precursor to chartered categories; updated "exactly one category" clause; corrected Context and Grounding Sources pre-authorization snapshot references
 - fix/phase14-delivery-vocabulary-amendment — added Structural Vocabulary section to ADR-0013 establishing chartered delivery categories, canonical delivery identity, and static content address as repository-grounded concepts
+- fix/phase14-delivery-boundary-architecture-grounding — added ARCHITECTURE.md Delivery Boundary Layer grounding for Phase 14 delivery-contract content concepts, including static content address and deterministic structural delivery contracts; documentation-only governance clarification, no implementation slice delivered
+- fix/adr-0013-delivery-boundary-companion-clarification — aligned ADR-0013 with the ARCHITECTURE.md Delivery Boundary Layer grounding; clarified that future Phase 14 assessments may evaluate directly chartered delivery contracts against the new architectural grounding; documentation-only clarification, no implementation slice delivered
 
 Repository-wide architectural audit complete — Phase 14 authorized to proceed.
 
@@ -24,9 +26,8 @@ Repository-wide architectural audit complete — Phase 14 authorized to proceed.
 - Tests passing: 770
 - Test files: 57
 - Statement coverage: 92.64%
-- Branch at time of last update:
-  fix/adr-0013-foundational-primitive-clarification
-- Commit at time of last update: 651a303161a4c25422fde5421cab1b56f57c28eb
+- Branch at time of last update: docs/architecture-adr13-amendment
+- Commit at time of last update: 09bc71ec9396c1a15dd22a2cb34e511ded315136
 
 ## Completed Systems
 
