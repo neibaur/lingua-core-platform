@@ -14,6 +14,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 13 ADR: ADR-0012 COMPLETE (docs/adr/0012-search-to-learning-integration-boundary.md)
 - Phase 13 — Search-to-Learning Integration (all three slices merged)
 - Phase 14 ADR: ADR-0013 ACCEPTED (docs/adr/0013-ui-api-delivery-boundary.md)
+- fix/adr-0013-foundational-primitive-clarification — authorized foundational delivery primitive as structural precursor to chartered categories; updated "exactly one category" clause; corrected Context and Grounding Sources pre-authorization snapshot references
+- fix/phase14-delivery-vocabulary-amendment — added Structural Vocabulary section to ADR-0013 establishing chartered delivery categories, canonical delivery identity, and static content address as repository-grounded concepts
 
 Repository-wide architectural audit complete — Phase 14 authorized to proceed.
 
@@ -22,8 +24,9 @@ Repository-wide architectural audit complete — Phase 14 authorized to proceed.
 - Tests passing: 770
 - Test files: 57
 - Statement coverage: 92.64%
-- Branch at time of last update: feat/phase13-spelling-entry-search-projection
-- Commit at time of last update: a267ab4d938f0b55ad1061a55759cade0051cb76
+- Branch at time of last update:
+  fix/adr-0013-foundational-primitive-clarification
+- Commit at time of last update: 651a303161a4c25422fde5421cab1b56f57c28eb
 
 ## Completed Systems
 
