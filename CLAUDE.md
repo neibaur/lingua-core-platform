@@ -2,7 +2,7 @@
 
 ## Project Identity
 
-Available models: Claude Opus 4.7 and Claude Sonnet 4.6 — use Opus 4.7
+Available models: Claude Opus 4.8 and Claude Sonnet 4.6 — use Opus 4.8
 for implementation assessment prompts, Sonnet 4.6 for documentation
 corrections and targeted fix PRs.
 
