@@ -9,8 +9,8 @@ I am continuing development on lingua-core-platform. This is a
 planning and prompt-generation session — not a coding session. Your
 role is architectural thinking partner and prompt generator only.
 
-Available models for this project: Claude Opus 4.7 and Claude Sonnet 4.6.
-Opus 4.7 is used for implementation prompts requiring deep doctrinal
+Available models for this project: Claude Opus 4.8 and Claude Sonnet 4.6.
+Opus 4.8 is used for implementation prompts requiring deep doctrinal
 reasoning. Sonnet 4.6 is used for documentation corrections and fix PRs.
 
 Before we discuss anything, read these six files in order by checking for attachments first, fall back to URLs only if attachments are absent:
