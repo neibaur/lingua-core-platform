@@ -130,6 +130,106 @@ SpellingEntrySearchProjection
   must not appear in Phase 12 types.
 - These boundaries are governed by ADR-0011.
 
+## Delivery Boundary Layer
+
+The delivery boundary layer is the Phase 14 structural boundary positioned
+between the search-to-learning integration layer (Phase 13) and public-facing
+delivery. It connects the deterministic pipeline's terminal artifacts — the
+Phase 13 search projections — to the public delivery surfaces named in the Core
+Architectural Principles: static rendering, SEO durability, and browser-native
+fallbacks. The binding per-phase decision for this layer is recorded in
+ADR-0013.
+
+Delivery contracts at this layer are structural seams only. They are not a
+runtime resolution engine, a rendering orchestration layer, or a transport
+framework. Equivalent inputs must produce equivalent delivery contracts,
+consistent with the determinism guarantee in Deterministic Query Explainability.
+
+### Delivery Contract Content
+
+A delivery contract is a structural artifact (no evaluationTimestamp, no
+generatedFrom) that connects a Phase 13 search projection to a single public
+delivery surface. Its content is structural payload — deterministic data
+describing what is delivered — and never logic that resolves delivery at
+runtime. A delivery contract carries the typed reference to its source Phase 13
+projection and the structural content appropriate to its delivery category.
+
+The concrete field shape of any delivery contract is derived at
+pre-implementation assessment time under the Typed Reference Law and the
+Documentary Derivation Law. This layer defines the structural meaning of that
+content; it does not prescribe field names or builder signatures.
+
+### Static Content Address
+
+A static content address is a structural, caller-supplied, deterministic
+representation of a public content location at which a Phase 13 projection's
+content is addressable. It is the structural content element shared by delivery
+categories that express a public location.
+
+A static content address is:
+
+- caller-supplied — it carries no generated value, no default, and no internal derivation routine; it accepts a caller-provided primitive only (Replay-Safe Governance Law);
+- deterministic and immutable — equivalent inputs yield an equivalent address, and the address is deep-frozen on the artifact that carries it (Immutability Law);
+- resolvable without runtime negotiation — it is read as data, not evaluated,
+  pattern-matched, or negotiated at runtime (Static Resolution Law).
+
+A static content address is not a dynamic route pattern, not a URL template with
+matching semantics, and not a tenant-resolved path. Tenant resolution belongs to
+Phase 15 (Multi-Tenant Routing Concept). The concrete structural representation
+of a static content address is derived at pre-implementation assessment time
+under the Typed Reference Law.
+
+### Chartered Category Contracts
+
+The Phase 14 charter names four delivery categories: public application routes,
+API contracts, static and SEO-first rendering, and browser-native fallbacks.
+Each is a concrete delivery deliverable and a structural artifact in its own
+right.
+
+A chartered category contract may derive directly from a Phase 13 search
+projection when each of its fields is grounded in this document or in an existing
+type signature. A content-free enabling wrapper is not an architectural
+precondition for a chartered category contract: the platform does not require an
+intermediate structural type whose only purpose is to be composed from before a
+concrete delivery deliverable may exist. Where a phase ADR specifies a particular
+composition sequence between delivery types, that ADR remains the binding
+per-phase decision, and any divergence from this principle is reconciled at the
+ADR level rather than assumed away here.
+
+### Delivery Boundary Non-Goals
+
+The following are excluded from the delivery boundary layer. Each is a
+runtime-resolution or mutable-state concern barred by the Static Resolution Law
+or the Replay-Safe Governance Law, or is owned by a deferred phase:
+
+- router or framework bindings, middleware, and tenant resolution — tenant
+  configuration is Phase 15;
+- transport, serialization runtime, authentication, and rate limiting;
+- rendering engine, SSR runtime, hydration, service worker, and bundle
+  configuration;
+- sitemap and robots orchestration, dynamic SEO mutation, and metadata ranking;
+- personalization, session state, persistence, and caching;
+- AI-assisted enrichment (Phase 16) and multilingual expansion (Phase 17).
+
+This layer introduces no router, no middleware, no transport, and no rendering
+runtime. It is consistent with Explicit Non-Goals: no frontend framework
+lock-in, no AI core dependency, and no database, hosting, ORM, or deployment
+commitment.
+
+### Layer Position
+
+```text
+ReadingPrimitiveSearchProjection
+WritingPrimitiveSearchProjection
+SpellingEntrySearchProjection
+(Phase 13 — search-to-learning integration)
+        ↓
+Delivery contracts (Phase 14 — delivery boundary)
+        ↓
+Tenant and content configuration (Phase 15 — deferred) consumes delivery
+contracts without reaching through Phase 13 internals.
+```
+
 ## Multi-Tenant Routing Concept
 
 Tenant routing should be resolved before business logic runs.
