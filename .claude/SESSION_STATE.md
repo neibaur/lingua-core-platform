@@ -5,7 +5,6 @@ Cross-Session State Document | Updated After Each PR Cycle
 ## Current Phase and Status
 
 - Current phase: Phase 14 — UI/API Delivery Boundary
-- Phase 13 — Search-to-Learning Integration (all three slices merged)
 - Phase 11 status: COMPLETE (all four slices merged)
 - Phase 12 status: COMPLETE (all three slices merged)
 - Phase 12 first slice COMPLETE: SpellingEntry (feat/phase12-spelling-entry)
@@ -13,6 +12,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 12 third slice COMPLETE: WritingPrimitive (feat/phase12-writing-primitive)
 - Phase 13 status: COMPLETE (all three slices merged)
 - Phase 13 ADR: ADR-0012 COMPLETE (docs/adr/0012-search-to-learning-integration-boundary.md)
+- Phase 13 — Search-to-Learning Integration (all three slices merged)
 - Phase 14 ADR: ADR-0013 ACCEPTED (docs/adr/0013-ui-api-delivery-boundary.md)
 
 Repository-wide architectural audit complete — Phase 14 authorized to proceed.
