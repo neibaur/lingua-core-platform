@@ -13,7 +13,9 @@
       "Bash(echo \"TYPECHECK_EXIT:$?\")",
       "Bash(echo \"TEST_EXIT:$?\")",
       "Bash(echo \"COVERAGE_EXIT:$?\")",
-      "Bash(echo \"VALIDATE_EXIT:$?\")"
+      "Bash(echo \"VALIDATE_EXIT:$?\")",
+      "Bash(echo \"FMT_EXIT:$?\")",
+      "Bash(:)"
     ]
   },
   "version": "1.0.0",
