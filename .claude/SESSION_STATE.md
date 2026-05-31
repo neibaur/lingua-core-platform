@@ -16,8 +16,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 14 ADR: ADR-0013 ACCEPTED (docs/adr/0013-ui-api-delivery-boundary.md)
 - Phase 14 status: COMPLETE (route category — three route delivery contracts merged: Reading/Writing/Spelling
   SearchProjectionRouteDeliveryContract; foundational delivery primitive assessed and found unwarranted; remaining chartered categories deferred — see Deferred Scope)
-- Next phase: Phase 15 — Tenant and content configuration — PENDING AUTHORIZATION (Phase 14→15
-  phase-transition audit COMPLETE and CONFIRMED CLEAN; Phase 15 awaits explicit authorization; HANDOFF §9)
+- Next phase: Phase 15 — Tenant and content configuration — AUTHORIZED for ADR-0014 boundary drafting only
+  (Phase 14→15 phase-transition audit COMPLETE and CONFIRMED CLEAN; HANDOFF §9)
 - fix/adr-0013-foundational-primitive-clarification — authorized foundational delivery primitive as structural
   precursor to chartered categories; updated "exactly one category" clause; corrected Context and Grounding Sources pre-authorization snapshot references
 - fix/phase14-delivery-vocabulary-amendment — added Structural Vocabulary section to ADR-0013 establishing
@@ -204,7 +204,7 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
 The following must NOT influence any assessment or implementation until
 explicitly authorized:
 
-- Tenant and content configuration (Phase 15) — PENDING AUTHORIZATION
+- Tenant and content configuration (Phase 15) — AUTHORIZED for ADR-0014 boundary drafting only
 - AI-assisted private envelope (Phase 16) — PENDING AUTHORIZATION
 - Multilingual expansion beyond Thai-first (Phase 17) — PENDING AUTHORIZATION
 - Ingestion pipelines, parsers, loaders, adapters, orchestration, or source
