@@ -6,7 +6,7 @@ when it introduces binding architecture decisions.
 
 Authoritative phase completion status: `.claude/SESSION_STATE.md`
 
-Phase 12 and beyond must be explicitly authorized before any work begins.
+Phase 15 and beyond must be explicitly authorized before any work begins.
 
 ## Phase Status
 
@@ -18,7 +18,7 @@ Phase 12 and beyond must be explicitly authorized before any work begins.
 | Phase 11 | Dictionary data boundary                                                        | COMPLETE              |
 | Phase 12 | Reading and writing learning surface                                            | COMPLETE              |
 | Phase 13 | Search-to-learning integration                                                  | COMPLETE              |
-| Phase 14 | UI/API delivery boundary                                                        | IN PROGRESS           |
+| Phase 14 | UI/API delivery boundary                                                        | COMPLETE           |
 | Phase 15 | Tenant and content configuration                                                | PENDING AUTHORIZATION |
 | Phase 16 | AI-assisted private envelope                                                    | PENDING AUTHORIZATION |
 | Phase 17 | Multilingual expansion                                                          | PENDING AUTHORIZATION |
@@ -55,11 +55,11 @@ All three slices complete and merged.
 
 **Phase 13** — Search-to-learning integration. Connect deterministic query and
 search outputs to dictionary, reading, and writing learning experiences without
-introducing heuristic runtime behavior. Requires explicit authorization.
+introducing heuristic runtime behavior.
 
 **Phase 14** — UI/API delivery boundary. Public application routes, API
 contracts, static and SEO-first rendering, and browser-native fallbacks.
-Requires explicit authorization.
+Delivered as the route category (three route delivery contracts deriving directly from the Phase 13 projections). The closure assessment found the four chartered categories resolve to a single groundable structural shape; API, static/SEO, and browser-native fallback are deferred as not structurally distinct under current grounding.
 
 **Phase 15** — Tenant and content configuration. Tenant and language
 configuration, feature boundaries, branding, and content visibility controls.

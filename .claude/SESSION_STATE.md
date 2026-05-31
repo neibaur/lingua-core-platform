@@ -4,7 +4,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 ## Current Phase and Status
 
-- Current phase: Phase 14 — UI/API Delivery Boundary
+- Current phase: Phase 14 — UI/API Delivery Boundary — COMPLETE
 - Phase 11 status: COMPLETE (all four slices merged)
 - Phase 12 status: COMPLETE (all three slices merged)
 - Phase 12 first slice COMPLETE: SpellingEntry (feat/phase12-spelling-entry)
@@ -14,20 +14,26 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 13 ADR: ADR-0012 COMPLETE (docs/adr/0012-search-to-learning-integration-boundary.md)
 - Phase 13 — Search-to-Learning Integration (all three slices merged)
 - Phase 14 ADR: ADR-0013 ACCEPTED (docs/adr/0013-ui-api-delivery-boundary.md)
-- fix/adr-0013-foundational-primitive-clarification — authorized foundational delivery primitive as structural precursor to chartered categories; updated "exactly one category" clause; corrected Context and Grounding Sources pre-authorization snapshot references
-- fix/phase14-delivery-vocabulary-amendment — added Structural Vocabulary section to ADR-0013 establishing chartered delivery categories, canonical delivery identity, and static content address as repository-grounded concepts
-- fix/phase14-delivery-boundary-architecture-grounding — added ARCHITECTURE.md Delivery Boundary Layer grounding for Phase 14 delivery-contract content concepts, including static content address and deterministic structural delivery contracts; documentation-only governance clarification, no implementation slice delivered
-- fix/adr-0013-delivery-boundary-companion-clarification — aligned ADR-0013 with the ARCHITECTURE.md Delivery Boundary Layer grounding; clarified that future Phase 14 assessments may evaluate directly chartered delivery contracts against the new architectural grounding; documentation-only clarification, no implementation slice delivered
+- Phase 14 status: COMPLETE (route category — three route delivery contracts merged: Reading/Writing/Spelling
+  SearchProjectionRouteDeliveryContract; foundational delivery primitive assessed and found unwarranted; remaining chartered categories deferred — see Deferred Scope)
+- fix/adr-0013-foundational-primitive-clarification — authorized foundational delivery primitive as structural
+  precursor to chartered categories; updated "exactly one category" clause; corrected Context and Grounding Sources pre-authorization snapshot references
+- fix/phase14-delivery-vocabulary-amendment — added Structural Vocabulary section to ADR-0013 establishing
+  chartered delivery categories, canonical delivery identity, and static content address as repository-grounded concepts
+- fix/phase14-delivery-boundary-architecture-grounding — added ARCHITECTURE.md Delivery Boundary Layer
+  grounding for Phase 14 delivery-contract content concepts, including static content address and deterministic structural delivery contracts; documentation-only governance clarification, no implementation slice delivered
+- fix/adr-0013-delivery-boundary-companion-clarification — aligned ADR-0013 with the ARCHITECTURE.md Delivery
+  Boundary Layer grounding; clarified that future Phase 14 assessments may evaluate directly chartered delivery contracts against the new architectural grounding; documentation-only clarification, no implementation slice delivered
 
-Repository-wide architectural audit complete — Phase 14 authorized to proceed.
+Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. A Phase 14→15 phase-transition audit (HANDOFF §9) is required before Phase 15 authorization.
 
 ## Validation Baseline
 
 - Tests passing: 824
 - Test files: 60
 - Statement coverage: 92.73%
-- Branch at time of last update: feat/phase14-spelling-entry-search-projection-route-delivery-contract
-- Commit at time of last update: dc2b5cc
+- Branch at time of last update: main
+- Commit at time of last update: 762b8ce 
 
 ## Completed Systems
 
@@ -188,8 +194,8 @@ Repository-wide architectural audit complete — Phase 14 authorized to proceed.
 
 ## Active Scope and Derivation Surface
 
-- UI/API delivery boundary (Phase 14) — IN PROGRESS (first slice delivered:
-  ReadingPrimitiveSearchProjectionRouteDeliveryContract)
+- UI/API delivery boundary (Phase 14) — COMPLETE (route category:
+  ReadingPrimitiveSearchProjectionRouteDeliveryContract, WritingPrimitiveSearchProjectionRouteDeliveryContract, SpellingEntrySearchProjectionRouteDeliveryContract — all merged). Remaining chartered categories (API, static/SEO rendering, browser-native fallback) deferred — see Deferred Scope.
 
 ## Deferred Scope
 
@@ -213,6 +219,8 @@ explicitly authorized:
 - Schema version migration for any existing @phase9, @phase10, @phase11,
   or @phase12 constants — not warranted; ARCHITECTURE.md defines no
   phase-coupled migration semantics
+- Phase 14 chartered categories — API contract, static/SEO rendering contract, browser-native fallback
+  contract — DEFERRED. The Phase 14 closure assessment determined each resolves to no structurally distinct artifact under current grounding: all would be field-identical to the route delivery contract ({schemaVersion, deliveryId, searchProjection, staticContentAddress}), distinguished only by name, with any category-specific field being domain-convention invention (DOCUMENTARY DERIVATION LAW) or prohibited vocabulary (ADR-0013). The groundable structural delivery surface is a single contract shape realized per-projection (the route category). Building any deferred category as a distinct type requires new ARCHITECTURE.md content grounding — an operator architectural decision, not yet warranted.
 
 ## Schema Version Literals (Confirmed from Repository Files)
 
