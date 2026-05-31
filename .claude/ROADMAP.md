@@ -6,7 +6,7 @@ when it introduces binding architecture decisions.
 
 Authoritative phase completion status: `.claude/SESSION_STATE.md`
 
-Phase 15 and beyond must be explicitly authorized before any work begins.
+Phase 16 and beyond must be explicitly authorized before any work begins.
 
 ## Phase Status
 

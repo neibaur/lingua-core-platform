@@ -27,7 +27,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - fix/adr-0013-delivery-boundary-companion-clarification — aligned ADR-0013 with the ARCHITECTURE.md Delivery
   Boundary Layer grounding; clarified that future Phase 14 assessments may evaluate directly chartered delivery contracts against the new architectural grounding; documentation-only clarification, no implementation slice delivered
 
-Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. The Phase 14→15 phase-transition audit (HANDOFF §9) was completed and CONFIRMED CLEAN across all five audit categories (Audit A schema-literal reconciliation 36/36 bidirectional; Audits B–E clean), with the validation chain green at 824 tests / 60 files / 92.73% statement coverage; Phase 15 remains PENDING explicit authorization.
+Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. The Phase 14→15 phase-transition audit (HANDOFF §9) was completed and CONFIRMED CLEAN across all five audit categories (Audit A schema-literal reconciliation 36/36 bidirectional; Audits B–E clean), with the validation chain green at 824 tests / 60 files / 92.73% statement coverage; Phase 15 is AUTHORIZED for ADR-0014 boundary drafting (see Current Phase and Status).
 
 ## Validation Baseline
 
@@ -204,7 +204,7 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
 The following must NOT influence any assessment or implementation until
 explicitly authorized:
 
-- Tenant and content configuration (Phase 15) — AUTHORIZED for ADR-0014 boundary drafting only
+- Tenant and content configuration (Phase 15) — implementation PENDING; ADR-0014 boundary drafting AUTHORIZED (see Current Phase and Status)
 - AI-assisted private envelope (Phase 16) — PENDING AUTHORIZATION
 - Multilingual expansion beyond Thai-first (Phase 17) — PENDING AUTHORIZATION
 - Ingestion pipelines, parsers, loaders, adapters, orchestration, or source
