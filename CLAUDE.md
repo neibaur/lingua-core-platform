@@ -9,11 +9,12 @@ corrections and targeted fix PRs.
 `lingua-core-platform` is a governance-first deterministic multilingual linguistic
 runtime platform built as a modular monolith. It is initialized for Thai-English
 and is currently at Phase 13 (complete) with Phase 14
-in progress. Phase 14 has delivered its second slice:
-WritingPrimitiveSearchProjectionRouteDeliveryContract, a public
+in progress. Phase 14 has delivered its third route slice:
+SpellingEntrySearchProjectionRouteDeliveryContract, a public
 application route delivery contract deriving directly from the Phase 13
-WritingPrimitiveSearchProjection (following the first slice,
-ReadingPrimitiveSearchProjectionRouteDeliveryContract) (806 tests, 92.7% coverage).
+SpellingEntrySearchProjection (following the first two slices,
+ReadingPrimitiveSearchProjectionRouteDeliveryContract and
+WritingPrimitiveSearchProjectionRouteDeliveryContract) (824 tests, 92.73% coverage).
 
 ## Authoritative Session Documents
 
