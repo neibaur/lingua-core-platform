@@ -33,3 +33,10 @@ export {
   type WritingPrimitiveSearchProjectionRouteDeliveryContract,
   type WritingPrimitiveSearchProjectionRouteDeliveryContractSchemaVersion,
 } from "./writing-primitive-search-projection-route-delivery-contract";
+export {
+  SPELLING_ENTRY_SEARCH_PROJECTION_ROUTE_DELIVERY_CONTRACT_SCHEMA_VERSION,
+  composeSpellingEntrySearchProjectionRouteDeliveryContract,
+  type ComposeSpellingEntrySearchProjectionRouteDeliveryContractInput,
+  type SpellingEntrySearchProjectionRouteDeliveryContract,
+  type SpellingEntrySearchProjectionRouteDeliveryContractSchemaVersion,
+} from "./spelling-entry-search-projection-route-delivery-contract";

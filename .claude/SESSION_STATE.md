@@ -23,11 +23,11 @@ Repository-wide architectural audit complete — Phase 14 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 806
-- Test files: 59
-- Statement coverage: 92.7%
-- Branch at time of last update: feat/phase14-writing-primitive-search-projection-route-delivery-contract
-- Commit at time of last update: 61c97b8
+- Tests passing: 824
+- Test files: 60
+- Statement coverage: 92.73%
+- Branch at time of last update: feat/phase14-spelling-entry-search-projection-route-delivery-contract
+- Commit at time of last update: dc2b5cc
 
 ## Completed Systems
 
@@ -172,6 +172,19 @@ Repository-wide architectural audit complete — Phase 14 authorized to proceed.
   WritingPrimitiveSearchProjection (single-layer; no foundational delivery
   primitive); barrel append (fifth export block); 18 tests (806 total)
   Validation baseline after merge: 806 tests passing, full chain green
+- feat/phase14-spelling-entry-search-projection-route-delivery-contract —
+  introduced SpellingEntrySearchProjectionRouteDeliveryContract structural
+  type (third and final Phase 14 route slice; public application route
+  delivery contract),
+  ComposeSpellingEntrySearchProjectionRouteDeliveryContractInput input
+  interface,
+  SPELLING_ENTRY_SEARCH_PROJECTION_ROUTE_DELIVERY_CONTRACT_SCHEMA_VERSION
+  (@phase14), composeSpellingEntrySearchProjectionRouteDeliveryContract
+  builder with three inline invariant guards for searchProjection.schemaVersion,
+  deliveryId, and staticContentAddress; derives directly from
+  SpellingEntrySearchProjection (single-layer; no foundational delivery
+  primitive); barrel append (sixth export block); 18 tests (824 total)
+  Validation baseline after merge: 824 tests passing, full chain green
 
 ## Active Scope and Derivation Surface
 
@@ -238,6 +251,7 @@ explicitly authorized:
 - "lingua-core-platform:spelling-entry-search-projection@phase13"
 - "lingua-core-platform:reading-primitive-search-projection-route-delivery-contract@phase14"
 - "lingua-core-platform:writing-primitive-search-projection-route-delivery-contract@phase14"
+- "lingua-core-platform:spelling-entry-search-projection-route-delivery-contract@phase14"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 
