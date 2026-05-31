@@ -7,7 +7,13 @@
       "PowerShell(git checkout .claude/settings.json 2>$null)",
       "PowerShell(pnpm run format:check 2>&1)",
       "PowerShell(git checkout .claude/settings.json 2>$null; pnpm validate 2>&1 | Select-Object -Last 20; Write-Output \"=== EXIT: $LASTEXITCODE ===\"; git status --short .claude/settings.json)",
-      "PowerShell(git add src/core/tokenizers/search/query-learning-interop/reading-primitive-search-projection-route-delivery-contract.ts src/core/tokenizers/search/query-learning-interop/tests/reading-primitive-search-projection-route-delivery-contract.test.ts src/core/tokenizers/search/query-learning-interop/index.ts .claude/SESSION_STATE.md CLAUDE.md)"
+      "PowerShell(git add src/core/tokenizers/search/query-learning-interop/reading-primitive-search-projection-route-delivery-contract.ts src/core/tokenizers/search/query-learning-interop/tests/reading-primitive-search-projection-route-delivery-contract.test.ts src/core/tokenizers/search/query-learning-interop/index.ts .claude/SESSION_STATE.md CLAUDE.md)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(echo \"LINT_EXIT:$?\")",
+      "Bash(echo \"TYPECHECK_EXIT:$?\")",
+      "Bash(echo \"TEST_EXIT:$?\")",
+      "Bash(echo \"COVERAGE_EXIT:$?\")",
+      "Bash(echo \"VALIDATE_EXIT:$?\")"
     ]
   },
   "version": "1.0.0",
@@ -23,7 +29,12 @@
       "git diff",
       "git log"
     ],
-    "blocked": ["git push origin main", "git push --force", "curl", "wget"]
+    "blocked": [
+      "git push origin main",
+      "git push --force",
+      "curl",
+      "wget"
+    ]
   },
   "files": {
     "ignore": [
