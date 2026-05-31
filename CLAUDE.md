@@ -22,6 +22,7 @@ Read these before any implementation:
   completed slices, deferred scope, and schema version literals
 - `.claude/HANDOFF_TEMPLATE.md` — all doctrine laws, session governance
   requirements, and the mandatory pre-implementation assessment format
+- `.claude/settings.json` is tool-managed and excluded from formatting validation because Claude Code may rewrite it during permission persistence.
 
 ## Toolchain
 

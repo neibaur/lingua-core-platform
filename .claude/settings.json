@@ -1,4 +1,15 @@
 {
+  "permissions": {
+    "allow": [
+      "PowerShell(pnpm validate 2>&1)",
+      "PowerShell(git stash list; Write-Output \"=== checking HEAD version ===\"; git show \"HEAD:.claude/settings.json\" | Out-File -FilePath \"$env:TEMP\\\\settings-head.json\" -Encoding utf8; pnpm exec prettier --check \"$env:TEMP\\\\settings-head.json\" 2>&1 | Select-Object -Last 5)",
+      "PowerShell(git restore .claude/settings.json 2>$null)",
+      "PowerShell(git checkout .claude/settings.json 2>$null)",
+      "PowerShell(pnpm run format:check 2>&1)",
+      "PowerShell(git checkout .claude/settings.json 2>$null; pnpm validate 2>&1 | Select-Object -Last 20; Write-Output \"=== EXIT: $LASTEXITCODE ===\"; git status --short .claude/settings.json)",
+      "PowerShell(git add src/core/tokenizers/search/query-learning-interop/reading-primitive-search-projection-route-delivery-contract.ts src/core/tokenizers/search/query-learning-interop/tests/reading-primitive-search-projection-route-delivery-contract.test.ts src/core/tokenizers/search/query-learning-interop/index.ts .claude/SESSION_STATE.md CLAUDE.md)"
+    ]
+  },
   "version": "1.0.0",
   "commands": {
     "trusted": [
