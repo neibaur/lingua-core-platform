@@ -23,10 +23,10 @@ Repository-wide architectural audit complete — Phase 14 authorized to proceed.
 
 ## Validation Baseline
 
-- Tests passing: 770
-- Test files: 57
-- Statement coverage: 92.64%
-- Branch at time of last update: docs/architecture-adr13-amendment
+- Tests passing: 788
+- Test files: 58
+- Statement coverage: 92.67%
+- Branch at time of last update: feat/phase14-reading-primitive-search-projection-route-delivery-contract
 - Commit at time of last update: 09bc71ec9396c1a15dd22a2cb34e511ded315136
 
 ## Completed Systems
@@ -148,10 +148,23 @@ Repository-wide architectural audit complete — Phase 14 authorized to proceed.
   invariant guards for enrichmentResult.schemaVersion,
   spellingEntry.schemaVersion, and projectionId; 18 tests (770 total)
   Validation baseline after merge: 770 tests passing, full chain green
+- feat/phase14-reading-primitive-search-projection-route-delivery-contract —
+  introduced ReadingPrimitiveSearchProjectionRouteDeliveryContract structural
+  type (first Phase 14 slice; public application route delivery contract),
+  ComposeReadingPrimitiveSearchProjectionRouteDeliveryContractInput input
+  interface,
+  READING_PRIMITIVE_SEARCH_PROJECTION_ROUTE_DELIVERY_CONTRACT_SCHEMA_VERSION
+  (@phase14), composeReadingPrimitiveSearchProjectionRouteDeliveryContract
+  builder with three inline invariant guards for searchProjection.schemaVersion,
+  deliveryId, and staticContentAddress; derives directly from
+  ReadingPrimitiveSearchProjection (single-layer; no foundational delivery
+  primitive); 18 tests (788 total)
+  Validation baseline after merge: 788 tests passing, full chain green
 
 ## Active Scope and Derivation Surface
 
-- UI/API delivery boundary (Phase 14) — IN PROGRESS
+- UI/API delivery boundary (Phase 14) — IN PROGRESS (first slice delivered:
+  ReadingPrimitiveSearchProjectionRouteDeliveryContract)
 
 ## Deferred Scope
 
@@ -211,6 +224,7 @@ explicitly authorized:
 - "lingua-core-platform:reading-primitive-search-projection@phase13"
 - "lingua-core-platform:writing-primitive-search-projection@phase13"
 - "lingua-core-platform:spelling-entry-search-projection@phase13"
+- "lingua-core-platform:reading-primitive-search-projection-route-delivery-contract@phase14"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 

@@ -19,3 +19,10 @@ export {
   type SpellingEntrySearchProjection,
   type SpellingEntrySearchProjectionSchemaVersion,
 } from "./spelling-entry-search-projection";
+export {
+  READING_PRIMITIVE_SEARCH_PROJECTION_ROUTE_DELIVERY_CONTRACT_SCHEMA_VERSION,
+  composeReadingPrimitiveSearchProjectionRouteDeliveryContract,
+  type ComposeReadingPrimitiveSearchProjectionRouteDeliveryContractInput,
+  type ReadingPrimitiveSearchProjectionRouteDeliveryContract,
+  type ReadingPrimitiveSearchProjectionRouteDeliveryContractSchemaVersion,
+} from "./reading-primitive-search-projection-route-delivery-contract";

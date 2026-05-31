@@ -9,9 +9,10 @@ corrections and targeted fix PRs.
 `lingua-core-platform` is a governance-first deterministic multilingual linguistic
 runtime platform built as a modular monolith. It is initialized for Thai-English
 and is currently at Phase 13 (complete) with Phase 14
-in progress. Phase 13 has delivered three slices:
-ReadingPrimitiveSearchProjection, WritingPrimitiveSearchProjection, and
-SpellingEntrySearchProjection (770 tests, 92.64% coverage).
+in progress. Phase 14 has delivered its first slice:
+ReadingPrimitiveSearchProjectionRouteDeliveryContract, the first public
+application route delivery contract deriving directly from a Phase 13
+projection (788 tests, 92.67% coverage).
 
 ## Authoritative Session Documents
 
@@ -21,6 +22,7 @@ Read these before any implementation:
   completed slices, deferred scope, and schema version literals
 - `.claude/HANDOFF_TEMPLATE.md` — all doctrine laws, session governance
   requirements, and the mandatory pre-implementation assessment format
+- `.claude/settings.json` is tool-managed and excluded from formatting validation because Claude Code may rewrite it during permission persistence.
 
 ## Toolchain
 
