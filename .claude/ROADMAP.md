@@ -18,7 +18,7 @@ Phase 15 and beyond must be explicitly authorized before any work begins.
 | Phase 11 | Dictionary data boundary                                                        | COMPLETE              |
 | Phase 12 | Reading and writing learning surface                                            | COMPLETE              |
 | Phase 13 | Search-to-learning integration                                                  | COMPLETE              |
-| Phase 14 | UI/API delivery boundary                                                        | COMPLETE           |
+| Phase 14 | UI/API delivery boundary                                                        | COMPLETE              |
 | Phase 15 | Tenant and content configuration                                                | PENDING AUTHORIZATION |
 | Phase 16 | AI-assisted private envelope                                                    | PENDING AUTHORIZATION |
 | Phase 17 | Multilingual expansion                                                          | PENDING AUTHORIZATION |
