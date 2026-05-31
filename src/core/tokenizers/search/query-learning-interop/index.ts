@@ -26,3 +26,10 @@ export {
   type ReadingPrimitiveSearchProjectionRouteDeliveryContract,
   type ReadingPrimitiveSearchProjectionRouteDeliveryContractSchemaVersion,
 } from "./reading-primitive-search-projection-route-delivery-contract";
+export {
+  WRITING_PRIMITIVE_SEARCH_PROJECTION_ROUTE_DELIVERY_CONTRACT_SCHEMA_VERSION,
+  composeWritingPrimitiveSearchProjectionRouteDeliveryContract,
+  type ComposeWritingPrimitiveSearchProjectionRouteDeliveryContractInput,
+  type WritingPrimitiveSearchProjectionRouteDeliveryContract,
+  type WritingPrimitiveSearchProjectionRouteDeliveryContractSchemaVersion,
+} from "./writing-primitive-search-projection-route-delivery-contract";
