@@ -36,4 +36,5 @@ Numbers are never reused. If a decision changes, create a new ADR and mark the o
 | [0009](0009-contracts-only-dictionary-data-boundary.md) | Accepted | Establish a contracts-only dictionary data boundary with mandatory typed provenance embedding. |
 | [0010](0010-typed-reference-provenance-fields.md) | Accepted | Enforce typed structural references across all lexical and dictionary boundary contracts. |
 | [0011](0011-learning-surface-layer.md) | Accepted | Define scope boundaries for the reading and writing learning surface layer. |
-| [0012](0012-search-to-learning-integration-boundary.md) | Proposed | Define the architectural boundary for search-to-learning integration. |
+| [0012](0012-search-to-learning-integration-boundary.md) | Accepted | Define the architectural boundary for search-to-learning integration. |
+| [0013](0013-ui-api-delivery-boundary.md) | Accepted | Define the UI/API delivery boundary as deterministic structural delivery contracts over the Phase 13 projections. |

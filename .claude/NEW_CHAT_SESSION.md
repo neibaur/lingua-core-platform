@@ -34,8 +34,8 @@ Before we discuss anything, read these seven files in order by checking for atta
    — immutable platform principles
 
 7. https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/docs/adr/0013-ui-api-delivery-boundary.md
-   — accepted Phase 14 ADR including Structural Vocabulary section and
-   Foundational Delivery Primitive authorization; read in full
+   — accepted Phase 14 ADR (UI/API delivery boundary), including the Structural
+   Vocabulary section and the Phase 14 closure note; read in full
 
 The following file is provided as a reference URL only. Do not fetch or
 read it during bootstrap. Read it only if explicitly instructed to do so
@@ -68,28 +68,25 @@ before discussing any Phase N+1 scope. The audit scope is defined in
 .claude/HANDOFF_TEMPLATE.md §9 phase-transition assessment extension.
 
 After I confirm the state summary is correct, provide the following
-Phase 14 session context before any further discussion:
+Phase 14 closure context before any further discussion:
 
-Three pre-implementation assessments ran against Phase 14 and found no
-warranted implementation slice under the DOCUMENTARY DERIVATION LAW.
-Two targeted documentation amendments to ADR-0013 resolved the blockers:
+Phase 14 (UI/API delivery boundary) is COMPLETE. It delivered the route
+category — three route delivery contracts deriving directly from the Phase 13
+projections: ReadingPrimitiveSearchProjectionRouteDeliveryContract,
+WritingPrimitiveSearchProjectionRouteDeliveryContract, and
+SpellingEntrySearchProjectionRouteDeliveryContract. The foundational delivery
+primitive was assessed and found unwarranted (no consumer; barred by the
+NO SPECULATIVE EXTENSIBILITY LAW). The closure assessment determined the four
+chartered delivery categories resolve to a single groundable structural shape;
+the API, static/SEO, and browser-native fallback categories are deferred as not
+structurally distinct under current grounding, and extending to any of them
+would require new ARCHITECTURE.md content grounding.
 
-- fix/phase14-delivery-vocabulary-amendment — added Structural Vocabulary
-  section to ADR-0013 establishing chartered delivery categories, canonical
-  delivery identity, and static content address as repository-grounded
-  concepts
-
-- fix/adr-0013-foundational-primitive-clarification — authorized a
-  foundational delivery primitive as an explicitly permitted structural
-  precursor to the four chartered delivery categories; updated the
-  "exactly one category" clause; corrected pre-authorization snapshot
-  references in Context and Grounding Sources
-
-The next action is a fresh Opus 4.8 pre-implementation assessment with
-the open question: what is the smallest warranted additive Phase 14
-slice? The foundational delivery primitive authorized in ADR-0013 is
-the most likely first groundable candidate. The assessment must derive
-that conclusion from repository evidence — do not assume it.
+The next action is the Phase 14 → Phase 15 phase-transition audit
+(HANDOFF_TEMPLATE.md §9 — Phase-Transition Assessment Extension), required
+before any Phase 15 (Tenant and content configuration) scope is discussed or
+authorized. Do not begin Phase 15 planning until that audit is confirmed clean
+and Phase 15 is explicitly authorized.
 
 Two standing rules for this session:
 

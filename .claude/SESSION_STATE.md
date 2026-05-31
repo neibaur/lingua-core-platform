@@ -16,6 +16,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 14 ADR: ADR-0013 ACCEPTED (docs/adr/0013-ui-api-delivery-boundary.md)
 - Phase 14 status: COMPLETE (route category — three route delivery contracts merged: Reading/Writing/Spelling
   SearchProjectionRouteDeliveryContract; foundational delivery primitive assessed and found unwarranted; remaining chartered categories deferred — see Deferred Scope)
+- Next phase: Phase 15 — Tenant and content configuration — PENDING AUTHORIZATION (Phase 14→15 phase-transition audit required before
+  authorization; HANDOFF §9)
 - fix/adr-0013-foundational-primitive-clarification — authorized foundational delivery primitive as structural
   precursor to chartered categories; updated "exactly one category" clause; corrected Context and Grounding Sources pre-authorization snapshot references
 - fix/phase14-delivery-vocabulary-amendment — added Structural Vocabulary section to ADR-0013 establishing
@@ -215,10 +217,9 @@ explicitly authorized:
   3 additional conflicts resolved across fix/audit-e-dictionary-driver-
   barrel-hygiene, fix/audit-a-test-fixture-reconciliation-scope, and
   fix/audit-d-phase9-guard-inlining; targeted re-audit confirmed
-  repository clean; Phase 12 authorized to proceed)
-- Schema version migration for any existing @phase9, @phase10, @phase11,
-  or @phase12 constants — not warranted; ARCHITECTURE.md defines no
-  phase-coupled migration semantics
+  repository clean; Phase 12 authorized to proceed) (records the pre-Phase-12 audit only; a Phase 14→15 phase-transition audit per HANDOFF §9 is separately required before Phase 15 — see Current Phase and Status)
+- Schema version migration for any existing constant through @phase14 (@phase9–@phase14) —
+  not warranted;ARCHITECTURE.md defines no phase-coupled migration semantics
 - Phase 14 chartered categories — API contract, static/SEO rendering contract, browser-native fallback
   contract — DEFERRED. The Phase 14 closure assessment determined each resolves to no structurally distinct artifact under current grounding: all would be field-identical to the route delivery contract ({schemaVersion, deliveryId, searchProjection, staticContentAddress}), distinguished only by name, with any category-specific field being domain-convention invention (DOCUMENTARY DERIVATION LAW) or prohibited vocabulary (ADR-0013). The groundable structural delivery surface is a single contract shape realized per-projection (the route category). Building any deferred category as a distinct type requires new ARCHITECTURE.md content grounding — an operator architectural decision, not yet warranted.
 
