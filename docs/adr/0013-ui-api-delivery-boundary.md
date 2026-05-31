@@ -97,6 +97,8 @@ What remains prohibited at this layer. Runtime route resolution, rendering strat
 
 What this ADR does not decide. Exact type names, field names, field shapes, interface members, builder parameters, builder signatures, structural payload shapes, slice count, and file placement. These are derived during pre-implementation assessment and governed by the DOCUMENTARY DERIVATION LAW, the TYPED REFERENCE LAW, the ARTIFACT CLASSIFICATION LAW, and existing sibling topology (HANDOFF_TEMPLATE.md §3, §9).
 
+Closure (Phase 14): delivered as the route category, three route delivery contracts deriving directly from the Phase 13 projections. The foundational delivery primitive was assessed and found unwarranted (no consumer; barred by NO SPECULATIVE EXTENSIBILITY). The API, static/SEO, and browser-native fallback categories are deferred as not structurally distinct under current grounding; extending to any requires new ARCHITECTURE.md content grounding.
+
 Prohibited Vocabulary
 The following terms must not appear in any Phase 14 type name, field name, builder name, schema version literal, test description, or inline comment. Each is grounded in a specific deferred phase or governing law. Presence of any is treated as an indicator of scope drift.
 
