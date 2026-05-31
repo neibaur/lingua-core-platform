@@ -57,6 +57,7 @@ Current high-level layout confirmed from working tree:
 │               ├── pipeline/
 │               ├── query-engine/
 │               ├── query-ir/
+│               ├── query-learning-interop/
 │               ├── query-lexical-interop/
 │               ├── query-parser/
 │               ├── query-pipeline/
