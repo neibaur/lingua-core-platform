@@ -2,9 +2,24 @@
 
 Cross-Session State Document | Updated After Each PR Cycle
 
+## Per-PR Update Block
+
+> Single source of truth for values that change most cycles. Update them here and
+> nowhere else; every other file points to this block rather than restating it.
+> Completed Slices, Schema Version Literals, and Open Doctrinal Questions below
+> are append-only logs.
+
+- Current phase: Phase 15 — Tenant and content configuration — IN PROGRESS (boundary ADR-0014 accepted; 0 code slices)
+- Next action: Author ARCHITECTURE.md grounding amendment for Phase 15 tenant/content configuration — precondition for the first slice per ADR-0014 §6 (pending operator decision on which concepts to commit)
+- Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
+- Tests passing: 824
+- Test files: 60
+- Statement coverage: 92.73%
+- Branch at last update: feat/adr-0014-tenant-content-boundary
+- Commit at last update: bf2ff6e19e7338dd775c27ca844f86cc00082fa3
+
 ## Current Phase and Status
 
-- Current phase: Phase 14 — UI/API Delivery Boundary — COMPLETE
 - Phase 11 status: COMPLETE (all four slices merged)
 - Phase 12 status: COMPLETE (all three slices merged)
 - Phase 12 first slice COMPLETE: SpellingEntry (feat/phase12-spelling-entry)
@@ -16,8 +31,6 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Phase 14 ADR: ADR-0013 ACCEPTED (docs/adr/0013-ui-api-delivery-boundary.md)
 - Phase 14 status: COMPLETE (route category — three route delivery contracts merged: Reading/Writing/Spelling
   SearchProjectionRouteDeliveryContract; foundational delivery primitive assessed and found unwarranted; remaining chartered categories deferred — see Deferred Scope)
-- Next phase: Phase 15 — Tenant and content configuration — AUTHORIZED for ADR-0014 boundary drafting only
-  (Phase 14→15 phase-transition audit COMPLETE and CONFIRMED CLEAN; HANDOFF §9)
 - fix/adr-0013-foundational-primitive-clarification — authorized foundational delivery primitive as structural
   precursor to chartered categories; updated "exactly one category" clause; corrected Context and Grounding Sources pre-authorization snapshot references
 - fix/phase14-delivery-vocabulary-amendment — added Structural Vocabulary section to ADR-0013 establishing
@@ -26,16 +39,9 @@ Cross-Session State Document | Updated After Each PR Cycle
   grounding for Phase 14 delivery-contract content concepts, including static content address and deterministic structural delivery contracts; documentation-only governance clarification, no implementation slice delivered
 - fix/adr-0013-delivery-boundary-companion-clarification — aligned ADR-0013 with the ARCHITECTURE.md Delivery
   Boundary Layer grounding; clarified that future Phase 14 assessments may evaluate directly chartered delivery contracts against the new architectural grounding; documentation-only clarification, no implementation slice delivered
+- Phase 15 ADR: ADR-0014 ACCEPTED (docs/adr/0014-tenant-and-content-configuration-boundary.md)
 
 Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. The Phase 14→15 phase-transition audit (HANDOFF §9) was completed and CONFIRMED CLEAN across all five audit categories (Audit A schema-literal reconciliation 36/36 bidirectional; Audits B–E clean), with the validation chain green at 824 tests / 60 files / 92.73% statement coverage; Phase 15 is AUTHORIZED for ADR-0014 boundary drafting (see Current Phase and Status).
-
-## Validation Baseline
-
-- Tests passing: 824
-- Test files: 60
-- Statement coverage: 92.73%
-- Branch at time of last update: fix/phase14-15-audit-record-and-doc-reconciliation
-- Commit at time of last update: df4648e6aa82a6935272caa85f4dc33fc1b31576
 
 ## Completed Systems
 
@@ -324,3 +330,17 @@ Prior PA.8 conflicts (resolved):
   two additional occurrences present in source): RESOLVED — exclusion note
   restated as class-based exclusion covering all present and future
   negative-case fixture occurrences of this literal
+
+Resolved doctrinal rulings:
+
+- Accepted ADRs and field grounding (operator ruling): Accepted ADRs PERMIT and
+  scope concepts, boundaries, vocabulary, and prohibitions, but do NOT constitute
+  field-grounding evidence under the DOCUMENTARY DERIVATION LAW. The grounding
+  sources for contract fields — ARCHITECTURE.md, DATA_SOURCES.md, and existing
+  type signatures — are exhaustive; docs/adr/\*.md are not field-grounding sources.
+  Basis: the DDL closing enumeration ("Only DATA_SOURCES.md, ARCHITECTURE.md, and
+  confirmed existing type signatures qualify"), and unanimous Phase 11–14
+  precedent (zero ADR-originated fields; staticContentAddress was grounded by an
+  ARCHITECTURE.md amendment, not by ADR-0013). This is why ADR-0014 §6 names an
+  ARCHITECTURE.md grounding amendment as the precondition for the first Phase 15
+  slice.
