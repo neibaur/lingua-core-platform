@@ -19,7 +19,7 @@ Phase 16 and beyond must be explicitly authorized before any work begins.
 | Phase 12 | Reading and writing learning surface                                            | COMPLETE                                |
 | Phase 13 | Search-to-learning integration                                                  | COMPLETE                                |
 | Phase 14 | UI/API delivery boundary                                                        | COMPLETE                                |
-| Phase 15 | Tenant and content configuration                                                | AUTHORIZED — ADR-0014 boundary drafting |
+| Phase 15 | Tenant and content configuration                                                | AUTHORIZED — ADR-0014 boundary accepted |
 | Phase 16 | AI-assisted private envelope                                                    | PENDING AUTHORIZATION                   |
 | Phase 17 | Multilingual expansion                                                          | PENDING AUTHORIZATION                   |
 
@@ -63,12 +63,11 @@ Delivered as the route category (three route delivery contracts deriving directl
 
 **Phase 15** — Tenant and content configuration. Tenant and language
 configuration, feature boundaries, branding, and content visibility controls.
-Requires explicit authorization.
 
 **Phase 16** — AI-assisted private envelope. Optional private-envelope AI
 workflows for explanation, generation, tutoring, or enrichment. AI must not
-become a core runtime dependency. Requires explicit authorization.
+become a core runtime dependency.
 
 **Phase 17** — Multilingual expansion. Extend the deterministic language
 substrate beyond Thai-first support, including Mandarin and future language
-modules. Requires explicit authorization.
+modules.

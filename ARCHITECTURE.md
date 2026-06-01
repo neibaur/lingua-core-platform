@@ -227,7 +227,7 @@ SpellingEntrySearchProjection
         ↓
 Delivery contracts (Phase 14 — delivery boundary)
         ↓
-Tenant and content configuration (Phase 15 — deferred) consumes delivery
+Tenant and content configuration (Phase 15) consumes delivery
 contracts without reaching through Phase 13 internals.
 ```
 
