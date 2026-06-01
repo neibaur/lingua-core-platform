@@ -122,6 +122,97 @@ WritingPrimitiveSearchProjection
 SpellingEntrySearchProjection
 (Phase 13 — search-to-learning integration, query-learning-interop/)
 
+## Tenant and Content Configuration Layer
+
+The tenant and content configuration layer is the Phase 15 structural boundary,
+positioned after the Phase 14 delivery boundary in the layer stack. This section
+is binding architectural grounding for the tenant and content configuration
+concepts named below; the binding per-phase boundary decision for this layer is
+recorded in ADR-0014. It supplies binding grounding — not the conceptual sketch of
+the Database Blueprint — for exactly the concepts defined here, and for nothing
+else.
+
+Configuration at this layer is structural data only. A configuration artifact is
+deterministic, caller-supplied, and deep-frozen; equivalent inputs produce
+equivalent configuration. This layer is not a tenant-resolution engine, a routing
+layer, or a runtime configuration evaluator. The runtime flow described in
+"Multi-Tenant Routing Concept" (hostname → middleware → resolve → apply) is a
+separate, later concern and is not grounded by this layer.
+
+### Tenant Identity
+
+A tenant identity is a structural, caller-supplied identifier distinguishing one
+tenant's configuration from another. It carries no generated value, no default,
+and no internal derivation routine; it accepts a caller-supplied primitive only
+(Replay-Safe Governance Law). It is read as data, never resolved at runtime from a
+hostname, domain, or request context (Static Resolution Law); that resolution is
+the runtime concern of the Multi-Tenant Routing Concept and is out of scope here.
+
+### Tenant-Scoped Enabled-Language Configuration
+
+Tenants may declare which already-supported language experiences are enabled for
+that tenant. Adding new language modules remains Phase 17.
+
+Enabled-language configuration is the deterministic, caller-supplied structural
+representation of which of the platform's already-supported languages are enabled
+for a given tenant. The platform's currently supported scope is Thai-first
+(Thai-English). Enabling a language is a configuration choice over the existing
+supported set; it is never the addition or expansion of a language module. A
+configuration that would enable a language the platform does not already support
+is out of scope and belongs to Phase 17 (Multilingual expansion).
+
+Canonical language identity is a required precursor decision for the first Phase
+15 implementation slice and is intentionally not decided here. The
+pre-implementation assessment for that slice must determine whether to reuse
+SupportedLanguageCode, reuse LexicalLanguageCode, or introduce a new canonical
+language-identity type, under the binding constraint that the chosen
+representation must not admit a language the platform does not already support —
+it must not, by reuse, silently authorize a Phase 17 language. This document does
+not select among those options; it records the decision as a precursor and binds
+the constraint.
+
+### Grounding Scope and the Database Blueprint
+
+This layer provides binding architectural grounding for two concepts only: tenant
+identity and tenant-scoped enabled-language configuration, as defined above. A
+Phase 15 contract field may be grounded in these definitions. The "Database
+Blueprint" section remains conceptual ("subject to ADRs and future migration
+decisions") in all other respects: this section promotes only these two concepts
+from that conceptual sketch to binding grounding, and the remaining candidate
+fields (hostname/domain mapping, branding references, feature flags, and the
+dictionary_tenant_tags tagging/visibility/weighting concepts) stay conceptual and
+are not grounding for any contract field. Content organization (curriculum, lesson
+grouping, content sequencing, tenant-specific weighting, content visibility),
+branding, feature boundaries, runtime tenant resolution, and the addition of new
+language modules are not grounded here; grounding any of them later requires a
+further binding amendment and remains an operator decision.
+
+### Tenant and Content Configuration Non-Goals
+
+The following are excluded from this layer, each barred by a named law or deferred
+to a later phase: runtime tenant routing, middleware, hostname/domain resolution,
+request-context application, and runtime configuration resolution (Static
+Resolution Law; owned as a runtime concern by the Multi-Tenant Routing Concept);
+content organization — curriculum, lesson grouping, content sequencing,
+tenant-specific weighting, and content visibility (deferred; not grounded here);
+branding and feature boundaries (conceptual Database Blueprint only); persistence,
+database migrations, ORM, hosting, deployment topology, authentication, sessions,
+and analytics/telemetry (Explicit Non-Goals); and the addition or expansion of
+language modules, including any not-yet-supported language (Phase 17). This layer
+introduces no router, middleware, persistence, or runtime resolution.
+
+### Layer Position
+
+```text
+Delivery contracts (Phase 14 — delivery boundary)
+        ↓
+Tenant and content configuration (Phase 15) — structural tenant identity and
+tenant-scoped enabled-language configuration. Consumes delivery contracts without
+reaching through Phase 13 internals. Whether a configuration artifact derives
+from, composes with, or is parallel to the delivery contracts is determined at
+per-slice pre-implementation assessment (ADR-0014 §5).
+```
+
 ### Scope Boundaries
 
 - Lesson grouping, sequencing, tenant-specific weighting, and curriculum

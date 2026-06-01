@@ -9,14 +9,17 @@ Cross-Session State Document | Updated After Each PR Cycle
 > Completed Slices, Schema Version Literals, and Open Doctrinal Questions below
 > are append-only logs.
 
-- Current phase: Phase 15 — Tenant and content configuration — IN PROGRESS (boundary ADR-0014 accepted; 0 code slices)
-- Next action: Author ARCHITECTURE.md grounding amendment for Phase 15 tenant/content configuration — precondition for the first slice per ADR-0014 §6 (pending operator decision on which concepts to commit)
-- Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
+- Current phase: Phase 15 — Tenant and content configuration — IN PROGRESS (boundary ADR-0014 accepted;
+  grounding amendment merged; 0 code slices)
+- Next action: First Phase 15 slice — repository-first pre-implementation assessment of the smallest
+  viable tenant-identity + enabled-language configuration contract, grounded in ARCHITECTURE.md — Tenant and Content Configuration Layer; the assessment must first resolve the canonical-language-identity precursor (reuse SupportedLanguageCode / reuse LexicalLanguageCode / new type) under the Phase 15/17 constraint.
+- Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
+  (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
 - Tests passing: 824
 - Test files: 60
 - Statement coverage: 92.73%
-- Branch at last update: feat/adr-0014-tenant-content-boundary
-- Commit at last update: bf2ff6e19e7338dd775c27ca844f86cc00082fa3
+- Branch at last update: fix/phase15-architecture-grounding
+- Commit at last update: 66df00bf5ae0354aa695e22afd24235f1297aec9
 
 ## Current Phase and Status
 
