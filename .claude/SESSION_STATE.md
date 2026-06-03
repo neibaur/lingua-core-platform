@@ -11,15 +11,15 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 - Current phase: Phase 15 — Tenant and content configuration — IN PROGRESS (boundary ADR-0014 accepted;
   tenant/content grounding amendment merged; canonical language identity grounded; 0 code slices)
-- Next action: Re-run the Phase 15 first-slice pre-implementation assessment (tenant identity +
-  enabled-language configuration) against the new Canonical Language Identity grounding (BCP-47; delivered set th/en). Prior assessment stands except the language-type spelling, grounding citation, and likely a dedicated file for the canonical type.
+- Next action: Re-derive the Phase 15 first slice (tenant configuration) against the enabled-language
+  set-semantics grounding — add a duplicate-rejection guard (adjacent-equality after sort; not Set/indexOf, per INVARIANT GUARD FORM LAW), empty still allowed. Prior derivation otherwise stands.
 - Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
   (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
 - Tests passing: 824
 - Test files: 60
 - Statement coverage: 92.73%
-- Branch at last update: fix/phase15-architecture-grounding
-- Commit at last update: 903fb1cbaa0c04ba546fc2cfda15b7e9afe989b0
+- Branch at last update: fix/canonical-language-identity-grounding
+- Commit at last update: 7bf2351f3a3a610f38d0f501b81f62a15a591a7e
 
 ## Current Phase and Status
 
@@ -357,3 +357,11 @@ Resolved doctrinal rulings:
   (ABSTRACTION GOVERNANCE LAW). Reuse of SupportedLanguageCode was rejected on the
   "zh"/Phase-17 constraint; full-word English spelling was rejected in favor of
   standard tags for unambiguous dialect identity.
+
+- Enabled-language set semantics (operator decision): tenant-scoped enabled-language
+  configuration is set-valued — each delivered language appears at most once.
+  Duplicate entries are invalid and rejected at construction (not silently
+  de-duplicated), keeping caller input un-normalized and consistent with the
+  fail-fast guard and no-internal-derivation posture. The set is deterministically
+  ordered; an empty set is permitted (no non-empty invariant). Grounded in
+  ARCHITECTURE.md — Tenant-Scoped Enabled-Language Configuration.

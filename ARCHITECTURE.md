@@ -170,6 +170,14 @@ against `SupportedLanguageCode` (which may carry not-yet-delivered codes) or
 `LexicalLanguageCode`. The Phase 15/17 boundary holds: enabling a currently
 delivered language is Phase 15; adding a language to the delivered set is Phase 17.
 
+Enabled-language configuration is set-valued: each delivered language appears at
+most once for a tenant. A configuration that presents the same delivered language
+more than once is invalid and is rejected at construction; duplicate entries are
+not silently de-duplicated, so caller input is never normalized. The stored
+representation is deterministically ordered by the platform's binary lexicographic
+ordering rule. An empty set is permitted and denotes a tenant with no currently
+enabled language experience; no minimum-membership invariant is imposed.
+
 ### Grounding Scope and the Database Blueprint
 
 This layer provides binding architectural grounding for two concepts only: tenant
