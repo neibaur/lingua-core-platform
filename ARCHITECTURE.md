@@ -161,15 +161,14 @@ supported set; it is never the addition or expansion of a language module. A
 configuration that would enable a language the platform does not already support
 is out of scope and belongs to Phase 17 (Multilingual expansion).
 
-Canonical language identity is a required precursor decision for the first Phase
-15 implementation slice and is intentionally not decided here. The
-pre-implementation assessment for that slice must determine whether to reuse
-SupportedLanguageCode, reuse LexicalLanguageCode, or introduce a new canonical
-language-identity type, under the binding constraint that the chosen
-representation must not admit a language the platform does not already support —
-it must not, by reuse, silently authorize a Phase 17 language. This document does
-not select among those options; it records the decision as a precursor and binds
-the constraint.
+Enabled-language values reference the platform's canonical language identity (see
+the Canonical Language Identity section): the currently delivered set, represented
+by standard language tags (`th`, `en`). The earlier precursor — whether to reuse an
+existing language type or establish a canonical one — is resolved there.
+Enabled-language configuration is typed against canonical language identity, not
+against `SupportedLanguageCode` (which may carry not-yet-delivered codes) or
+`LexicalLanguageCode`. The Phase 15/17 boundary holds: enabling a currently
+delivered language is Phase 15; adding a language to the delivered set is Phase 17.
 
 ### Grounding Scope and the Database Blueprint
 
@@ -186,6 +185,48 @@ grouping, content sequencing, tenant-specific weighting, content visibility),
 branding, feature boundaries, runtime tenant resolution, and the addition of new
 language modules are not grounded here; grounding any of them later requires a
 further binding amendment and remains an operator decision.
+
+## Canonical Language Identity
+
+Canonical language identity is the platform's binding representation of the human
+languages it delivers. A delivered language is identified by its standard language
+tag (BCP 47, which subsumes ISO 639); the currently delivered set is Thai (`th`)
+and English (`en`). This identity is a closed enumeration of the languages the
+platform actually delivers — not a registry of every language an internal layer
+may reference.
+
+This identity is structural and forward-only. It is introduced as binding
+grounding for language-aware configuration from Phase 15 onward; it does not
+migrate, rename, or alter any existing type.
+
+Relationship to existing language types (no coupling). Canonical language identity
+is distinct from, and independent of, the two pre-existing language types:
+
+- `SupportedLanguageCode` (`"th" | "zh" | "en"`, tokenizer driver) is the
+  tokenizer's own code set and may carry codes for languages not yet delivered by
+  the platform (e.g. `zh`, a Phase 17 module). It is not the canonical
+  delivered-language identity, and the two must not be coupled or
+  auto-synchronized — an edit to one never implies an edit to the other.
+- `LexicalLanguageCode` (`"thai" | "en"`, lexical entry identity) is the language
+  segment of a lexical entry identifier and uses a different spelling for Thai
+  (`thai`). It is a lexical-domain identity, not the canonical delivered-language
+  identity.
+  The spelling divergence between canonical language identity (`th`) and
+  `LexicalLanguageCode` (`thai`) is tolerated legacy, not an error to be reconciled
+  (ABSTRACTION GOVERNANCE LAW — intentional duplication over premature coupling; NO
+  OPPORTUNISTIC CLEANUP LAW). No existing language type is migrated.
+
+Expansion is governed. Adding a language to the delivered set — including any
+dialect or regional variant — is a Phase 17 (Multilingual expansion) decision and
+a governed, explicit edit to this identity. This section grounds only the
+currently delivered set; it neither enumerates nor designs for any not-yet-
+delivered language.
+
+This resolves the canonical-language-identity precursor recorded in ADR-0014 §7
+and in the Tenant and Content Configuration Layer. The concrete type name, shape,
+guard form, and file placement are derived at per-slice pre-implementation
+assessment under the DOCUMENTARY DERIVATION LAW and TYPED REFERENCE LAW; this
+section does not prescribe them.
 
 ### Tenant and Content Configuration Non-Goals
 
