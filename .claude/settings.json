@@ -15,7 +15,9 @@
       "Bash(echo \"COVERAGE_EXIT:$?\")",
       "Bash(echo \"VALIDATE_EXIT:$?\")",
       "Bash(echo \"FMT_EXIT:$?\")",
-      "Bash(:)"
+      "Bash(:)",
+      "PowerShell(pnpm lint)",
+      "PowerShell(pnpm typecheck)"
     ]
   },
   "version": "1.0.0",

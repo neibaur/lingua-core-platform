@@ -10,16 +10,16 @@ Cross-Session State Document | Updated After Each PR Cycle
 > are append-only logs.
 
 - Current phase: Phase 15 — Tenant and content configuration — IN PROGRESS (boundary ADR-0014 accepted;
-  grounding amendment merged; 0 code slices)
-- Next action: First Phase 15 slice — repository-first pre-implementation assessment of the smallest
-  viable tenant-identity + enabled-language configuration contract, grounded in ARCHITECTURE.md — Tenant and Content Configuration Layer; the assessment must first resolve the canonical-language-identity precursor (reuse SupportedLanguageCode / reuse LexicalLanguageCode / new type) under the Phase 15/17 constraint.
+  tenant/content grounding amendment merged; canonical language identity grounded; 0 code slices)
+- Next action: Re-run the Phase 15 first-slice pre-implementation assessment (tenant identity +
+  enabled-language configuration) against the new Canonical Language Identity grounding (BCP-47; delivered set th/en). Prior assessment stands except the language-type spelling, grounding citation, and likely a dedicated file for the canonical type.
 - Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
   (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
 - Tests passing: 824
 - Test files: 60
 - Statement coverage: 92.73%
 - Branch at last update: fix/phase15-architecture-grounding
-- Commit at last update: 66df00bf5ae0354aa695e22afd24235f1297aec9
+- Commit at last update: 903fb1cbaa0c04ba546fc2cfda15b7e9afe989b0
 
 ## Current Phase and Status
 
@@ -347,3 +347,13 @@ Resolved doctrinal rulings:
   ARCHITECTURE.md amendment, not by ADR-0013). This is why ADR-0014 §6 names an
   ARCHITECTURE.md grounding amendment as the precondition for the first Phase 15
   slice.
+
+- Canonical language identity (ADR-0014 §7, resolved): the platform represents
+  delivered languages by standard language tag (BCP 47 / ISO 639); the delivered
+  set is {th, en}. Grounded in ARCHITECTURE.md — Canonical Language Identity,
+  forward-only and additive: existing language types (SupportedLanguageCode,
+  LexicalLanguageCode, LexicalLanguageDirection) are not migrated, and the
+  spelling divergence with LexicalLanguageCode ("thai") is tolerated legacy
+  (ABSTRACTION GOVERNANCE LAW). Reuse of SupportedLanguageCode was rejected on the
+  "zh"/Phase-17 constraint; full-word English spelling was rejected in favor of
+  standard tags for unambiguous dialect identity.
