@@ -10,18 +10,18 @@ Phase 16 and beyond must be explicitly authorized before any work begins.
 
 ## Phase Status
 
-| Phase    | Title                                                                           | Status                                  |
-| -------- | ------------------------------------------------------------------------------- | --------------------------------------- |
-| Phase 8  | Deterministic query explainability, replay governance, and audit infrastructure | COMPLETE                                |
-| Phase 9  | Deterministic runtime capability governance                                     | COMPLETE                                |
-| Phase 10 | Lexical foundation and interoperability                                         | COMPLETE                                |
-| Phase 11 | Dictionary data boundary                                                        | COMPLETE                                |
-| Phase 12 | Reading and writing learning surface                                            | COMPLETE                                |
-| Phase 13 | Search-to-learning integration                                                  | COMPLETE                                |
-| Phase 14 | UI/API delivery boundary                                                        | COMPLETE                                |
-| Phase 15 | Tenant and content configuration                                                | AUTHORIZED — ADR-0014 boundary accepted |
-| Phase 16 | AI-assisted private envelope                                                    | PENDING AUTHORIZATION                   |
-| Phase 17 | Multilingual expansion                                                          | PENDING AUTHORIZATION                   |
+| Phase    | Title                                                                           | Status                |
+| -------- | ------------------------------------------------------------------------------- | --------------------- |
+| Phase 8  | Deterministic query explainability, replay governance, and audit infrastructure | COMPLETE              |
+| Phase 9  | Deterministic runtime capability governance                                     | COMPLETE              |
+| Phase 10 | Lexical foundation and interoperability                                         | COMPLETE              |
+| Phase 11 | Dictionary data boundary                                                        | COMPLETE              |
+| Phase 12 | Reading and writing learning surface                                            | COMPLETE              |
+| Phase 13 | Search-to-learning integration                                                  | COMPLETE              |
+| Phase 14 | UI/API delivery boundary                                                        | COMPLETE              |
+| Phase 15 | Tenant and content configuration                                                | IN PROGRESS           |
+| Phase 16 | AI-assisted private envelope                                                    | PENDING AUTHORIZATION |
+| Phase 17 | Multilingual expansion                                                          | PENDING AUTHORIZATION |
 
 ## Phase Summaries
 
