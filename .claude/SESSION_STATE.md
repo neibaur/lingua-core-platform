@@ -9,17 +9,17 @@ Cross-Session State Document | Updated After Each PR Cycle
 > Completed Slices, Schema Version Literals, and Open Doctrinal Questions below
 > are append-only logs.
 
-- Current phase: Phase 15 — Tenant and content configuration — IN PROGRESS (boundary ADR-0014 accepted;
-  tenant/content grounding amendment merged; canonical language identity grounded; 0 code slices)
+- Current phase: PPhase 15 — IN PROGRESS (boundary ADR-0014 accepted; tenant/content, canonical-language,
+  and enabled-language-set grounding merged; 1 code slice merged)
 - Next action: Re-derive the Phase 15 first slice (tenant configuration) against the enabled-language
   set-semantics grounding — add a duplicate-rejection guard (adjacent-equality after sort; not Set/indexOf, per INVARIANT GUARD FORM LAW), empty still allowed. Prior derivation otherwise stands.
 - Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
   (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
-- Tests passing: 824
-- Test files: 60
-- Statement coverage: 92.73%
-- Branch at last update: fix/canonical-language-identity-grounding
-- Commit at last update: 7bf2351f3a3a610f38d0f501b81f62a15a591a7e
+- Tests passing: 843
+- Test files: 61
+- Statement coverage: 92.78%
+- Branch at last update: fix/enabled-language-set-semantics
+- Commit at last update: f35aa8c
 
 ## Current Phase and Status
 
@@ -44,7 +44,7 @@ Cross-Session State Document | Updated After Each PR Cycle
   Boundary Layer grounding; clarified that future Phase 14 assessments may evaluate directly chartered delivery contracts against the new architectural grounding; documentation-only clarification, no implementation slice delivered
 - Phase 15 ADR: ADR-0014 ACCEPTED (docs/adr/0014-tenant-and-content-configuration-boundary.md)
 
-Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. The Phase 14→15 phase-transition audit (HANDOFF §9) was completed and CONFIRMED CLEAN across all five audit categories (Audit A schema-literal reconciliation 36/36 bidirectional; Audits B–E clean), with the validation chain green at 824 tests / 60 files / 92.73% statement coverage; Phase 15 is AUTHORIZED for ADR-0014 boundary drafting (see Current Phase and Status).
+Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. The Phase 14→15 phase-transition audit (HANDOFF §9) was completed and CONFIRMED CLEAN across all five audit categories (Audit A schema-literal reconciliation 37/37 bidirectional; Audits B–E clean), with the validation chain green at 824 tests / 60 files / 92.73% statement coverage; Phase 15 is AUTHORIZED for ADR-0014 boundary drafting (see Current Phase and Status).
 
 ## Completed Systems
 
@@ -202,6 +202,15 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
   SpellingEntrySearchProjection (single-layer; no foundational delivery
   primitive); barrel append (sixth export block); 18 tests (824 total)
   Validation baseline after merge: 824 tests passing, full chain green
+- Phase 15 slice 1 — Tenant configuration. Foundational CanonicalLanguageTag =
+  "th" | "en" (src/core/language/, new module + barrel; no schemaVersion) and
+  STRUCTURAL TenantConfiguration { schemaVersion, tenantId, enabledLanguages:
+  readonly CanonicalLanguageTag[] } via composeTenantConfiguration (src/core/tenant/,
+  new module + barrel). Guards: tenantId non-empty; per-element membership
+  ("th"/"en"); clone-before-sort binary ordering; adjacent-equality duplicate
+  rejection; empty set permitted. Parallel (ADR-0014 §5(c)); terminal
+  deepFreezeStructure. Branch feat/phase15-tenant-configuration, commit 3824cad.
+  843 / 61 / 92.78%.
 
 ## Active Scope and Derivation Surface
 
@@ -270,6 +279,7 @@ explicitly authorized:
 - "lingua-core-platform:reading-primitive-search-projection-route-delivery-contract@phase14"
 - "lingua-core-platform:writing-primitive-search-projection-route-delivery-contract@phase14"
 - "lingua-core-platform:spelling-entry-search-projection-route-delivery-contract@phase14"
+- "lingua-core-platform:tenant-configuration@phase15"
 
 ### Test Fixture Literals — Excluded from Bidirectional Reconciliation
 
