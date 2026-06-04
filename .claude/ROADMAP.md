@@ -21,7 +21,7 @@ Phase 16 and beyond must be explicitly authorized before any work begins.
 | Phase 12 | Reading and writing learning surface                                            | COMPLETE              |
 | Phase 13 | Search-to-learning integration                                                  | COMPLETE              |
 | Phase 14 | UI/API delivery boundary                                                        | COMPLETE              |
-| Phase 15 | Tenant and content configuration                                                | IN PROGRESS           |
+| Phase 15 | Tenant and content configuration                                                | COMPLETE              |
 | Phase 16 | AI-assisted private envelope                                                    | PENDING AUTHORIZATION |
 | Phase 17 | Multilingual expansion                                                          | PENDING AUTHORIZATION |
 
@@ -65,6 +65,9 @@ Delivered as the route category (three route delivery contracts deriving directl
 
 **Phase 15** — Tenant and content configuration. Tenant and language
 configuration, feature boundaries, branding, and content visibility controls.
+Delivered: TenantConfiguration (tenant identity + enabled-language configuration)
+and CanonicalLanguageTag. Remaining concepts (content organization, content
+visibility, branding, feature flags) deferred per ADR-0015.
 
 **Phase 16** — AI-assisted private envelope. Optional private-envelope AI
 workflows for explanation, generation, tutoring, or enrichment. AI must not
