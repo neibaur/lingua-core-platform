@@ -12,6 +12,7 @@ export default tseslint.config(
       "coverage/**",
       ".turbo/**",
       ".venv/**",
+      "apps/**/.astro/**",
     ],
   },
   js.configs.recommended,
