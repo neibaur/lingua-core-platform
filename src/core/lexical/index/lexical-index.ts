@@ -4,6 +4,7 @@ import {
   type LexicalEntry,
   type LexicalIndex,
 } from "../contracts";
+import { canonicalizeEnglishKey } from "../normalization/canonicalize-english-key";
 import { normalizeLexicalKey } from "../normalization/normalize-lexical-key";
 
 export interface ComposeLexicalIndexInput {
@@ -45,7 +46,7 @@ export function composeLexicalIndex(
     thaiToEnglish[canonicalThaiKey] = entry;
 
     for (const def of entry.definitions) {
-      const canonicalEnglishKey = def.definition.toLowerCase();
+      const canonicalEnglishKey = canonicalizeEnglishKey(def.definition);
       const bucket = englishToThaiBuilder[canonicalEnglishKey];
       if (bucket === undefined) {
         englishToThaiBuilder[canonicalEnglishKey] = [entry];

@@ -215,4 +215,75 @@ describe("composeLexicalLookup", () => {
     const roundTripped = JSON.parse(JSON.stringify(result)) as typeof result;
     expect(roundTripped).toEqual(result);
   });
+
+  it("resolves a multi-word English gloss in en→th direction", () => {
+    const result = composeLexicalLookup(
+      {
+        query: "to eat",
+        direction: "en→th",
+        lexicalIndexId: TEST_INDEX.lexicalIndexId,
+      },
+      TEST_INDEX,
+    );
+
+    expect(result.entries).toHaveLength(1);
+    expect(result.entries[0].headword).toBe("กิน");
+    expect(result.diagnostics).toHaveLength(0);
+  });
+
+  it("admits a whitespace-bearing query in en→th direction (per-direction guard)", () => {
+    expect(() => {
+      composeLexicalLookup(
+        {
+          query: "to eat",
+          direction: "en→th",
+          lexicalIndexId: TEST_INDEX.lexicalIndexId,
+        },
+        TEST_INDEX,
+      );
+    }).not.toThrow();
+  });
+
+  it("still throws on whitespace in th→en direction (per-direction guard)", () => {
+    expect(() => {
+      composeLexicalLookup(
+        {
+          query: "กิน ข้าว",
+          direction: "th→en",
+          lexicalIndexId: TEST_INDEX.lexicalIndexId,
+        },
+        TEST_INDEX,
+      );
+    }).toThrow("[lexical invariant]");
+  });
+
+  it("resolves an en→th query with irregular whitespace via collapse/trim canonicalization", () => {
+    const result = composeLexicalLookup(
+      {
+        query: "  to   eat ",
+        direction: "en→th",
+        lexicalIndexId: TEST_INDEX.lexicalIndexId,
+      },
+      TEST_INDEX,
+    );
+
+    expect(result.entries).toHaveLength(1);
+    expect(result.entries[0].headword).toBe("กิน");
+    expect(result.diagnostics).toHaveLength(0);
+  });
+
+  it("still resolves a single-word en→th query unchanged (no regression)", () => {
+    const result = composeLexicalLookup(
+      {
+        query: "rice",
+        direction: "en→th",
+        lexicalIndexId: TEST_INDEX.lexicalIndexId,
+      },
+      TEST_INDEX,
+    );
+
+    expect(result.entries).toHaveLength(1);
+    expect(result.entries[0].headword).toBe("ข้าว");
+    expect(result.diagnostics).toHaveLength(0);
+  });
 });
