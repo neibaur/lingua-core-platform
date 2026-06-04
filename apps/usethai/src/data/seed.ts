@@ -14,41 +14,57 @@ export const seed: LexicalEntry[] = [
   {
     headword: "กิน",
     romanized: "kin",
-    definitions: [{ definitionIndex: 0, definition: "to eat", partOfSpeech: "verb" }],
+    definitions: [
+      { definitionIndex: 0, definition: "to eat", partOfSpeech: "verb" },
+    ],
   },
   {
     headword: "ข้าว",
     romanized: "khao",
-    definitions: [{ definitionIndex: 0, definition: "rice", partOfSpeech: "noun" }],
+    definitions: [
+      { definitionIndex: 0, definition: "rice", partOfSpeech: "noun" },
+    ],
   },
   {
     headword: "น้ำ",
     romanized: "nam",
-    definitions: [{ definitionIndex: 0, definition: "water", partOfSpeech: "noun" }],
+    definitions: [
+      { definitionIndex: 0, definition: "water", partOfSpeech: "noun" },
+    ],
   },
   {
     headword: "ดี",
     romanized: "dee",
-    definitions: [{ definitionIndex: 0, definition: "good", partOfSpeech: "adjective" }],
+    definitions: [
+      { definitionIndex: 0, definition: "good", partOfSpeech: "adjective" },
+    ],
   },
   {
     headword: "มา",
     romanized: "maa",
-    definitions: [{ definitionIndex: 0, definition: "come", partOfSpeech: "verb" }],
+    definitions: [
+      { definitionIndex: 0, definition: "come", partOfSpeech: "verb" },
+    ],
   },
   {
     headword: "ไป",
     romanized: "pai",
-    definitions: [{ definitionIndex: 0, definition: "go", partOfSpeech: "verb" }],
+    definitions: [
+      { definitionIndex: 0, definition: "go", partOfSpeech: "verb" },
+    ],
   },
   {
     headword: "บ้าน",
     romanized: "baan",
-    definitions: [{ definitionIndex: 0, definition: "house", partOfSpeech: "noun" }],
+    definitions: [
+      { definitionIndex: 0, definition: "house", partOfSpeech: "noun" },
+    ],
   },
   {
     headword: "รัก",
     romanized: "rak",
-    definitions: [{ definitionIndex: 0, definition: "love", partOfSpeech: "verb" }],
+    definitions: [
+      { definitionIndex: 0, definition: "love", partOfSpeech: "verb" },
+    ],
   },
 ];
