@@ -1,6 +1,10 @@
 # Dependency directories
 node_modules/
 
+# Astro generated files
+.astro/
+apps/**/.astro/
+
 # Next.js build output
 .next/
 
