@@ -11,24 +11,24 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 - Current phase: Phase 15 — IN PROGRESS (boundary ADR-0014 accepted; tenant/content, canonical-language,
   and enabled-language-set grounding merged; 1 code slice merged)
-- Next action: The application shell (apps/usethai — branch feat/usethai-shell,
-  with astro check wired) is built, validated locally (กิน → "to eat" renders
-  th→en), and merged to main. It is application-tier, not a core slice. Next
-  effort: scope search/tokenizer integration — route lookup through
-  src/core/tokenizers + the search layer for prefix/fuzzy matching and word-level
-  English keying. The first question is what those barrels expose, which decides
-  app-tier consumption vs a thin core seam. Separately pending and independent:
-  whether to formally close Phase 15 COMPLETE (grounded tenant slice shipped;
-  content configuration remains deferred/ungrounded — a Phase-14-style closure
-  assessment + ADR). Phase 16 (AI envelope) is premature until the dictionary UX
-  moves past exact-key lookup.
+- Next action: en→th multi-word gloss grounding (Option D) is merged — ARCHITECTURE.md
+  "Lexical Key Normalization Policy" grounds whole-phrase English-key lookup. Next concrete
+  step for this thread: a §9 pre-implementation assessment for the en→th English-key
+  phrase-lookup slice (composeLexicalIndex English keying + composeLexicalLookup en→th path),
+  carrying three scope constraints — make the lexical-lookup.ts:28 whitespace guard
+  per-direction (en→th admits whitespace; th→en unchanged), realize the English-key
+  canonicalizer as a single-purpose transform mirroring normalizeLexicalKey (intentional
+  duplication, not a shared helper), and leave the th→en throw behavior untouched (the
+  declared-but-unemitted LEXICAL_KEY_WHITESPACE_REJECTED discrepancy is out of scope).
+  Still pending and parallel: scope prefix/fuzzy search via src/core/tokenizers (app-tier
+  vs thin core seam); whether to formally close Phase 15 COMPLETE. Phase 16 remains premature.
 - Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
   (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
 - Tests passing: 843
 - Test files: 61
 - Statement coverage: 92.78%
-- Branch at last update: feat/phase15-tenant-configuration
-- Commit at last update: 3123f21
+- Branch at last update: fix/session-state-app-shell-learnings
+- Commit at last update: 193b5b7
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier status (apps/usethai). First shell merged. Load-bearing learnings
@@ -39,11 +39,11 @@ for the next planning session:
 - Exact-key lexical lookup is insufficient for a real dictionary UX — prefix/
   substring/fuzzy is wanted. The search layer under src/core/tokenizers is the
   likely path.
-- en→th lookup of multi-word glosses (e.g. "to eat") is unreachable:
-  composeLexicalIndex keys englishToThai on the full lowercased definition string,
-  and the whitespace invariant rejects multi-word queries. This is a core
-  lexical-index limitation, to be resolved through core governance, not an app
-  workaround.
+- en→th lookup of multi-word glosses (e.g. "to eat") was unreachable (full-definition-string
+  English key + whitespace-rejecting lookup). Resolution is now GROUNDED via ARCHITECTURE.md
+  "Lexical Key Normalization Policy" (Option D: symmetric whole-phrase canonical English key,
+  exact-equality only). Implementation pending the §9 slice above; still core-governed, not an
+  app workaround.
 
 Application-tier work is governed and tracked separately per
 APP_SHELL_GUIDELINES.md.
@@ -238,6 +238,13 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
   rejection; empty set permitted. Parallel (ADR-0014 §5(c)); terminal
   deepFreezeStructure. Branch feat/phase15-tenant-configuration, commit 3824cad.
   843 / 61 / 92.78%.
+- fix/lexical-key-normalization-grounding — added ARCHITECTURE.md "Lexical Key Normalization
+  Policy" grounding for en→th whole-phrase English-key lookup (Option D): per-direction key
+  normalization (Thai keys whitespace-free via unchanged normalizeLexicalKey; English keys
+  whitespace-canonicalized whole phrases composing existing collapse-whitespace /
+  trim-boundary-whitespace primitives + case folding), exact-equality only, no
+  tokenization/prefix/fuzzy/ranking, no new contract field. Documentation-only governance
+  grounding; no implementation slice delivered.
 
 ## Active Scope and Derivation Surface
 

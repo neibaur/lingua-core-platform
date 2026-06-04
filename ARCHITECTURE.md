@@ -416,6 +416,28 @@ flowchart LR
     H --> I[Dictionary, content, or search response]
 ```
 
+## Lexical Key Normalization Policy
+
+The lexical index and lexical lookup share a single, deterministic key-normalization policy so that equivalent inputs produce equivalent keys at both index construction and lookup. Key normalization is per direction, and the two directions are intentionally asymmetric.
+
+Thai-side keys (th→en). A Thai lexical key is whitespace-free. It is canonicalized by the established lexical-key normalization (Thai tone-mark and Thai-digit folding) and a query containing whitespace is rejected. This guarantee is unchanged by this policy.
+
+English-side keys (en→th). An English lexical key is a whole-phrase, deterministically canonicalized string. Canonicalization collapses internal whitespace runs to a single space, trims boundary whitespace, and lower-cases the phrase, composing only the platform's existing normalization rule primitives (collapse-whitespace, trim-boundary-whitespace) together with case folding. The same canonicalization is applied identically at index construction and at lookup. A multi-word gloss (for example, "to eat") is therefore stored under, and reachable by, one canonical whole-phrase key.
+
+Resolution is exact-equality only. An en→th lookup accepts a whitespace-bearing whole-phrase query and resolves it by exact equality against the canonicalized English key. There is no tokenization, no word-level or sub-phrase matching, no prefix matching, no fuzzy matching, and no ranking or scoring. This preserves the platform's identity as a deterministic exact-key lexical substrate, not a heuristic search engine; prefix, fuzzy, and segmentation behavior remain the separate responsibility of the tokenizer/search abstraction.
+
+The per-direction asymmetry is intentional and documented: Thai keys are whitespace-free, English keys are whitespace-canonicalized whole phrases. This eliminates the prior, incidental divergence between index-side and lookup-side English-key handling by making a single canonicalization authoritative for both.
+
+Non-Goals (this policy introduces none of the following):
+
+- no word-level or tokenized English keys (segmentation belongs to the tokenizer/search abstraction);
+- no reusable or configurable normalization framework, pipeline-builder, or rule registry — only composition of normalization rule primitives that already exist;
+- no prefix, fuzzy, ranking, or scoring semantics;
+- no new externally exposed contract field and no change to the englishToThai value shape — only the derivation of the key string changes;
+- no change to the tokenizer/search layer.
+
+This policy is independent of Phase 15 tenant and enabled-language configuration. The concrete type names, function shapes, guard forms, and file placement that realize this policy are derived at a later per-slice pre-implementation assessment under the Documentary Derivation Law and the Typed Reference Law; this section grounds the behavior only and prescribes no implementation shape.
+
 ## Database Blueprint
 
 This schema is conceptual and subject to ADRs and future migration decisions. It does not select a production database, migration framework, hosting provider, or ORM.
