@@ -1,0 +1,157 @@
+---
+// UseThai.com — thinnest possible lookup shell. The page is static HTML +
+// vanilla JS; it fetches the SSR endpoint at /api/lookup which consumes the
+// governed core's lexical lookup. No framework runtime, no styling beyond
+// legibility.
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UseThai — lookup</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        max-width: 40rem;
+        margin: 3rem auto;
+        padding: 0 1rem;
+        line-height: 1.5;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      form {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      input[type="text"] {
+        flex: 1 1 12rem;
+        padding: 0.5rem;
+        font-size: 1.25rem;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .entry {
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.75rem;
+      }
+      .headword {
+        font-size: 1.75rem;
+        margin: 0;
+      }
+      .romanized {
+        color: #555;
+        font-style: italic;
+      }
+      .definition {
+        margin: 0.25rem 0 0;
+      }
+      .pos {
+        color: #777;
+        font-size: 0.85rem;
+      }
+      .diagnostic {
+        color: #a00;
+      }
+      .muted {
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>UseThai — Thai word lookup</h1>
+
+    <form id="lookup-form">
+      <input
+        id="q"
+        type="text"
+        placeholder="Type a word, e.g. กิน"
+        value="กิน"
+        autocomplete="off"
+        autofocus
+      />
+      <label>
+        <select id="dir">
+          <option value="th→en" selected>Thai → English</option>
+          <option value="en→th">English → Thai</option>
+        </select>
+      </label>
+      <button type="submit">Look up</button>
+    </form>
+
+    <section id="results" aria-live="polite"></section>
+
+    <script>
+      const form = document.getElementById("lookup-form");
+      const qInput = document.getElementById("q");
+      const dirSelect = document.getElementById("dir");
+      const results = document.getElementById("results");
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function renderEntries(result) {
+        const entries = result.entries ?? [];
+        const diagnostics = result.diagnostics ?? [];
+
+        if (entries.length === 0) {
+          const reason =
+            diagnostics.length > 0
+              ? escapeHtml(diagnostics[0].message)
+              : "No entry found.";
+          results.innerHTML = `<p class="diagnostic">${reason}</p>`;
+          return;
+        }
+
+        results.innerHTML = entries
+          .map((entry) => {
+            const romanized = entry.romanized
+              ? `<span class="romanized">${escapeHtml(entry.romanized)}</span>`
+              : "";
+            const defs = (entry.definitions ?? [])
+              .map(
+                (def) =>
+                  `<p class="definition">${escapeHtml(def.definition)} <span class="pos">(${escapeHtml(def.partOfSpeech)})</span></p>`,
+              )
+              .join("");
+            return `<div class="entry"><p class="headword">${escapeHtml(entry.headword)} ${romanized}</p>${defs}</div>`;
+          })
+          .join("");
+      }
+
+      async function doLookup(event) {
+        if (event) event.preventDefault();
+        const q = qInput.value;
+        const dir = dirSelect.value;
+        results.innerHTML = '<p class="muted">Looking up…</p>';
+        try {
+          const response = await fetch(
+            `/api/lookup?q=${encodeURIComponent(q)}&dir=${encodeURIComponent(dir)}`,
+          );
+          const result = await response.json();
+          renderEntries(result);
+        } catch (error) {
+          results.innerHTML = `<p class="diagnostic">Lookup failed: ${escapeHtml(error)}</p>`;
+        }
+      }
+
+      form.addEventListener("submit", doLookup);
+      // Run an initial lookup so the acceptance word renders on load.
+      doLookup();
+    </script>
+  </body>
+</html>
