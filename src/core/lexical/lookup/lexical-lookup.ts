@@ -7,6 +7,7 @@ import {
   type LexicalLookupInput,
   type LexicalLookupResult,
 } from "../contracts";
+import { canonicalizeEnglishKey } from "../normalization/canonicalize-english-key";
 import { normalizeLexicalKey } from "../normalization/normalize-lexical-key";
 
 function compareEntries(a: LexicalEntry, b: LexicalEntry): number {
@@ -25,7 +26,7 @@ export function composeLexicalLookup(
   input: LexicalLookupInput,
   index: LexicalIndex,
 ): LexicalLookupResult {
-  if (/\s/.test(input.query)) {
+  if (input.direction === "th→en" && /\s/.test(input.query)) {
     throw new Error(
       `[lexical invariant] query must not contain whitespace: ${JSON.stringify(input.query)}`,
     );
@@ -50,11 +51,10 @@ export function composeLexicalLookup(
     });
   }
 
-  const canonicalKey = normalizeLexicalKey(input.query);
-
   let entries: LexicalEntry[];
 
   if (input.direction === "th→en") {
+    const canonicalKey = normalizeLexicalKey(input.query);
     if (canonicalKey in index.thaiToEnglish) {
       entries = [index.thaiToEnglish[canonicalKey]];
     } else {
@@ -67,7 +67,7 @@ export function composeLexicalLookup(
       entries = [];
     }
   } else {
-    const canonicalEnglishKey = canonicalKey.toLowerCase();
+    const canonicalEnglishKey = canonicalizeEnglishKey(input.query);
     if (canonicalEnglishKey in index.englishToThai) {
       entries = [...index.englishToThai[canonicalEnglishKey]].sort(
         compareEntries,

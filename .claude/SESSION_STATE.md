@@ -11,24 +11,19 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 - Current phase: Phase 15 — IN PROGRESS (boundary ADR-0014 accepted; tenant/content, canonical-language,
   and enabled-language-set grounding merged; 1 code slice merged)
-- Next action: en→th multi-word gloss grounding (Option D) is merged — ARCHITECTURE.md
-  "Lexical Key Normalization Policy" grounds whole-phrase English-key lookup. Next concrete
-  step for this thread: a §9 pre-implementation assessment for the en→th English-key
-  phrase-lookup slice (composeLexicalIndex English keying + composeLexicalLookup en→th path),
-  carrying three scope constraints — make the lexical-lookup.ts:28 whitespace guard
-  per-direction (en→th admits whitespace; th→en unchanged), realize the English-key
-  canonicalizer as a single-purpose transform mirroring normalizeLexicalKey (intentional
-  duplication, not a shared helper), and leave the th→en throw behavior untouched (the
-  declared-but-unemitted LEXICAL_KEY_WHITESPACE_REJECTED discrepancy is out of scope).
-  Still pending and parallel: scope prefix/fuzzy search via src/core/tokenizers (app-tier
-  vs thin core seam); whether to formally close Phase 15 COMPLETE. Phase 16 remains premature.
+- Next action: en→th multi-word phrase-keying is DELIVERED (feat/lexical-english-phrase-keying;
+  ARCHITECTURE "Lexical Key Normalization Policy" grounding + symmetric whole-phrase English key,
+  per-direction whitespace guard). Parallel pending: scope prefix/fuzzy search via
+  src/core/tokenizers (app-tier consumption vs thin core seam) — first question is what those
+  barrels expose; and whether to formally close Phase 15 COMPLETE (Phase-14-style closure
+  assessment + ADR). Phase 16 remains premature.
 - Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
   (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
-- Tests passing: 843
-- Test files: 61
+- Tests passing: 856
+- Test files: 62
 - Statement coverage: 92.78%
-- Branch at last update: fix/lexical-key-normalization-grounding
-- Commit at last update: 53b71d2
+- Branch at last update: chore/dependency-maintenance-eslint-astro
+- Commit at last update: cc737b9
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier status (apps/usethai). First shell merged. Load-bearing learnings
@@ -42,8 +37,8 @@ for the next planning session:
 - en→th lookup of multi-word glosses (e.g. "to eat") was unreachable (full-definition-string
   English key + whitespace-rejecting lookup). Resolution is now GROUNDED via ARCHITECTURE.md
   "Lexical Key Normalization Policy" (Option D: symmetric whole-phrase canonical English key,
-  exact-equality only). Implementation pending the §9 slice above; still core-governed, not an
-  app workaround.
+  exact-equality only). DELIVERED via feat/lexical-english-phrase-keying; resolved through core
+  governance, not an app workaround.
 
 Application-tier work is governed and tracked separately per
 APP_SHELL_GUIDELINES.md.
@@ -245,6 +240,12 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
   trim-boundary-whitespace primitives + case folding), exact-equality only, no
   tokenization/prefix/fuzzy/ranking, no new contract field. Documentation-only governance
   grounding; no implementation slice delivered.
+- feat/lexical-english-phrase-keying — en→th whole-phrase English-key lookup (ARCHITECTURE
+  "Lexical Key Normalization Policy"): new internal canonicalizeEnglishKey (collapse + trim +
+  lowercase, composing existing primitives; not barrel-exported), symmetric en→th keying at
+  index + lookup, per-direction whitespace guard (en→th admits whole-phrase queries; th→en
+  unchanged). normalizeLexicalKey/assertNoWhitespace untouched; LEXICAL_KEY_WHITESPACE_REJECTED
+  discrepancy untouched. Test-additive (+13 / +1 file). 856 tests / 62 files / 92.78%.
 
 ## Active Scope and Derivation Surface
 
@@ -256,7 +257,9 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
 The following must NOT influence any assessment or implementation until
 explicitly authorized:
 
-- Tenant and content configuration (Phase 15) — implementation PENDING; ADR-0014 boundary drafting AUTHORIZED (see Current Phase and Status)
+- Phase 15 content configuration beyond the merged tenant-configuration slice (content
+  visibility, branding, feature boundaries) — not yet assessed; must not influence unrelated
+  assessments. (Phase 15 itself is IN PROGRESS — see Per-PR block.)
 - AI-assisted private envelope (Phase 16) — PENDING AUTHORIZATION
 - Multilingual expansion beyond Thai-first (Phase 17) — PENDING AUTHORIZATION
 - Ingestion pipelines, parsers, loaders, adapters, orchestration, or source
@@ -270,7 +273,7 @@ explicitly authorized:
   barrel-hygiene, fix/audit-a-test-fixture-reconciliation-scope, and
   fix/audit-d-phase9-guard-inlining; targeted re-audit confirmed
   repository clean; Phase 12 authorized to proceed) (records the pre-Phase-12 audit only; the Phase 14→15 phase-transition audit per HANDOFF §9 is COMPLETE and CONFIRMED CLEAN — see Current Phase and Status)
-- Schema version migration for any existing constant through @phase14 (@phase9–@phase14) —
+- Schema version migration for any existing constant through @phase15 (@phase9–@phase15) —
   not warranted;ARCHITECTURE.md defines no phase-coupled migration semantics
 - Phase 14 chartered categories — API contract, static/SEO rendering contract, browser-native fallback
   contract — DEFERRED. The Phase 14 closure assessment determined each resolves to no structurally distinct artifact under current grounding: all would be field-identical to the route delivery contract ({schemaVersion, deliveryId, searchProjection, staticContentAddress}), distinguished only by name, with any category-specific field being domain-convention invention (DOCUMENTARY DERIVATION LAW) or prohibited vocabulary (ADR-0013). The groundable structural delivery surface is a single contract shape realized per-projection (the route category). Building any deferred category as a distinct type requires new ARCHITECTURE.md content grounding — an operator architectural decision, not yet warranted.
