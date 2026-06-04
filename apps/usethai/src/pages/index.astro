@@ -93,11 +93,11 @@
 
     <script>
       const form = document.getElementById("lookup-form");
-      const qInput = document.getElementById("q");
-      const dirSelect = document.getElementById("dir");
+      const qInput = document.getElementById("q") as HTMLInputElement | null;
+      const dirSelect = document.getElementById("dir") as HTMLSelectElement | null;;
       const results = document.getElementById("results");
 
-      function escapeHtml(value) {
+      function escapeHtml(value: string): string {
         return String(value)
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
@@ -133,7 +133,8 @@
           .join("");
       }
 
-      async function doLookup(event) {
+      async function doLookup(event?: Event) {
+        event?.preventDefault();
         if (event) event.preventDefault();
         const q = qInput.value;
         const dir = dirSelect.value;
