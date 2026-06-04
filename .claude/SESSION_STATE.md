@@ -12,7 +12,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Current phase: Phase 15 — IN PROGRESS (boundary ADR-0014 accepted; tenant/content, canonical-language,
   and enabled-language-set grounding merged; 1 code slice merged)
 - Next action: Phase 15 tenant configuration slice complete and merged. Do NOT start another Phase 15 core
-  derivation. Next effort is a minimal application shell OUTSIDE src/core (runtime/app layer — not a governed-core slice; ARCHITECTURE Explicit Non-Goals exclude frontend/hosting from the core, so no grounding amendment or PA assessment applies) that builds a LexicalIndex from THAI_ENGLISH_FIXTURE_DATASET via composeLexicalIndex and exposes composeLexicalLookup over a thin HTTP entry + minimal page, to validate the core composes into a usable Thai→English result. Deferred pending shell learnings: whether Phase 15 is complete, whether additional tenant/content grounding is warranted, or whether Phase 16 begins.
+  derivation. Next effort is a minimal application shell OUTSIDE src/core (runtime/app layer — not a governed-core slice; ARCHITECTURE Explicit Non-Goals exclude frontend/hosting from the core, so no grounding amendment or PA assessment applies) that builds a LexicalIndex from THAI_ENGLISH_FIXTURE_DATASET via composeLexicalIndex and exposes composeLexicalLookup over a thin HTTP entry + minimal page, to validate the core composes into a usable Thai→English result. Deferred pending shell learnings: whether Phase 15 is complete, whether additional tenant/content grounding is warranted, or whether Phase 16 begins (application-tier; governed by APP_SHELL_GUIDELINES.md — not a core slice: it will not appear in Completed Slices and does not change the core validation baseline).
 - Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
   (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
 - Tests passing: 843
@@ -20,6 +20,10 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Statement coverage: 92.78%
 - Branch at last update: feat/phase15-tenant-configuration
 - Commit at last update: 07fc09d
+
+Completed Slices, the validation baseline, and Schema Version Literals track core
+(src/core) only. Application-tier work is governed and tracked separately per
+APP_SHELL_GUIDELINES.md.
 
 ## Current Phase and Status
 

@@ -40,6 +40,11 @@ https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/ARCHITECTURE
 DATA_SOURCES.md is a reference only. Do not read it during bootstrap; read it
 only if a task directly requires dataset-governance context.
 
+If a session concerns application/UI work (code outside src/core, e.g. apps/), the
+governing document is APP_SHELL_GUIDELINES.md — a lighter tier outside the core
+doctrine, the §9 assessment, and the phase machinery. The core-doctrine framing and
+the two standing rules below apply to core work.
+
 After reading, confirm and summarize current state in this exact format and
 nothing else — no commentary, no phase proposals, no implementation discussion:
 

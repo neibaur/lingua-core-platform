@@ -4,6 +4,8 @@ This roadmap is directional, not an implementation mandate. Each phase must be
 derived repository-first, assessed before implementation, and captured in ADRs
 when it introduces binding architecture decisions.
 
+Application- and UI-tier work outside src/core proceeds outside this phase sequence, governed by APP_SHELL_GUIDELINES.md.
+
 Authoritative phase completion status: `.claude/SESSION_STATE.md`
 
 Phase 16 and beyond must be explicitly authorized before any work begins.

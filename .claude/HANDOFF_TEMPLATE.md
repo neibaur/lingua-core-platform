@@ -28,6 +28,13 @@ a vector-search platform
 a telemetry-first architecture
 a dynamically extensible runtime system
 
+This identity and all doctrine in this document govern the core platform under
+src/core. Application- and UI-tier code outside src/core — including a user-facing
+dictionary site that consumes the core — is governed by APP_SHELL_GUIDELINES.md, a
+deliberately lighter tier, and is not subject to the laws, the §9 pre-implementation
+assessment, or phase gating below. The "NOT a CRUD dictionary application" identity
+above describes the core substrate, not the applications that consume it.
+
 §2 — FIRST REQUIRED ACTIONS
 The new session must perform these actions before proposing any contract, file,
 or implementation:
