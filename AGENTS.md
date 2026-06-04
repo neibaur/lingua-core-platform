@@ -36,6 +36,16 @@ Do not introduce microservice fragmentation, separate product repositories, or
 isolated codebases for multi-tenant domains unless an approved ADR in
 `docs/adr/` explicitly authorizes the change.
 
+## Application and UI Tier
+
+Application- and UI-tier code outside `src/core` (for example a user-facing site
+consuming the core) is governed by
+[APP_SHELL_GUIDELINES.md](APP_SHELL_GUIDELINES.md), not by the core doctrine in
+`.claude/HANDOFF_TEMPLATE.md`. It is a deliberately lighter tier: no §9
+pre-implementation assessment, no Documentary Derivation Law, no schema-version
+literals, no phase gating. Read APP_SHELL_GUIDELINES.md before any application or
+UI work. Work inside `src/core` remains governed by HANDOFF_TEMPLATE.md as above.
+
 ## ADR Discipline
 
 Document major architectural decisions in `docs/adr/` before making them
