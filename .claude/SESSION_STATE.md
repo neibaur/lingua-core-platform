@@ -27,8 +27,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 843
 - Test files: 61
 - Statement coverage: 92.78%
-- Branch at last update: fix/session-state-app-shell-learnings
-- Commit at last update: 193b5b7
+- Branch at last update: fix/lexical-key-normalization-grounding
+- Commit at last update: 53b71d2
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier status (apps/usethai). First shell merged. Load-bearing learnings
