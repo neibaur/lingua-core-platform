@@ -11,18 +11,41 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 - Current phase: Phase 15 — IN PROGRESS (boundary ADR-0014 accepted; tenant/content, canonical-language,
   and enabled-language-set grounding merged; 1 code slice merged)
-- Next action: Phase 15 tenant configuration slice complete and merged. Do NOT start another Phase 15 core
-  derivation. Next effort is a minimal application shell OUTSIDE src/core (runtime/app layer — not a governed-core slice; ARCHITECTURE Explicit Non-Goals exclude frontend/hosting from the core, so no grounding amendment or PA assessment applies) that builds a LexicalIndex from THAI_ENGLISH_FIXTURE_DATASET via composeLexicalIndex and exposes composeLexicalLookup over a thin HTTP entry + minimal page, to validate the core composes into a usable Thai→English result. Deferred pending shell learnings: whether Phase 15 is complete, whether additional tenant/content grounding is warranted, or whether Phase 16 begins (application-tier; governed by APP_SHELL_GUIDELINES.md — not a core slice: it will not appear in Completed Slices and does not change the core validation baseline).
+- Next action: The application shell (apps/usethai — branch feat/usethai-shell,
+  with astro check wired) is built, validated locally (กิน → "to eat" renders
+  th→en), and merged to main. It is application-tier, not a core slice. Next
+  effort: scope search/tokenizer integration — route lookup through
+  src/core/tokenizers + the search layer for prefix/fuzzy matching and word-level
+  English keying. The first question is what those barrels expose, which decides
+  app-tier consumption vs a thin core seam. Separately pending and independent:
+  whether to formally close Phase 15 COMPLETE (grounded tenant slice shipped;
+  content configuration remains deferred/ungrounded — a Phase-14-style closure
+  assessment + ADR). Phase 16 (AI envelope) is premature until the dictionary UX
+  moves past exact-key lookup.
 - Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
   (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
 - Tests passing: 843
 - Test files: 61
 - Statement coverage: 92.78%
 - Branch at last update: feat/phase15-tenant-configuration
-- Commit at last update: 07fc09d
+- Commit at last update: 3123f21
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
-(src/core) only. Application-tier work is governed and tracked separately per
+(src/core) only. Application-tier status (apps/usethai). First shell merged. Load-bearing learnings
+for the next planning session:
+
+- The core consumes cleanly as source via a Vite path alias (@core ->
+  ../../src/core); no core build/exports/dist is needed yet.
+- Exact-key lexical lookup is insufficient for a real dictionary UX — prefix/
+  substring/fuzzy is wanted. The search layer under src/core/tokenizers is the
+  likely path.
+- en→th lookup of multi-word glosses (e.g. "to eat") is unreachable:
+  composeLexicalIndex keys englishToThai on the full lowercased definition string,
+  and the whitespace invariant rejects multi-word queries. This is a core
+  lexical-index limitation, to be resolved through core governance, not an app
+  workaround.
+
+Application-tier work is governed and tracked separately per
 APP_SHELL_GUIDELINES.md.
 
 ## Current Phase and Status
