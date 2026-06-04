@@ -9,21 +9,22 @@ Cross-Session State Document | Updated After Each PR Cycle
 > Completed Slices, Schema Version Literals, and Open Doctrinal Questions below
 > are append-only logs.
 
-- Current phase: Phase 15 — IN PROGRESS (boundary ADR-0014 accepted; tenant/content, canonical-language,
-  and enabled-language-set grounding merged; 1 code slice merged)
-- Next action: en→th multi-word phrase-keying is DELIVERED (feat/lexical-english-phrase-keying;
-  ARCHITECTURE "Lexical Key Normalization Policy" grounding + symmetric whole-phrase English key,
-  per-direction whitespace guard). Parallel pending: scope prefix/fuzzy search via
-  src/core/tokenizers (app-tier consumption vs thin core seam) — first question is what those
-  barrels expose; and whether to formally close Phase 15 COMPLETE (Phase-14-style closure
-  assessment + ADR). Phase 16 remains premature.
-- Last accepted ADR: ADR-0014 — Tenant and Content Configuration Boundary
-  (docs/adr/0014-tenant-and-content-configuration-boundary.md), Accepted
+- Current phase: Phase 15 — COMPLETE (closure ADR-0015 accepted; binding-grounded
+  surface — tenant identity + enabled-language configuration, backed by canonical
+  language identity — realized by TenantConfiguration + CanonicalLanguageTag)
+- Next action: Phase 15 COMPLETE (ADR-0015); no core phase active. Phase 16
+  PENDING AUTHORIZATION — premature; requires explicit authorization and a §9
+  Phase-15→16 transition audit (Audits A–E) before any work. Open non-phase
+  thread: prefix/fuzzy search scoping via src/core/tokenizers (app-tier
+  consumption vs thin core seam), not yet assessed — first question is what those
+  barrels expose.
+- Last accepted ADR: ADR-0015 — Phase 15 Closure
+  (docs/adr/0015-phase-15-closure-tenant-and-content-configuration.md), Accepted
 - Tests passing: 856
 - Test files: 62
 - Statement coverage: 92.78%
-- Branch at last update: feat/lexical-english-phrase-keying
-- Commit at last update: 0094b4f
+- Branch at last update: fix/phase15-closure
+- Commit at last update: (pending — update after commit)
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier status (apps/usethai). First shell merged. Load-bearing learnings
@@ -65,6 +66,10 @@ APP_SHELL_GUIDELINES.md.
 - fix/adr-0013-delivery-boundary-companion-clarification — aligned ADR-0013 with the ARCHITECTURE.md Delivery
   Boundary Layer grounding; clarified that future Phase 14 assessments may evaluate directly chartered delivery contracts against the new architectural grounding; documentation-only clarification, no implementation slice delivered
 - Phase 15 ADR: ADR-0014 ACCEPTED (docs/adr/0014-tenant-and-content-configuration-boundary.md)
+- Phase 15 status: COMPLETE (binding-grounded surface — tenant identity + enabled-language
+  configuration, backed by canonical language identity — fully realized; closure via ADR-0015
+  (docs/adr/0015-phase-15-closure-tenant-and-content-configuration.md); grounded-surface-exhausted
+  finding: no additive slice warranted under current grounding)
 
 Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. The Phase 14→15 phase-transition audit (HANDOFF §9) was completed and CONFIRMED CLEAN across all five audit categories (Audit A schema-literal reconciliation 37/37 bidirectional; Audits B–E clean), with the validation chain green at 824 tests / 60 files / 92.73% statement coverage; Phase 15 is AUTHORIZED for ADR-0014 boundary drafting (see Current Phase and Status).
 
@@ -257,9 +262,16 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
 The following must NOT influence any assessment or implementation until
 explicitly authorized:
 
-- Phase 15 content configuration beyond the merged tenant-configuration slice (content
-  visibility, branding, feature boundaries) — not yet assessed; must not influence unrelated
-  assessments. (Phase 15 itself is IN PROGRESS — see Per-PR block.)
+- Phase 15 deferred concepts (ADR-0015 Decision §4; Phase 15 COMPLETE): each requires a
+  further binding ARCHITECTURE.md amendment plus explicit operator authorization before
+  any future slice:
+  - content organization — curriculum, lesson grouping, content sequencing,
+    tenant-specific weighting;
+  - content visibility — grounded only in the conceptual Database Blueprint
+    dictionary_tenant_tags entity; insufficiently grounded for any field; runtime
+    content-visibility resolution prohibited;
+  - branding;
+  - feature boundaries / feature flags.
 - AI-assisted private envelope (Phase 16) — PENDING AUTHORIZATION
 - Multilingual expansion beyond Thai-first (Phase 17) — PENDING AUTHORIZATION
 - Ingestion pipelines, parsers, loaders, adapters, orchestration, or source
