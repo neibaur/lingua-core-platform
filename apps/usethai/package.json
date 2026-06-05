@@ -9,7 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "evidence:friction": "node evidence/run-friction-harness.mjs"
+    "evidence:friction": "node evidence/run-friction-harness.mts"
   },
   "dependencies": {
     "astro": "^6.1.10"

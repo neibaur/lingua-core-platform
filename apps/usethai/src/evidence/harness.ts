@@ -55,7 +55,7 @@ function observeLexical(scenario: LexicalScenario): ObservedOutcome {
 
     return {
       outcome: result.entries.length > 0 ? "hit" : "miss",
-      note: `composeLexicalLookup → ${result.entries.length} entr${result.entries.length === 1 ? "y" : "ies"}${codeNote}`,
+      note: `composeLexicalLookup → ${String(result.entries.length)} entr${result.entries.length === 1 ? "y" : "ies"}${codeNote}`,
     };
   } catch (error) {
     // A thrown core invariant (e.g. whitespace rejection) is recorded as
@@ -76,7 +76,7 @@ function observeCorpus(
   const result = executeQuery(invertedIndex, scenario.coreQuery);
   return {
     outcome: result.matches.length > 0 ? "hit" : "miss",
-    note: `executeQuery → ${result.matches.length} document match(es)`,
+    note: `executeQuery → ${String(result.matches.length)} document match(es)`,
   };
 }
 
@@ -149,10 +149,10 @@ export function renderReport(records: readonly FrictionRecord[]): string {
   );
 
   const verdictLines = VERDICT_ORDER.map(
-    (v) => `| ${v} | ${verdictCounts.get(v) ?? 0} |`,
+    (v) => `| ${v} | ${String(verdictCounts.get(v) ?? 0)} |`,
   ).join("\n");
   const classificationLines = CLASSIFICATION_ORDER.map(
-    (c) => `| ${c} | ${classificationCounts.get(c) ?? 0} |`,
+    (c) => `| ${c} | ${String(classificationCounts.get(c) ?? 0)} |`,
   ).join("\n");
 
   const corpusList = CORPUS_STRINGS.map((s) => `\`${s}\``).join(", ");
@@ -219,7 +219,7 @@ ${rows}
 
 ## 3. Summary
 
-Factual tallies only across all ${records.length} records. No recommendations.
+Factual tallies only across all ${String(records.length)} records. No recommendations.
 
 ### Counts by verdict
 

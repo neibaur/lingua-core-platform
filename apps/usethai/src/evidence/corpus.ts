@@ -36,7 +36,7 @@ export async function buildEvidenceCorpus(): Promise<SearchCorpus> {
   let documentNumber = 0;
   for (const text of CORPUS_STRINGS) {
     const projection = await buildSearchProjection(text, driver);
-    const documentId = `corpus-doc-${documentNumber}`;
+    const documentId = `corpus-doc-${String(documentNumber)}`;
 
     indexer.addDocument({
       documentId,
