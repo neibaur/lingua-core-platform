@@ -24,7 +24,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 856
 - Test files: 62
 - Statement coverage: 92.78%
-- Last merged PR: #170 — fix: anchor session state to last merged PR
+- Last merged PR: #172 — docs: file Thai dataset licensing landscape into data sources registry
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — first shell merged;
