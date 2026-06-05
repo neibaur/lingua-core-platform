@@ -24,7 +24,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Test files: 62
 - Statement coverage: 92.78%
 - Branch at last update: fix/phase15-closure
-- Commit at last update: (pending — update after commit)
+- Commit at last update: 4c067ab
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier status (apps/usethai). First shell merged. Load-bearing learnings
@@ -33,8 +33,7 @@ for the next planning session:
 - The core consumes cleanly as source via a Vite path alias (@core ->
   ../../src/core); no core build/exports/dist is needed yet.
 - Exact-key lexical lookup is insufficient for a real dictionary UX — prefix/
-  substring/fuzzy is wanted. The search layer under src/core/tokenizers is the
-  likely path.
+  substring/fuzzy is wanted. Barrel denominator captured — docs/architecture/tokenizer-search-barrel-inventory.md. Two search surfaces are already app-reachable: lexical exact-key lookup (composeLexicalLookup) and a tokenizer corpus token/phrase path (buildSearchProjection → CorpusIndexer → executeQuery/executePhraseQuery). prefix/substring/fuzzy are NOT PRESENT and non-goaled in lexical lookup — if ever warranted, tokenizer/search layer only. Phase 13 projections + Phase 14 delivery contracts sit in a leaf-only barrel (query-learning-interop) with no app-legal path today.
 - en→th lookup of multi-word glosses (e.g. "to eat") was unreachable (full-definition-string
   English key + whitespace-rejecting lookup). Resolution is now GROUNDED via ARCHITECTURE.md
   "Lexical Key Normalization Policy" (Option D: symmetric whole-phrase canonical English key,
