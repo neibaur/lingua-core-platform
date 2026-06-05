@@ -25,6 +25,8 @@ from `main` at commit `4c067ab` (docs: close phase 15 and add ADR-0015, #165).
 
 ### Definitions
 
+Reachability tiers (neutral measures of distance from the top-level barrel):
+
 - **APP-REACHABLE**: symbol survives the full re-export chain to a **top-level
   public barrel** — one of `src/core/tokenizers/index.ts` or
   `src/core/lexical/index.ts` (the outermost module-level barrels; no
@@ -35,8 +37,17 @@ from `main` at commit `4c067ab` (docs: close phase 15 and add ADR-0015, #165).
 - **LEAF-ONLY**: symbol exists only in a barrel that no higher-level barrel
   re-exports (the barrel itself is a dead end in the upward chain).
 - **INTERNAL**: symbol lives in a source file with no barrel exposure at any level.
+
+Capability verdict vocabulary (three values):
+
 - **EXPORTED** (capability verdict): an app-reachable symbol or type directly
   enabling the capability.
+- **PRESENT — NOT APP-REACHABLE** (capability verdict): implementation exists in
+  source but is not reachable through a top-level public barrel. Always paired with
+  a reachability tier. This is a reporting label only: it does not imply that a
+  symbol should be exposed, promoted, forwarded, or consumed by applications. It
+  records only that an implementation exists somewhere in source while not reaching
+  a top-level public barrel.
 - **NOT PRESENT** (capability verdict): no implementation exists anywhere in
   source that could provide the capability.
 
@@ -506,23 +517,24 @@ These symbols exist in the intermediate barrel but are neither forwarded by
 
 ## 4. Capability Verdict Matrix
 
-For each capability, verdict is exactly EXPORTED / INTERNAL / NOT PRESENT per
-the definitions in §1. Supporting path uses extensionless barrel specifiers
-matching repository convention.
+For each capability, verdict is exactly EXPORTED / PRESENT — NOT APP-REACHABLE /
+NOT PRESENT per the definitions in §1. PRESENT — NOT APP-REACHABLE rows also carry
+a reachability tier. Supporting path uses extensionless barrel specifiers matching
+repository convention.
 
-| capability                       | verdict     | supporting path                                                                                                                                                                           | basis                                                                                                                                                                                                                                                                                                                            |
-| -------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **exact-key lookup**             | EXPORTED    | `src/core/lexical/index` → `composeLexicalLookup`                                                                                                                                         | `composeLexicalLookup` is app-reachable. ARCHITECTURE.md "Lexical Key Normalization Policy" documents exact-equality resolution for both th→en and en→th directions.                                                                                                                                                             |
-| **English whole-phrase lookup**  | EXPORTED    | `src/core/lexical/index` → `composeLexicalLookup`                                                                                                                                         | Same function; ARCHITECTURE.md "Lexical Key Normalization Policy" explicitly grounds en→th whole-phrase query acceptance with exact-equality matching (no tokenization, no prefix, no fuzzy). Delivered by `feat/lexical-english-phrase-keying`.                                                                                 |
-| **prefix matching**              | NOT PRESENT | —                                                                                                                                                                                         | No exported or internal function implementing prefix matching exists in `src/core/tokenizers/` or `src/core/lexical/`. ARCHITECTURE.md "Lexical Key Normalization Policy" lists "no prefix matching" as an explicit non-goal. The search layer architecture (Deterministic Query Explainability) documents no prefix capability. |
-| **substring matching**           | NOT PRESENT | —                                                                                                                                                                                         | No exported or internal function implementing substring matching exists. ARCHITECTURE.md documents no substring matching capability in either the lexical or search layers.                                                                                                                                                      |
-| **fuzzy matching**               | NOT PRESENT | —                                                                                                                                                                                         | No exported or internal function implementing fuzzy matching exists. ARCHITECTURE.md "Lexical Key Normalization Policy" lists "no fuzzy matching" as an explicit non-goal. The search layer architecture documents no fuzzy capability.                                                                                          |
-| **tokenization-driven matching** | EXPORTED    | `src/core/tokenizers/index` → `buildSearchProjection`, `CorpusIndexer`, `executeQuery` / `executeTokenQuery` / `executeBooleanQuery` / `executePhraseQuery`                               | The pipeline from `buildSearchProjection` (normalize+tokenize→projection records) through `CorpusIndexer` (inverted index build) to `executeQuery` (corpus query execution) is fully app-reachable. ARCHITECTURE.md "Pluggable Tokenizer And Search Abstraction" documents this as a core platform capability.                   |
-| **phrase matching**              | EXPORTED    | `src/core/tokenizers/index` → `executePhraseQuery`, `matchSearchTerm`, `buildPhraseWindow`, `PhraseQuery`, `PhraseMatchResult`, `PhraseQueryNode`                                         | `executePhraseQuery` executes phrase queries against a corpus index. `matchSearchTerm` performs exact normalized-phrase equality matching against token windows. `PhraseQueryNode` is an AST node type grounded in ARCHITECTURE.md's query pipeline model. All are app-reachable.                                                |
-| **query parser surface**         | EXPORTED    | `src/core/tokenizers/index` → `lexQuery`, `parseQuery`, `compileQueryAst`, AST node types, `QueryLexeme`, `CompiledQueryPlan`                                                             | Full lex→parse→compile surface is app-reachable. Corresponds to "Lexer → Parser AST → Planner / Compiler" stages in ARCHITECTURE.md "Deterministic Query Explainability".                                                                                                                                                        |
-| **query IR surface**             | INTERNAL    | `src/core/tokenizers/search/index` → `buildQueryExecutionPlan`, `QueryExecutionPlan`, execution plan node types                                                                           | `buildQueryExecutionPlan` and all `QueryExecutionPlan` IR types are in `src/core/tokenizers/search/index.ts` (intermediate) but NOT forwarded by `src/core/tokenizers/index.ts`. ARCHITECTURE.md documents the "Execution Plan IR" stage in the query pipeline.                                                                  |
-| **execution-plan surface**       | INTERNAL    | `src/core/tokenizers/search/index` → `buildQueryExecutionPlan`, `QUERY_EXECUTION_PLAN_SCHEMA_VERSION`, `QueryExecutionPlanDiagnostic`, `QueryExecutionPlanMetadata`                       | Same module as query IR surface; the builder and schema version constant are not forwarded to the top-level barrel.                                                                                                                                                                                                              |
-| **explainability surface**       | INTERNAL    | `src/core/tokenizers/search/index` → `buildQueryExplanation`, `buildQueryExecutionTrace`, `QUERY_EXPLANATION_SCHEMA_VERSION`, `QUERY_EXECUTION_TRACE_SCHEMA_VERSION`, query-tracing types | All explainability builders, constants, and types are in `src/core/tokenizers/search/index.ts` (intermediate) but NOT forwarded by `src/core/tokenizers/index.ts`. ARCHITECTURE.md "Deterministic Query Explainability" documents this as a defined platform capability.                                                         |
+| capability                       | verdict                     | reachability tier | supporting path                                                                                                                                                                           | basis                                                                                                                                                                                                                                                                                                                            |
+| -------------------------------- | --------------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **exact-key lookup**             | EXPORTED                    | APP-REACHABLE     | `src/core/lexical/index` → `composeLexicalLookup`                                                                                                                                         | `composeLexicalLookup` is app-reachable. ARCHITECTURE.md "Lexical Key Normalization Policy" documents exact-equality resolution for both th→en and en→th directions.                                                                                                                                                             |
+| **English whole-phrase lookup**  | EXPORTED                    | APP-REACHABLE     | `src/core/lexical/index` → `composeLexicalLookup`                                                                                                                                         | Same function; ARCHITECTURE.md "Lexical Key Normalization Policy" explicitly grounds en→th whole-phrase query acceptance with exact-equality matching (no tokenization, no prefix, no fuzzy). Delivered by `feat/lexical-english-phrase-keying`.                                                                                 |
+| **prefix matching**              | NOT PRESENT                 | —                 | —                                                                                                                                                                                         | No exported or internal function implementing prefix matching exists in `src/core/tokenizers/` or `src/core/lexical/`. ARCHITECTURE.md "Lexical Key Normalization Policy" lists "no prefix matching" as an explicit non-goal. The search layer architecture (Deterministic Query Explainability) documents no prefix capability. |
+| **substring matching**           | NOT PRESENT                 | —                 | —                                                                                                                                                                                         | No exported or internal function implementing substring matching exists. ARCHITECTURE.md documents no substring matching capability in either the lexical or search layers.                                                                                                                                                      |
+| **fuzzy matching**               | NOT PRESENT                 | —                 | —                                                                                                                                                                                         | No exported or internal function implementing fuzzy matching exists. ARCHITECTURE.md "Lexical Key Normalization Policy" lists "no fuzzy matching" as an explicit non-goal. The search layer architecture documents no fuzzy capability.                                                                                          |
+| **tokenization-driven matching** | EXPORTED                    | APP-REACHABLE     | `src/core/tokenizers/index` → `buildSearchProjection`, `CorpusIndexer`, `executeQuery` / `executeTokenQuery` / `executeBooleanQuery` / `executePhraseQuery`                               | The pipeline from `buildSearchProjection` (normalize+tokenize→projection records) through `CorpusIndexer` (inverted index build) to `executeQuery` (corpus query execution) is fully app-reachable. ARCHITECTURE.md "Pluggable Tokenizer And Search Abstraction" documents this as a core platform capability.                   |
+| **phrase matching**              | EXPORTED                    | APP-REACHABLE     | `src/core/tokenizers/index` → `executePhraseQuery`, `matchSearchTerm`, `buildPhraseWindow`, `PhraseQuery`, `PhraseMatchResult`, `PhraseQueryNode`                                         | `executePhraseQuery` executes phrase queries against a corpus index. `matchSearchTerm` performs exact normalized-phrase equality matching against token windows. `PhraseQueryNode` is an AST node type grounded in ARCHITECTURE.md's query pipeline model. All are app-reachable.                                                |
+| **query parser surface**         | EXPORTED                    | APP-REACHABLE     | `src/core/tokenizers/index` → `lexQuery`, `parseQuery`, `compileQueryAst`, AST node types, `QueryLexeme`, `CompiledQueryPlan`                                                             | Full lex→parse→compile surface is app-reachable. Corresponds to "Lexer → Parser AST → Planner / Compiler" stages in ARCHITECTURE.md "Deterministic Query Explainability".                                                                                                                                                        |
+| **query IR surface**             | PRESENT — NOT APP-REACHABLE | INTERMEDIATE      | `src/core/tokenizers/search/index` → `buildQueryExecutionPlan`, `QueryExecutionPlan`, execution plan node types                                                                           | `buildQueryExecutionPlan` and all `QueryExecutionPlan` IR types are in `src/core/tokenizers/search/index.ts` (intermediate) but NOT forwarded by `src/core/tokenizers/index.ts`. ARCHITECTURE.md documents the "Execution Plan IR" stage in the query pipeline.                                                                  |
+| **execution-plan surface**       | PRESENT — NOT APP-REACHABLE | INTERMEDIATE      | `src/core/tokenizers/search/index` → `buildQueryExecutionPlan`, `QUERY_EXECUTION_PLAN_SCHEMA_VERSION`, `QueryExecutionPlanDiagnostic`, `QueryExecutionPlanMetadata`                       | Same module as query IR surface; the builder and schema version constant are not forwarded to the top-level barrel.                                                                                                                                                                                                              |
+| **explainability surface**       | PRESENT — NOT APP-REACHABLE | INTERMEDIATE      | `src/core/tokenizers/search/index` → `buildQueryExplanation`, `buildQueryExecutionTrace`, `QUERY_EXPLANATION_SCHEMA_VERSION`, `QUERY_EXECUTION_TRACE_SCHEMA_VERSION`, query-tracing types | All explainability builders, constants, and types are in `src/core/tokenizers/search/index.ts` (intermediate) but NOT forwarded by `src/core/tokenizers/index.ts`. ARCHITECTURE.md "Deterministic Query Explainability" documents this as a defined platform capability.                                                         |
 
 ---
 
@@ -560,7 +572,7 @@ matching repository convention.
    `thaiDigitNormalizationRule`, and `trimBoundaryWhitespaceRule` are in the
    intermediate normalization barrel but are not forwarded by `tokenizers/index.ts`.
    Only `normalizeText` (the pipeline runner) is app-reachable; individual rules are
-   internal.
+   not app-reachable (INTERMEDIATE).
 
 6. **Lexical barrel is a flat, no-sub-barrel structure.** All `src/core/lexical/index.ts`
    exports are direct leaf-to-top-level re-exports. Every symbol in that barrel is
@@ -580,7 +592,7 @@ matching repository convention.
 Every search-related symbol that is NOT app-reachable through a top-level barrel.
 Facts only; no recommendation about exposing any of them.
 
-### A.1 Phase 13/14 learning and delivery artifacts (leaf-only — `query-learning-interop`)
+### A.1 Phase 13/14 learning and delivery artifacts (LEAF-ONLY — `query-learning-interop`)
 
 `composeReadingPrimitiveSearchProjection` · `ReadingPrimitiveSearchProjection` ·
 `READING_PRIMITIVE_SEARCH_PROJECTION_SCHEMA_VERSION` ·
@@ -615,7 +627,7 @@ Facts only; no recommendation about exposing any of them.
 `ComposeSpellingEntrySearchProjectionRouteDeliveryContractInput` ·
 `SpellingEntrySearchProjectionRouteDeliveryContractSchemaVersion`
 
-### A.2 Lexical query enrichment and reporting (leaf-only — `query-lexical-interop`)
+### A.2 Lexical query enrichment and reporting (LEAF-ONLY — `query-lexical-interop`)
 
 `composeLexicalQueryEnrichment` · `LexicalQueryEnrichmentResult` ·
 `LEXICAL_QUERY_ENRICHMENT_SCHEMA_VERSION` · `ComposeLexicalQueryEnrichmentInput` ·
@@ -631,7 +643,7 @@ Facts only; no recommendation about exposing any of them.
 `LEXICAL_QUERY_REPORT_SCHEMA_VERSION` · `ComposeLexicalQueryReportInput` ·
 `LexicalQueryReportSchemaVersion`
 
-### A.3 Query execution plan IR (intermediate — `search/index.ts`, not forwarded to `tokenizers/index.ts`)
+### A.3 Query execution plan IR (INTERMEDIATE — `search/index.ts`, not forwarded to `tokenizers/index.ts`)
 
 `buildQueryExecutionPlan` · `QUERY_EXECUTION_PLAN_SCHEMA_VERSION` ·
 `QueryExecutionPlan` · `QueryExecutionPlanMetadata` · `QueryExecutionPlanDiagnostic` ·
@@ -640,7 +652,7 @@ Facts only; no recommendation about exposing any of them.
 
 `ExecuteQueryPipelineOptions` · `PlanQueryPipelineDiagnostic`
 
-### A.4 Explainability infrastructure (intermediate — `search/index.ts`, not forwarded)
+### A.4 Explainability infrastructure (INTERMEDIATE — `search/index.ts`, not forwarded)
 
 `buildQueryExplanation` · `QUERY_EXPLANATION_SCHEMA_VERSION` ·
 `QueryExplanation` · `QueryExplanationArtifact` · `QueryExplanationArtifactType` ·
@@ -651,7 +663,7 @@ Facts only; no recommendation about exposing any of them.
 `QueryExecutionTraceStage` · `QueryExecutionTraceStatus` · `QueryExecutionTraceStep` ·
 `QueryTraceMetadataPrimitive`
 
-### A.5 Snapshot / replay governance (intermediate — `search/index.ts`, not forwarded)
+### A.5 Snapshot / replay governance (INTERMEDIATE — `search/index.ts`, not forwarded)
 
 `aggregateReplayDiagnostics` · `buildReplayGovernanceReport` ·
 `canonicalizeForEquivalence` · `createQueryReplaySnapshot` ·
@@ -673,7 +685,7 @@ Facts only; no recommendation about exposing any of them.
 
 _(Full type set for snapshots: ~40 type-only exports — see §3.3 for full list)_
 
-### A.6 Runtime capability governance (intermediate — partial; not forwarded past search or not forwarded to tokenizers)
+### A.6 Runtime capability governance (INTERMEDIATE — partial; not forwarded past search or not forwarded to tokenizers)
 
 `deepFreezeStructure` · `orderCertificationSummaryMismatches` ·
 `orderRuntimeCapabilityCertifications` · `orderRuntimeCapabilityManifests` ·
@@ -687,11 +699,11 @@ _(associated input types and branded schema-version types — see §3.6 for full
 _(All runtime-capabilities functions/consts that ARE in search/index.ts are also
 non-app-reachable since they are not forwarded to tokenizers/index.ts — see §3.3)_
 
-### A.7 Pre-built normalization rules (intermediate — `normalization/index.ts`, not forwarded to `tokenizers/index.ts`)
+### A.7 Pre-built normalization rules (INTERMEDIATE — `normalization/index.ts`, not forwarded to `tokenizers/index.ts`)
 
 `collapseWhitespaceRule` · `thaiDigitNormalizationRule` · `trimBoundaryWhitespaceRule`
 
-### A.8 Internal lexical normalization functions (no barrel exposure at any level)
+### A.8 Internal lexical normalization functions (INTERNAL — no barrel exposure at any level)
 
 `normalizeLexicalKey` · `canonicalizeEnglishKey` · `assertNoWhitespace` ·
 Thai tone-mark normalization rule (defined in
