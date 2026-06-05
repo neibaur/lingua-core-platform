@@ -7,7 +7,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 > Single source of truth for values that change most cycles. Update them here and
 > nowhere else; every other file points to this block rather than restating it.
 > Completed Slices, Schema Version Literals, and Open Doctrinal Questions below
-> are append-only logs.
+> are append-only logs. Record the last MERGED PR (stable, knowable post-merge);
+> never record the current branch or a self-referential commit hash.
 
 - Current phase: Phase 15 — COMPLETE (closure ADR-0015 accepted; binding-grounded
   surface — tenant identity + enabled-language configuration, backed by canonical
@@ -15,27 +16,24 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Next action: Phase 15 COMPLETE (ADR-0015); no core phase active. Phase 16
   PENDING AUTHORIZATION — premature; requires explicit authorization and a §9
   Phase-15→16 transition audit (Audits A–E) before any work. Open non-phase
-  thread: prefix/fuzzy search scoping via src/core/tokenizers (app-tier
-  consumption vs thin core seam) — barrel-surface denominator captured
-  (docs/architecture/tokenizer-search-barrel-inventory.md, merged); next step is
-  apps/usethai friction log (usage-evidence pass) before any search capability is
-  warranted.
+  thread: friction-evidence pass complete; next step is the search/tokenizer warrant
+  deliberation (app-only consumption vs thin core seam vs core slice), now unblocked
+  by that evidence.
 - Last accepted ADR: ADR-0015 — Phase 15 Closure
   (docs/adr/0015-phase-15-closure-tenant-and-content-configuration.md), Accepted
 - Tests passing: 856
 - Test files: 62
 - Statement coverage: 92.78%
-- Branch at last update: fix/phase15-closure
-- Commit at last update: 4c067ab
+- Last merged PR: #170 — fix: anchor session state to last merged PR
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
-(src/core) only. Application-tier status (apps/usethai). First shell merged. Load-bearing learnings
-for the next planning session:
+(src/core) only. Application-tier work (apps/usethai) — first shell merged;
+load-bearing learnings for the next planning session:
 
 - The core consumes cleanly as source via a Vite path alias (@core ->
   ../../src/core); no core build/exports/dist is needed yet.
 - Exact-key lexical lookup is insufficient for a real dictionary UX — prefix/
-  substring/fuzzy is wanted. Barrel denominator captured — docs/architecture/tokenizer-search-barrel-inventory.md. Two search surfaces are already app-reachable: lexical exact-key lookup (composeLexicalLookup) and a tokenizer corpus token/phrase path (buildSearchProjection → CorpusIndexer → executeQuery/executePhraseQuery). prefix/substring/fuzzy are NOT PRESENT and non-goaled in lexical lookup — if ever warranted, tokenizer/search layer only. Phase 13 projections + Phase 14 delivery contracts sit in a leaf-only barrel (query-learning-interop) with no app-legal path today.
+  substring/fuzzy is wanted.
 - en→th lookup of multi-word glosses (e.g. "to eat") was unreachable (full-definition-string
   English key + whitespace-rejecting lookup). Resolution is now GROUNDED via ARCHITECTURE.md
   "Lexical Key Normalization Policy" (Option D: symmetric whole-phrase canonical English key,
