@@ -52,7 +52,7 @@ nothing else — no commentary, no phase proposals, no implementation discussion
 Phase status: [current phase] — [status from SESSION_STATE Per-PR Update Block]
 Next action: [next action from SESSION_STATE]
 Validation baseline: [N] tests / [N] files / [N]% statement coverage
-Branch at last update: [branch]
+Last merged PR: [#N — title]
 Last accepted ADR: [ADR filename]
 ```
 
