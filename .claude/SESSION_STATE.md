@@ -24,7 +24,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 856
 - Test files: 62
 - Statement coverage: 92.78%
-- Last merged PR: #173 — feat(usethai): add Cloudflare adapter and enable server build validation
+- Last merged PR: #174 — chore(deps): remediate yaml vulnerability via pnpm override
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — first shell merged;
