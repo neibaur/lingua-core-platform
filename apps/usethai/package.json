@@ -12,6 +12,7 @@
     "evidence:friction": "node evidence/run-friction-harness.mts"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "13.6.1",
     "astro": "^6.1.10"
   },
   "devDependencies": {
