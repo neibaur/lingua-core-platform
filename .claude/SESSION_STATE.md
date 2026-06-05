@@ -24,7 +24,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 856
 - Test files: 62
 - Statement coverage: 92.78%
-- Last merged PR: #174 — chore(deps): remediate yaml vulnerability via pnpm override
+- Last merged PR: #175 — chore: ignore generated app build output in ESLint
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — first shell merged;
