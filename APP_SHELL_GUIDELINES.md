@@ -40,8 +40,18 @@ follows the rules below instead.
 
 ## Application validation
 
-- Application code maintains automated validation appropriate to its stack
-  (linting, type-checking, tests, build verification).
+- Application code must pass the full set of checks the project enforces over
+  the app directory: format (Prettier), lint (ESLint at the
+  repository-enforced config and strictness level — not a relaxed local
+  subset), type-check, and build. Apps with tests must also pass them.
+- "App validation" means the same gate CI/CD enforces over the app directory.
+  Running a partial subset — for example, `astro check` alone — does not
+  satisfy it. Every applicable check must be run and its result reported
+  per-command before app work is declared validated or proposed for merge.
+- These checks are satisfied by fixing the source. Suppressing rules, adding
+  blanket `eslint-disable` comments, loosening the enforced config, or passing
+  bypass flags do not satisfy them. A check that cannot pass is surfaced and
+  fixed, not silenced.
 - Core and application validation chains are independent concerns.
 - Failing application validation is not excused because the code lives outside
   src/core; "not governed by core doctrine" does not mean "not validated."
