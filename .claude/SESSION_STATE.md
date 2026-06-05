@@ -16,8 +16,10 @@ Cross-Session State Document | Updated After Each PR Cycle
   PENDING AUTHORIZATION — premature; requires explicit authorization and a §9
   Phase-15→16 transition audit (Audits A–E) before any work. Open non-phase
   thread: prefix/fuzzy search scoping via src/core/tokenizers (app-tier
-  consumption vs thin core seam), not yet assessed — first question is what those
-  barrels expose.
+  consumption vs thin core seam) — barrel-surface denominator captured
+  (docs/architecture/tokenizer-search-barrel-inventory.md, merged); next step is
+  apps/usethai friction log (usage-evidence pass) before any search capability is
+  warranted.
 - Last accepted ADR: ADR-0015 — Phase 15 Closure
   (docs/adr/0015-phase-15-closure-tenant-and-content-configuration.md), Accepted
 - Tests passing: 856
@@ -39,6 +41,14 @@ for the next planning session:
   "Lexical Key Normalization Policy" (Option D: symmetric whole-phrase canonical English key,
   exact-equality only). DELIVERED via feat/lexical-english-phrase-keying; resolved through core
   governance, not an app workaround.
+- Barrel denominator captured — docs/architecture/tokenizer-search-barrel-inventory.md
+  (merged). Two search surfaces are already app-reachable: lexical exact-key lookup
+  (composeLexicalLookup) and a tokenizer corpus token/phrase path
+  (buildSearchProjection -> CorpusIndexer -> executeQuery / executePhraseQuery).
+  prefix / substring / fuzzy are NOT PRESENT and non-goaled in lexical lookup; if
+  ever warranted they belong to the tokenizer/search layer only. Phase 13 search
+  projections and Phase 14 route delivery contracts sit in a leaf-only barrel
+  (query-learning-interop) with no app-legal path today.
 
 Application-tier work is governed and tracked separately per
 APP_SHELL_GUIDELINES.md.
