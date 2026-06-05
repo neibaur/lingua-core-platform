@@ -5,6 +5,10 @@ node_modules/
 .astro/
 apps/**/.astro/
 
+# Cloudflare adapter / wrangler generated files
+.wrangler/
+apps/**/.wrangler/
+
 # Next.js build output
 .next/
 
