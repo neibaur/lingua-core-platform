@@ -11,7 +11,11 @@
 
 import type { Query } from "@core/tokenizers";
 
-import type { IntendedCapability, MissClassification, ReachDirection } from "./friction-record";
+import type {
+  IntendedCapability,
+  MissClassification,
+  ReachDirection,
+} from "./friction-record";
 
 /** A reach resolved through the exact-key lexical barrel (composeLexicalLookup). */
 export interface LexicalScenario {

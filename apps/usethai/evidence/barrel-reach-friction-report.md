@@ -53,23 +53,23 @@ contains no recommendations, no promotion paths, and no barrel-exposure proposal
 
 One row per concrete query, in execution order.
 
-| query | category | direction | intended capability | outcome | verdict | reachability tier | classification | evidence (live) |
-| ----- | -------- | --------- | ------------------- | ------- | ------- | ----------------- | -------------- | --------------- |
-| `กิน` | exact-key (th→en) | th→en | exact-key | hit | EXPORTED | APP-REACHABLE | NONE | composeLexicalLookup → 1 entry |
-| `to eat` | whole-phrase exact (en→th) | en→th | exact-key whole-phrase | hit | EXPORTED | APP-REACHABLE | NONE | composeLexicalLookup → 1 entry |
-| `eat` | single-word exact (en→th) | en→th | exact-key single word | miss | EXPORTED | APP-REACHABLE | AMBIGUOUS | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `ea` | prefix (en→th) | en→th | prefix | miss | NOT PRESENT | — | STRUCTURAL | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `กิ` | prefix (th→en) | th→en | prefix | miss | NOT PRESENT | — | STRUCTURAL | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `watter` | misspellings | en→th | fuzzy | miss | NOT PRESENT | — | STRUCTURAL | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `gud` | misspellings | en→th | fuzzy | miss | NOT PRESENT | — | STRUCTURAL | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `hows` | misspellings | en→th | fuzzy | miss | NOT PRESENT | — | STRUCTURAL | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `to eat` | multi-word English | en→th | exact-key whole-phrase | hit | EXPORTED | APP-REACHABLE | NONE | composeLexicalLookup → 1 entry |
-| `to drink` | multi-word English | en→th | exact-key whole-phrase | miss | EXPORTED | APP-REACHABLE | CONTENT-CAPPED | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `eat` | multi-word English | either | tokenization-driven matching | hit | EXPORTED | APP-REACHABLE | NONE | executeQuery → 1 document match(es) |
-| `"to eat"` | multi-word English | either | phrase matching | hit | EXPORTED | APP-REACHABLE | NONE | executeQuery → 1 document match(es) |
-| `w` | autocomplete typing | en→th | incremental prefix | miss | NOT PRESENT | — | STRUCTURAL | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `wa` | autocomplete typing | en→th | incremental prefix | miss | NOT PRESENT | — | STRUCTURAL | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
-| `wat` | autocomplete typing | en→th | incremental prefix | miss | NOT PRESENT | — | STRUCTURAL | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| query      | category                   | direction | intended capability          | outcome | verdict     | reachability tier | classification | evidence (live)                                          |
+| ---------- | -------------------------- | --------- | ---------------------------- | ------- | ----------- | ----------------- | -------------- | -------------------------------------------------------- |
+| `กิน`      | exact-key (th→en)          | th→en     | exact-key                    | hit     | EXPORTED    | APP-REACHABLE     | NONE           | composeLexicalLookup → 1 entry                           |
+| `to eat`   | whole-phrase exact (en→th) | en→th     | exact-key whole-phrase       | hit     | EXPORTED    | APP-REACHABLE     | NONE           | composeLexicalLookup → 1 entry                           |
+| `eat`      | single-word exact (en→th)  | en→th     | exact-key single word        | miss    | EXPORTED    | APP-REACHABLE     | AMBIGUOUS      | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `ea`       | prefix (en→th)             | en→th     | prefix                       | miss    | NOT PRESENT | —                 | STRUCTURAL     | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `กิ`       | prefix (th→en)             | th→en     | prefix                       | miss    | NOT PRESENT | —                 | STRUCTURAL     | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `watter`   | misspellings               | en→th     | fuzzy                        | miss    | NOT PRESENT | —                 | STRUCTURAL     | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `gud`      | misspellings               | en→th     | fuzzy                        | miss    | NOT PRESENT | —                 | STRUCTURAL     | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `hows`     | misspellings               | en→th     | fuzzy                        | miss    | NOT PRESENT | —                 | STRUCTURAL     | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `to eat`   | multi-word English         | en→th     | exact-key whole-phrase       | hit     | EXPORTED    | APP-REACHABLE     | NONE           | composeLexicalLookup → 1 entry                           |
+| `to drink` | multi-word English         | en→th     | exact-key whole-phrase       | miss    | EXPORTED    | APP-REACHABLE     | CONTENT-CAPPED | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `eat`      | multi-word English         | either    | tokenization-driven matching | hit     | EXPORTED    | APP-REACHABLE     | NONE           | executeQuery → 1 document match(es)                      |
+| `"to eat"` | multi-word English         | either    | phrase matching              | hit     | EXPORTED    | APP-REACHABLE     | NONE           | executeQuery → 1 document match(es)                      |
+| `w`        | autocomplete typing        | en→th     | incremental prefix           | miss    | NOT PRESENT | —                 | STRUCTURAL     | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `wa`       | autocomplete typing        | en→th     | incremental prefix           | miss    | NOT PRESENT | —                 | STRUCTURAL     | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
+| `wat`      | autocomplete typing        | en→th     | incremental prefix           | miss    | NOT PRESENT | —                 | STRUCTURAL     | composeLexicalLookup → 0 entries [LEXICAL_KEY_NOT_FOUND] |
 
 ## 3. Summary
 
@@ -77,17 +77,17 @@ Factual tallies only across all 15 records. No recommendations.
 
 ### Counts by verdict
 
-| verdict | count |
-| ------- | ----- |
-| EXPORTED | 7 |
-| PRESENT — NOT APP-REACHABLE | 0 |
-| NOT PRESENT | 8 |
+| verdict                     | count |
+| --------------------------- | ----- |
+| EXPORTED                    | 7     |
+| PRESENT — NOT APP-REACHABLE | 0     |
+| NOT PRESENT                 | 8     |
 
 ### Counts by classification
 
 | classification | count |
 | -------------- | ----- |
-| STRUCTURAL | 8 |
-| CONTENT-CAPPED | 1 |
-| AMBIGUOUS | 1 |
-| NONE | 5 |
+| STRUCTURAL     | 8     |
+| CONTENT-CAPPED | 1     |
+| AMBIGUOUS      | 1     |
+| NONE           | 5     |

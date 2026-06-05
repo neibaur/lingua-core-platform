@@ -11,7 +11,11 @@
 // fabricate no DictionarySourceProvenance / CanonicalDictionaryEntry lineage
 // (APP_SHELL_GUIDELINES.md — Data).
 
-import { buildSearchProjection, CorpusIndexer, MockTokenizerDriver } from "@core/tokenizers";
+import {
+  buildSearchProjection,
+  CorpusIndexer,
+  MockTokenizerDriver,
+} from "@core/tokenizers";
 import type { SearchCorpus } from "@core/tokenizers";
 
 /** Fixed, hardcoded corpus input. Whitespace-segmented by MockTokenizerDriver. */

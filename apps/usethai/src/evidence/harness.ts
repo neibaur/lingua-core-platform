@@ -22,7 +22,11 @@ import {
   type ObservedOutcome,
   type CapabilityVerdict,
 } from "./friction-record";
-import { SCENARIOS, type CorpusScenario, type LexicalScenario } from "./scenarios";
+import {
+  SCENARIOS,
+  type CorpusScenario,
+  type LexicalScenario,
+} from "./scenarios";
 
 // Branch and base commit this evidence pass was produced from (for the report).
 export const EVIDENCE_BRANCH = "spike/usethai-barrel-reach-friction-log";
@@ -57,7 +61,10 @@ function observeLexical(scenario: LexicalScenario): ObservedOutcome {
     // A thrown core invariant (e.g. whitespace rejection) is recorded as
     // unsupported — the capability could not be executed at all.
     const message = error instanceof Error ? error.message : String(error);
-    return { outcome: "unsupported", note: `composeLexicalLookup threw: ${message}` };
+    return {
+      outcome: "unsupported",
+      note: `composeLexicalLookup threw: ${message}`,
+    };
   }
 }
 
@@ -112,7 +119,10 @@ const CLASSIFICATION_ORDER: readonly EvidenceClassification[] = [
   "NONE",
 ];
 
-function tally<T extends string>(values: readonly T[], order: readonly T[]): Map<T, number> {
+function tally<T extends string>(
+  values: readonly T[],
+  order: readonly T[],
+): Map<T, number> {
   const counts = new Map<T, number>(order.map((key) => [key, 0]));
   for (const value of values) {
     counts.set(value, (counts.get(value) ?? 0) + 1);

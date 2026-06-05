@@ -116,15 +116,24 @@ export interface FrictionRecord {
 const INVENTORY_VERDICT: Readonly<
   Record<
     IntendedCapability,
-    { readonly verdict: CapabilityVerdict; readonly reachabilityTier: ReachabilityTier | null }
+    {
+      readonly verdict: CapabilityVerdict;
+      readonly reachabilityTier: ReachabilityTier | null;
+    }
   >
 > = Object.freeze({
   // §4 "exact-key lookup" → EXPORTED / APP-REACHABLE
   "exact-key": { verdict: "EXPORTED", reachabilityTier: "APP-REACHABLE" },
   // §4 "English whole-phrase lookup" → EXPORTED / APP-REACHABLE
-  "exact-key whole-phrase": { verdict: "EXPORTED", reachabilityTier: "APP-REACHABLE" },
+  "exact-key whole-phrase": {
+    verdict: "EXPORTED",
+    reachabilityTier: "APP-REACHABLE",
+  },
   // §4 "exact-key lookup" (single-word query is the same capability) → EXPORTED
-  "exact-key single word": { verdict: "EXPORTED", reachabilityTier: "APP-REACHABLE" },
+  "exact-key single word": {
+    verdict: "EXPORTED",
+    reachabilityTier: "APP-REACHABLE",
+  },
   // §4 "prefix matching" → NOT PRESENT
   prefix: { verdict: "NOT PRESENT", reachabilityTier: null },
   // §4 "fuzzy matching" → NOT PRESENT
@@ -132,7 +141,10 @@ const INVENTORY_VERDICT: Readonly<
   // §4 "prefix matching" (incremental prefix is prefix repeated) → NOT PRESENT
   "incremental prefix": { verdict: "NOT PRESENT", reachabilityTier: null },
   // §4 "tokenization-driven matching" → EXPORTED / APP-REACHABLE
-  "tokenization-driven matching": { verdict: "EXPORTED", reachabilityTier: "APP-REACHABLE" },
+  "tokenization-driven matching": {
+    verdict: "EXPORTED",
+    reachabilityTier: "APP-REACHABLE",
+  },
   // §4 "phrase matching" → EXPORTED / APP-REACHABLE
   "phrase matching": { verdict: "EXPORTED", reachabilityTier: "APP-REACHABLE" },
 });

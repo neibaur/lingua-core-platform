@@ -25,7 +25,9 @@ function resolveVite() {
       // try next base
     }
   }
-  throw new Error("Could not resolve 'vite' (expected transitively via astro).");
+  throw new Error(
+    "Could not resolve 'vite' (expected transitively via astro).",
+  );
 }
 const { createServer } = await import(resolveVite());
 
@@ -50,7 +52,9 @@ try {
   const records = await harness.runHarness();
   const report = harness.renderReport(records);
   await writeFile(reportPath, report, "utf8");
-  console.log(`barrel-reach friction harness: wrote ${records.length} records.`);
+  console.log(
+    `barrel-reach friction harness: wrote ${records.length} records.`,
+  );
 } finally {
   await server.close();
 }
