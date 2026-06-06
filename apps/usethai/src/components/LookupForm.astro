@@ -1,0 +1,24 @@
+---
+// Static lookup form: the text query (defaulting to the acceptance word กิน),
+// the translation-direction select, and the submit button. Behavior is wired by
+// the page's client script, which reads these controls by id — markup and
+// semantics are unchanged from the original inline form.
+---
+
+<form id="lookup-form">
+  <input
+    id="q"
+    type="text"
+    placeholder="Type a word, e.g. กิน"
+    value="กิน"
+    autocomplete="off"
+    autofocus
+  />
+  <label>
+    <select id="dir">
+      <option value="th→en" selected>Thai → English</option>
+      <option value="en→th">English → Thai</option>
+    </select>
+  </label>
+  <button type="submit">Look up</button>
+</form>

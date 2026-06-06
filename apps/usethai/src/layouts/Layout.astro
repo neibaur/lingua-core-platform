@@ -1,0 +1,29 @@
+---
+// UseThai document shell. Provides the HTML scaffold, the global token
+// stylesheet, and the page header; pages supply their content through the slot.
+// No framework runtime — this is the static chrome around a vanilla-JS page.
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "UseThai — lookup" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <h1>UseThai — Thai word lookup</h1>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

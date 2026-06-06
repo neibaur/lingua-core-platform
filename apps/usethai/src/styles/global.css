@@ -1,0 +1,123 @@
+/*
+ * UseThai design tokens + base styles.
+ *
+ * A small, deliberate token system: one color set, one spacing scale, and one
+ * type scale, each defined once as CSS custom properties and consumed
+ * throughout. Thai-script legibility is the one intentional sizing decision —
+ * the headword renders larger with generous line-height so stacked tone marks
+ * and upper/lower vowels are not clipped; romanized (Latin) text stays at body
+ * scale.
+ */
+
+:root {
+  /* Color set */
+  --color-text: #1a1a1a;
+  --color-muted: #555555;
+  --color-faint: #777777;
+  --color-border: #cccccc;
+  --color-danger: #aa0000;
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+
+  /* Spacing scale (0.25rem base step) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-12: 3rem;
+
+  /* Type scale */
+  --text-xs: 0.85rem;
+  --text-base: 1rem;
+  --text-md: 1.25rem;
+  --text-lg: 1.5rem;
+  --text-headword: 2.25rem;
+
+  /* Line heights */
+  --leading-base: 1.5;
+  --leading-headword: 1.6;
+
+  /* Layout + form */
+  --content-width: 40rem;
+  --radius: 6px;
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  max-width: var(--content-width);
+  margin: var(--space-12) auto;
+  padding: 0 var(--space-4);
+  line-height: var(--leading-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+h1 {
+  font-size: var(--text-lg);
+}
+
+form {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: var(--space-6);
+}
+
+input[type="text"] {
+  flex: 1 1 12rem;
+  padding: var(--space-2);
+  font-size: var(--text-md);
+}
+
+button {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-base);
+  cursor: pointer;
+}
+
+.entry {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-3);
+  background: var(--color-surface);
+}
+
+/*
+ * Thai-script sizing: the headword carries the Thai word, which stacks tone
+ * marks and upper/lower vowels. Render it large with generous line-height so
+ * those marks are never clipped.
+ */
+.headword {
+  font-size: var(--text-headword);
+  line-height: var(--leading-headword);
+  margin: 0;
+}
+
+/* Romanized (Latin) sits at body scale, not the enlarged headword scale. */
+.romanized {
+  color: var(--color-muted);
+  font-style: italic;
+  font-size: var(--text-base);
+}
+
+.definition {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-base);
+}
+
+.pos {
+  color: var(--color-faint);
+  font-size: var(--text-xs);
+}
+
+.diagnostic {
+  color: var(--color-danger);
+}
+
+.muted {
+  color: var(--color-faint);
+}
