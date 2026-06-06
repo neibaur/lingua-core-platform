@@ -13,23 +13,19 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Current phase: Phase 15 — COMPLETE (closure ADR-0015 accepted; binding-grounded
   surface — tenant identity + enabled-language configuration, backed by canonical
   language identity — realized by TenantConfiguration + CanonicalLanguageTag)
-- Next action: Phase 15 COMPLETE (ADR-0015); no core phase active. Phase 16
-  PENDING AUTHORIZATION — premature; requires explicit authorization and a §9
-  Phase-15→16 transition audit (Audits A–E) before any work. Immediate core
-  thread (non-phase, corrective — surfaced during apps/usethai work):
-  composeLexicalLookup THROWS on th→en whitespace (inline /\s/.test guard, #87)
-  but the LexicalLookupDiagnosticCode union DECLARES LEXICAL_KEY_WHITESPACE_REJECTED,
-  which the lexical-lookup path never emits — see Open Doctrinal Questions. Needs a
-  §9 assessment of whether th→en whitespace should be reconciled to RETURN that
-  diagnostic vs. remain a fail-fast invariant. Broader open thread remains:
-  search/tokenizer warrant deliberation (app-only consumption vs thin core seam vs
-  core slice), unblocked by the merged friction-evidence pass.
-- Last accepted ADR: ADR-0015 — Phase 15 Closure
-  (docs/adr/0015-phase-15-closure-tenant-and-content-configuration.md), Accepted
+- Next action: ADR-0016 accepted — th→en whitespace rejection surfaced as a returned
+  LEXICAL_KEY_WHITESPACE_REJECTED diagnostic (Option A), grounded by the ARCHITECTURE "Lexical Key
+  Normalization Policy" clarification. Pending: a §9 pre-implementation assessment for the core slice
+  that emits the diagnostic in composeLexicalLookup (replacing the inline /\s/.test throw), carrying an
+  explicit premise check that the existing LexicalLookupResultStatus union can represent the rejection
+  without a new member (any pull toward a new member surfaces as a conflict, not an implementation).
+  The apps/usethai slice (delete the endpoint pre-guard; consume core's real diagnostic) unblocks after
+  the core slice lands.
+- Last accepted ADR: ADR-0016 (docs/adr/0016-lexical-lookup-whitespace-diagnostic-surfacing.md), Accepted
 - Tests passing: 856
 - Test files: 62
 - Statement coverage: 92.78%
-- Last merged PR: #179 — docs: correct SESSION_STATE whitespace rejection mechanism
+- Last merged PR: #179 — docs(session-state): correct th→en whitespace rejection mechanism to inline guard
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
@@ -94,7 +90,7 @@ APP_SHELL_GUIDELINES.md.
   (docs/adr/0015-phase-15-closure-tenant-and-content-configuration.md); grounded-surface-exhausted
   finding: no additive slice warranted under current grounding)
 
-Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. The Phase 14→15 phase-transition audit (HANDOFF §9) was completed and CONFIRMED CLEAN across all five audit categories (Audit A schema-literal reconciliation 37/37 bidirectional; Audits B–E clean), with the validation chain green at 824 tests / 60 files / 92.73% statement coverage; Phase 15 is AUTHORIZED for ADR-0014 boundary drafting (see Current Phase and Status).
+Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts resolved; Phase 12 authorized. Phases 13 and 14 proceeded under per-slice pre-implementation assessments; no separate Phase 13→14 transition audit was recorded. The Phase 14→15 phase-transition audit (HANDOFF §9) was completed and CONFIRMED CLEAN across all five audit categories (Audit A schema-literal reconciliation 37/37 bidirectional; Audits B–E clean), with the validation chain green at 824 tests / 60 files / 92.73% statement coverage; Phase 15 was AUTHORIZED for ADR-0014 boundary drafting (Phase 15 since closed — ADR-0015).
 
 ## Completed Systems
 
@@ -274,6 +270,15 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
   index + lookup, per-direction whitespace guard (en→th admits whole-phrase queries; th→en
   unchanged). normalizeLexicalKey/assertNoWhitespace untouched; LEXICAL_KEY_WHITESPACE_REJECTED
   discrepancy untouched. Test-additive (+13 / +1 file). 856 tests / 62 files / 92.78%.
+- Lexical lookup th→en whitespace diagnostic surfacing (ADR-0016) — decision recorded; pending §9
+  implementation slice in composeLexicalLookup. Derivation surface: src/core/lexical/{lookup,
+  contracts,diagnostics}; downstream interop whitespace bucket transitions from always-empty to
+  populated.
+- fix/adr-0016-lexical-whitespace-diagnostic-surfacing — added ADR-0016 (th→en whitespace rejection
+  surfaced as a returned diagnostic, Option A) plus a one-sentence ARCHITECTURE "Lexical Key
+  Normalization Policy" clarification grounding the returned-diagnostic surfacing posture.
+  Documentation-only governance grounding; no implementation slice delivered. Baseline unchanged:
+  856 / 62 / 92.78%.
 
 ## Active Scope and Derivation Surface
 
@@ -309,7 +314,7 @@ explicitly authorized:
   fix/audit-d-phase9-guard-inlining; targeted re-audit confirmed
   repository clean; Phase 12 authorized to proceed) (records the pre-Phase-12 audit only; the Phase 14→15 phase-transition audit per HANDOFF §9 is COMPLETE and CONFIRMED CLEAN — see Current Phase and Status)
 - Schema version migration for any existing constant through @phase15 (@phase9–@phase15) —
-  not warranted;ARCHITECTURE.md defines no phase-coupled migration semantics
+  not warranted; ARCHITECTURE.md defines no phase-coupled migration semantics
 - Phase 14 chartered categories — API contract, static/SEO rendering contract, browser-native fallback
   contract — DEFERRED. The Phase 14 closure assessment determined each resolves to no structurally distinct artifact under current grounding: all would be field-identical to the route delivery contract ({schemaVersion, deliveryId, searchProjection, staticContentAddress}), distinguished only by name, with any category-specific field being domain-convention invention (DOCUMENTARY DERIVATION LAW) or prohibited vocabulary (ADR-0013). The groundable structural delivery surface is a single contract shape realized per-projection (the route category). Building any deferred category as a distinct type requires new ARCHITECTURE.md content grounding — an operator architectural decision, not yet warranted.
 
@@ -387,29 +392,6 @@ ARCHITECTURE.md explicitly defines phase-coupled migration semantics.
   (Number.isFinite, Number.isInteger) qualify under or violate this restriction
   is not yet resolved by ARCHITECTURE.md or HANDOFF_TEMPLATE.md. Defer to a
   future session for explicit doctrinal ruling.
-- th→en whitespace: declared-but-unemitted diagnostic. LEXICAL_KEY_WHITESPACE_REJECTED
-  is declared in the LexicalLookupDiagnosticCode union (src/core/lexical contracts,
-  app-reachable via @core/lexical) but composeLexicalLookup NEVER emits it: it rejects
-  th→en whitespace by THROWING an invariant error (inline /\s/.test guard in
-  composeLexicalLookup, lexical-lookup.ts ~L29-33, introduced by #87; not via
-  assertNoWhitespace), not by returning a diagnostic on the result. (en→th
-  accepts whitespace-bearing whole phrases and resolves by exact equality; empty input
-  in both directions returns LEXICAL_KEY_NOT_FOUND/warning without throwing. Evidence:
-  direct composeLexicalLookup calls against the apps/usethai fixture index.) Surfaced
-  when an app slice tried to defer the endpoint's whitespace handling to core — with no
-  diagnostic emitted, a th→en whitespace query passed to core would throw and surface
-  as a 500 instead of the honest rejected-input state, and the app has been masking
-  this by fabricating the code in api/lookup.ts. Open §9 question: should th→en
-  whitespace be reconciled so composeLexicalLookup RETURNS LEXICAL_KEY_WHITESPACE_REJECTED
-  (core becomes the single authority that emits the code it declares), or remain a
-  fail-fast INVARIANT GUARD per HANDOFF ("invariant guards must fail fast with crisp,
-  explicit, statically declared error literals"), with a separate validating entry
-  point owning the diagnostic? Tension to weigh: the extracted assertNoWhitespace helper
-  may itself sit uneasily with HANDOFF's prohibition on delegated/extracted validation
-  routines. Grounding candidates: the union member itself (intent evidence) + ARCHITECTURE
-  "Lexical Key Normalization Policy". App-tier impact: the apps/usethai endpoint
-  fabrication and the blocked en→th "to eat" reverse lookup cannot be honestly resolved
-  until this is settled.
 
 Accepted patterns (not open questions — resolved by fix/audit-d-phase9-guard-inlining):
 
@@ -470,3 +452,12 @@ Resolved doctrinal rulings:
   fail-fast guard and no-internal-derivation posture. The set is deterministically
   ordered; an empty set is permitted (no non-empty invariant). Grounded in
   ARCHITECTURE.md — Tenant-Scoped Enabled-Language Configuration.
+
+- th→en whitespace declared-but-unemitted diagnostic — RESOLVED by ADR-0016 (reconcile-to-return,
+  Option A). composeLexicalLookup will surface th→en whitespace rejection as a returned
+  LEXICAL_KEY_WHITESPACE_REJECTED diagnostic, replacing the inline /\s/.test throw; the
+  index-construction whitespace invariant is unchanged. Grounded-of-record by the ARCHITECTURE
+  "Lexical Key Normalization Policy" clarification co-merged with ADR-0016; the existing union member
+  and LexicalLookupResult.diagnostics ground the reused surface. Implementation pending a §9
+  assessment, which must verify the existing LexicalLookupResultStatus union (found | not-found |
+  empty-index) can represent the rejection without a new member.
