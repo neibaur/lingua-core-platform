@@ -15,10 +15,15 @@ Cross-Session State Document | Updated After Each PR Cycle
   language identity — realized by TenantConfiguration + CanonicalLanguageTag)
 - Next action: Phase 15 COMPLETE (ADR-0015); no core phase active. Phase 16
   PENDING AUTHORIZATION — premature; requires explicit authorization and a §9
-  Phase-15→16 transition audit (Audits A–E) before any work. Open non-phase
-  thread: friction-evidence pass complete; next step is the search/tokenizer warrant
-  deliberation (app-only consumption vs thin core seam vs core slice), now unblocked
-  by that evidence.
+  Phase-15→16 transition audit (Audits A–E) before any work. Immediate core
+  thread (non-phase, corrective — surfaced during apps/usethai work):
+  composeLexicalLookup THROWS on th→en whitespace (internal assertNoWhitespace)
+  but the LexicalLookupDiagnosticCode union DECLARES LEXICAL_KEY_WHITESPACE_REJECTED,
+  which the lexical-lookup path never emits — see Open Doctrinal Questions. Needs a
+  §9 assessment of whether th→en whitespace should be reconciled to RETURN that
+  diagnostic vs. remain a fail-fast invariant. Broader open thread remains:
+  search/tokenizer warrant deliberation (app-only consumption vs thin core seam vs
+  core slice), unblocked by the merged friction-evidence pass.
 - Last accepted ADR: ADR-0015 — Phase 15 Closure
   (docs/adr/0015-phase-15-closure-tenant-and-content-configuration.md), Accepted
 - Tests passing: 856
@@ -27,18 +32,29 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Last merged PR: #177 — feat(usethai): add honest lookup state rendering
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
-(src/core) only. Application-tier work (apps/usethai) — first shell merged;
+(src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
+(build-green) + layout/component baseline + honest lookup states merged;
 load-bearing learnings for the next planning session:
 
 - The core consumes cleanly as source via a Vite path alias (@core ->
   ../../src/core); no core build/exports/dist is needed yet.
 - Exact-key lexical lookup is insufficient for a real dictionary UX — prefix/
   substring/fuzzy is wanted.
-- en→th lookup of multi-word glosses (e.g. "to eat") was unreachable (full-definition-string
-  English key + whitespace-rejecting lookup). Resolution is now GROUNDED via ARCHITECTURE.md
-  "Lexical Key Normalization Policy" (Option D: symmetric whole-phrase canonical English key,
-  exact-equality only). DELIVERED via feat/lexical-english-phrase-keying; resolved through core
-  governance, not an app workaround.
+- en→th whole-phrase lookup IS delivered in core (feat/lexical-english-phrase-keying;
+  ARCHITECTURE "Lexical Key Normalization Policy" Option D — symmetric whole-phrase
+  canonical English key, exact-equality only). composeLexicalLookup resolves "to eat"
+  → กิน directly and already collapses multiple internal spaces ("to eat" → กิน).
+  HOWEVER it is currently UNREACHABLE through the apps/usethai endpoint: api/lookup.ts
+  applies a blanket whitespace pre-guard (query === "" || /\s/.test(query)) that
+  rejects internal whitespace for BOTH directions before calling core, and that guard
+  FABRICATES a LEXICAL_KEY_WHITESPACE_REJECTED diagnostic in the app — a code core's
+  lexical-lookup path never emits (core throws via the internal assertNoWhitespace
+  invariant instead). Resolution path: core slice FIRST (reconcile the
+  declared-but-unemitted th→en whitespace diagnostic — see Per-PR Next action / Open
+  Doctrinal Questions), THEN app slice (delete the endpoint pre-guard, pass through to
+  core, mint nothing; PR-177 honest-states taxonomy already maps core's real
+  diagnostics). Active app branch: none (slices through honest-states merged); the
+  next app slice is BLOCKED on the core reconciliation.
 - Barrel denominator captured — docs/architecture/tokenizer-search-barrel-inventory.md
   (merged). Two search surfaces are already app-reachable: lexical exact-key lookup
   (composeLexicalLookup) and a tokenizer corpus token/phrase path
@@ -371,6 +387,28 @@ ARCHITECTURE.md explicitly defines phase-coupled migration semantics.
   (Number.isFinite, Number.isInteger) qualify under or violate this restriction
   is not yet resolved by ARCHITECTURE.md or HANDOFF_TEMPLATE.md. Defer to a
   future session for explicit doctrinal ruling.
+- th→en whitespace: declared-but-unemitted diagnostic. LEXICAL_KEY_WHITESPACE_REJECTED
+  is declared in the LexicalLookupDiagnosticCode union (src/core/lexical contracts,
+  app-reachable via @core/lexical) but composeLexicalLookup NEVER emits it: it rejects
+  th→en whitespace by THROWING an invariant error (internal assertNoWhitespace,
+  lexical-lookup.ts ~L29-33), not by returning a diagnostic on the result. (en→th
+  accepts whitespace-bearing whole phrases and resolves by exact equality; empty input
+  in both directions returns LEXICAL_KEY_NOT_FOUND/warning without throwing. Evidence:
+  direct composeLexicalLookup calls against the apps/usethai fixture index.) Surfaced
+  when an app slice tried to defer the endpoint's whitespace handling to core — with no
+  diagnostic emitted, a th→en whitespace query passed to core would throw and surface
+  as a 500 instead of the honest rejected-input state, and the app has been masking
+  this by fabricating the code in api/lookup.ts. Open §9 question: should th→en
+  whitespace be reconciled so composeLexicalLookup RETURNS LEXICAL_KEY_WHITESPACE_REJECTED
+  (core becomes the single authority that emits the code it declares), or remain a
+  fail-fast INVARIANT GUARD per HANDOFF ("invariant guards must fail fast with crisp,
+  explicit, statically declared error literals"), with a separate validating entry
+  point owning the diagnostic? Tension to weigh: the extracted assertNoWhitespace helper
+  may itself sit uneasily with HANDOFF's prohibition on delegated/extracted validation
+  routines. Grounding candidates: the union member itself (intent evidence) + ARCHITECTURE
+  "Lexical Key Normalization Policy". App-tier impact: the apps/usethai endpoint
+  fabrication and the blocked en→th "to eat" reverse lookup cannot be honestly resolved
+  until this is settled.
 
 Accepted patterns (not open questions — resolved by fix/audit-d-phase9-guard-inlining):
 
