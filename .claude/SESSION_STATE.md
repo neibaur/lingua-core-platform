@@ -17,7 +17,7 @@ Cross-Session State Document | Updated After Each PR Cycle
   PENDING AUTHORIZATION — premature; requires explicit authorization and a §9
   Phase-15→16 transition audit (Audits A–E) before any work. Immediate core
   thread (non-phase, corrective — surfaced during apps/usethai work):
-  composeLexicalLookup THROWS on th→en whitespace (internal assertNoWhitespace)
+  composeLexicalLookup THROWS on th→en whitespace (inline /\s/.test guard, #87)
   but the LexicalLookupDiagnosticCode union DECLARES LEXICAL_KEY_WHITESPACE_REJECTED,
   which the lexical-lookup path never emits — see Open Doctrinal Questions. Needs a
   §9 assessment of whether th→en whitespace should be reconciled to RETURN that
@@ -29,7 +29,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 856
 - Test files: 62
 - Statement coverage: 92.78%
-- Last merged PR: #178 — docs: record usethai diagnostic reconciliation thread
+- Last merged PR: #179 — docs: correct SESSION_STATE whitespace rejection mechanism
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
@@ -48,8 +48,8 @@ load-bearing learnings for the next planning session:
   applies a blanket whitespace pre-guard (query === "" || /\s/.test(query)) that
   rejects internal whitespace for BOTH directions before calling core, and that guard
   FABRICATES a LEXICAL_KEY_WHITESPACE_REJECTED diagnostic in the app — a code core's
-  lexical-lookup path never emits (core throws via the internal assertNoWhitespace
-  invariant instead). Resolution path: core slice FIRST (reconcile the
+  lexical-lookup path never emits (core throws via the inline /\s/.test guard
+  in composeLexicalLookup (#87) instead). Resolution path: core slice FIRST (reconcile the
   declared-but-unemitted th→en whitespace diagnostic — see Per-PR Next action / Open
   Doctrinal Questions), THEN app slice (delete the endpoint pre-guard, pass through to
   core, mint nothing; PR-177 honest-states taxonomy already maps core's real
@@ -390,8 +390,9 @@ ARCHITECTURE.md explicitly defines phase-coupled migration semantics.
 - th→en whitespace: declared-but-unemitted diagnostic. LEXICAL_KEY_WHITESPACE_REJECTED
   is declared in the LexicalLookupDiagnosticCode union (src/core/lexical contracts,
   app-reachable via @core/lexical) but composeLexicalLookup NEVER emits it: it rejects
-  th→en whitespace by THROWING an invariant error (internal assertNoWhitespace,
-  lexical-lookup.ts ~L29-33), not by returning a diagnostic on the result. (en→th
+  th→en whitespace by THROWING an invariant error (inline /\s/.test guard in
+  composeLexicalLookup, lexical-lookup.ts ~L29-33, introduced by #87; not via
+  assertNoWhitespace), not by returning a diagnostic on the result. (en→th
   accepts whitespace-bearing whole phrases and resolves by exact equality; empty input
   in both directions returns LEXICAL_KEY_NOT_FOUND/warning without throwing. Evidence:
   direct composeLexicalLookup calls against the apps/usethai fixture index.) Surfaced
