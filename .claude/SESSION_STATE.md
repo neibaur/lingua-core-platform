@@ -24,7 +24,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 856
 - Test files: 62
 - Statement coverage: 92.78%
-- Last merged PR: #176 — refactor(usethai): extract layout baseline and design tokens
+- Last merged PR: #177 — feat(usethai): add honest lookup state rendering
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — first shell merged;
