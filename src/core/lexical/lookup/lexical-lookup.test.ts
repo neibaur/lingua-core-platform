@@ -135,30 +135,34 @@ describe("composeLexicalLookup", () => {
     expect(result.diagnostics[0].code).toBe("LEXICAL_INDEX_EMPTY");
   });
 
-  it("throws on leading whitespace in query", () => {
-    expect(() => {
-      composeLexicalLookup(
-        {
-          query: " กิน",
-          direction: "th→en",
-          lexicalIndexId: TEST_INDEX.lexicalIndexId,
-        },
-        TEST_INDEX,
-      );
-    }).toThrow("[lexical invariant]");
+  it("emits LEXICAL_KEY_WHITESPACE_REJECTED for leading whitespace in th→en query", () => {
+    const result = composeLexicalLookup(
+      {
+        query: " กิน",
+        direction: "th→en",
+        lexicalIndexId: TEST_INDEX.lexicalIndexId,
+      },
+      TEST_INDEX,
+    );
+
+    expect(result.entries).toHaveLength(0);
+    expect(result.diagnostics).toHaveLength(1);
+    expect(result.diagnostics[0].code).toBe("LEXICAL_KEY_WHITESPACE_REJECTED");
   });
 
-  it("throws on trailing whitespace in query", () => {
-    expect(() => {
-      composeLexicalLookup(
-        {
-          query: "กิน ",
-          direction: "th→en",
-          lexicalIndexId: TEST_INDEX.lexicalIndexId,
-        },
-        TEST_INDEX,
-      );
-    }).toThrow("[lexical invariant]");
+  it("emits LEXICAL_KEY_WHITESPACE_REJECTED for trailing whitespace in th→en query", () => {
+    const result = composeLexicalLookup(
+      {
+        query: "กิน ",
+        direction: "th→en",
+        lexicalIndexId: TEST_INDEX.lexicalIndexId,
+      },
+      TEST_INDEX,
+    );
+
+    expect(result.entries).toHaveLength(0);
+    expect(result.diagnostics).toHaveLength(1);
+    expect(result.diagnostics[0].code).toBe("LEXICAL_KEY_WHITESPACE_REJECTED");
   });
 
   it("normalizes NFD Thai query to the same result as NFC query", () => {
@@ -244,17 +248,45 @@ describe("composeLexicalLookup", () => {
     }).not.toThrow();
   });
 
-  it("still throws on whitespace in th→en direction (per-direction guard)", () => {
-    expect(() => {
-      composeLexicalLookup(
-        {
-          query: "กิน ข้าว",
-          direction: "th→en",
-          lexicalIndexId: TEST_INDEX.lexicalIndexId,
-        },
-        TEST_INDEX,
-      );
-    }).toThrow("[lexical invariant]");
+  it("still rejects whitespace in th→en direction via diagnostic (per-direction guard)", () => {
+    const result = composeLexicalLookup(
+      {
+        query: "กิน ข้าว",
+        direction: "th→en",
+        lexicalIndexId: TEST_INDEX.lexicalIndexId,
+      },
+      TEST_INDEX,
+    );
+
+    expect(result.entries).toHaveLength(0);
+    expect(result.diagnostics).toHaveLength(1);
+    expect(result.diagnostics[0].code).toBe("LEXICAL_KEY_WHITESPACE_REJECTED");
+  });
+
+  it("returns the full whitespace-rejection result shape for a th→en query", () => {
+    const result = composeLexicalLookup(
+      {
+        query: "กิน ข้าว",
+        direction: "th→en",
+        lexicalIndexId: TEST_INDEX.lexicalIndexId,
+      },
+      TEST_INDEX,
+    );
+
+    expect(result.entries).toEqual([]);
+    expect(result.diagnostics).toHaveLength(1);
+
+    const diagnostic = result.diagnostics[0];
+    expect(diagnostic.code).toBe("LEXICAL_KEY_WHITESPACE_REJECTED");
+    expect(diagnostic.severity).toBe("warning");
+    expect(diagnostic.path).toEqual(["query"]);
+    expect(diagnostic.message).toBe(
+      `Thai query must not contain whitespace: ${JSON.stringify("กิน ข้าว")}`,
+    );
+
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(result.entries)).toBe(true);
+    expect(Object.isFrozen(result.diagnostics)).toBe(true);
   });
 
   it("resolves an en→th query with irregular whitespace via collapse/trim canonicalization", () => {

@@ -1,11 +1,17 @@
 import { describe, expect, it } from "vitest";
 
+import {
+  composeLexicalLookup,
+  composeLexicalLookupTrace,
+} from "../../../../../lexical";
 import { THAI_ENGLISH_FIXTURE_DATASET } from "../../../../../lexical/datasets/thai-english/thai-english-fixture-dataset";
 import { composeLexicalIndex } from "../../../../../lexical/index/lexical-index";
 import { CorpusIndexer } from "../../../index-primitives";
 import type { SearchCorpus } from "../../../index-primitives";
 import { executeQueryPipeline } from "../../../query-pipeline";
 import { composeLexicalQueryEnrichment } from "../../pipeline/compose-lexical-query-enrichment";
+import type { LexicalQueryEnrichmentResult } from "../../shared/lexical-interop-types";
+import { LEXICAL_QUERY_ENRICHMENT_SCHEMA_VERSION } from "../../shared/lexical-interop-types";
 import { composeLexicalEnrichmentReport } from "../compose-lexical-enrichment-report";
 import { LEXICAL_QUERY_ENRICHMENT_REPORT_SCHEMA_VERSION } from "../lexical-enrichment-report-types";
 
@@ -241,6 +247,62 @@ describe("composeLexicalEnrichmentReport", () => {
     expect(
       report.diagnosticsByCode.LEXICAL_KEY_WHITESPACE_REJECTED,
     ).toHaveLength(0);
+  });
+
+  it("populates the LEXICAL_KEY_WHITESPACE_REJECTED bucket when a th→en whitespace lookup flows through (passthrough)", () => {
+    // The enrichment token path never produces a whitespace-bearing term
+    // (whitespace is the tokenization boundary), so the diagnostic is driven by
+    // a genuine composeLexicalLookup whitespace-rejection result carried on a
+    // term enrichment. The report buckets it via existing passthrough behavior;
+    // no report-layer production change is involved.
+    const index = buildFixtureIndex();
+    const whitespaceQuery = `${GIN} ${KHAO}`;
+
+    const lookupResult = composeLexicalLookup(
+      {
+        query: whitespaceQuery,
+        direction: "th→en",
+        lexicalIndexId: index.lexicalIndexId,
+      },
+      index,
+    );
+    const lookupTrace = composeLexicalLookupTrace({
+      traceId: "enrich-ws-term-0",
+      result: lookupResult,
+    });
+
+    const enrichment: LexicalQueryEnrichmentResult = {
+      schemaVersion: LEXICAL_QUERY_ENRICHMENT_SCHEMA_VERSION,
+      generatedFrom: "lexical-query-enrichment-result",
+      evaluationTimestamp: null,
+      enrichmentId: "enrich-ws",
+      lexicalIndexId: index.lexicalIndexId,
+      direction: "th→en",
+      derivedFrom: "execution-plan-ir",
+      termCount: 1,
+      enrichedTermCount: 0,
+      termEnrichments: [
+        {
+          normalizedTerm: whitespaceQuery,
+          direction: "th→en",
+          status: "not-found",
+          lookupResult,
+          lookupTrace,
+        },
+      ],
+    };
+
+    const report = composeLexicalEnrichmentReport({
+      reportId: "report-ws",
+      enrichmentResult: enrichment,
+    });
+
+    const bucket = report.diagnosticsByCode.LEXICAL_KEY_WHITESPACE_REJECTED;
+    expect(bucket).toHaveLength(1);
+    expect(bucket[0]?.code).toBe("LEXICAL_KEY_WHITESPACE_REJECTED");
+    expect(bucket[0]?.severity).toBe("warning");
+    expect(bucket[0]?.path).toEqual(["query"]);
+    expect(report.diagnosticCount).toBe(1);
   });
 
   // ── Deep immutability ───────────────────────────────────────────────────────
