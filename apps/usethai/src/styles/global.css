@@ -16,8 +16,14 @@
   --color-faint: #777777;
   --color-border: #cccccc;
   --color-danger: #aa0000;
+  --color-warning: #8a5a00;
   --color-bg: #ffffff;
   --color-surface: #ffffff;
+
+  /* State surfaces — quiet tints that pair with each accent color */
+  --color-neutral-surface: #f5f5f5;
+  --color-warning-surface: #fdf6e3;
+  --color-danger-surface: #fdf0f0;
 
   /* Spacing scale (0.25rem base step) */
   --space-1: 0.25rem;
@@ -114,10 +120,136 @@ button {
   font-size: var(--text-xs);
 }
 
-.diagnostic {
+/*
+ * Lookup presentation states.
+ *
+ * Four non-success states share a panel shape but are deliberately distinct in
+ * accent color and tone so that a no-match never reads as an error:
+ *   - loading        — neutral, in-progress (no alarm).
+ *   - no-result      — neutral; an honest "no exact match".
+ *   - rejected-input — amber; a correctable input condition.
+ *   - system         — red (or amber when the diagnostic's severity is warning);
+ *                      a failed or unavailable lookup.
+ * The accent for the system state and the severity badge are driven by the
+ * diagnostic's own severity value, not by a per-code hardcode.
+ */
+.state {
+  border: 1px solid var(--color-border);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+}
+
+.state__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 600;
+}
+
+.state__body {
+  margin: var(--space-2) 0 0;
+  color: var(--color-muted);
+}
+
+.state__hint {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-faint);
+}
+
+/* Loading — neutral and quiet; an in-progress cue, not an outcome. */
+.state--loading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-left-color: var(--color-border);
+  background: var(--color-neutral-surface);
+}
+
+.state--loading .state__body {
+  margin: 0;
+}
+
+.state__spinner {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-faint);
+  border-radius: 50%;
+  animation: state-spin 0.7s linear infinite;
+}
+
+@keyframes state-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .state__spinner {
+    animation: none;
+  }
+}
+
+/* No-result — neutral; this is "no exact match", not an error. */
+.state--no-result {
+  border-left-color: var(--color-faint);
+  background: var(--color-neutral-surface);
+}
+
+.state--no-result .state__heading {
+  color: var(--color-text);
+}
+
+/* Rejected-input — amber; a correctable input condition. */
+.state--rejected {
+  border-left-color: var(--color-warning);
+  background: var(--color-warning-surface);
+}
+
+.state--rejected .state__heading {
+  color: var(--color-warning);
+}
+
+/* System — failed or unavailable lookup; red by default. */
+.state--system {
+  border-left-color: var(--color-danger);
+  background: var(--color-danger-surface);
+}
+
+.state--system .state__heading {
   color: var(--color-danger);
 }
 
-.muted {
-  color: var(--color-faint);
+/* When the governing diagnostic's severity is "warning", soften to amber. */
+.state--system-warning {
+  border-left-color: var(--color-warning);
+  background: var(--color-warning-surface);
+}
+
+.state--system-warning .state__heading {
+  color: var(--color-warning);
+}
+
+/* Severity badge — its label and tone reflect the diagnostic's severity value. */
+.state__severity {
+  padding: 0 var(--space-2);
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.state__severity--warning {
+  color: var(--color-warning);
+}
+
+.state__severity--error {
+  color: var(--color-danger);
 }
