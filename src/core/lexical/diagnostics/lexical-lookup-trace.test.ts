@@ -108,6 +108,22 @@ describe("composeLexicalLookupTrace", () => {
     expect(trace.resultStatus).toBe("not-found");
   });
 
+  it("resolves resultStatus as 'not-found' for a th→en whitespace-rejection result", () => {
+    const whitespaceResult = composeLexicalLookup(
+      { query: "กิน ข้าว", direction: "th→en", lexicalIndexId: "test-index" },
+      buildFixtureIndex(),
+    );
+    const trace = composeLexicalLookupTrace({
+      traceId: "t1",
+      result: whitespaceResult,
+    });
+
+    expect(whitespaceResult.diagnostics[0].code).toBe(
+      "LEXICAL_KEY_WHITESPACE_REJECTED",
+    );
+    expect(trace.resultStatus).toBe("not-found");
+  });
+
   it("resolves resultStatus as 'empty-index' when LEXICAL_INDEX_EMPTY diagnostic is present", () => {
     const trace = composeLexicalLookupTrace({
       traceId: "t1",

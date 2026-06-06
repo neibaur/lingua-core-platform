@@ -26,13 +26,24 @@ export function composeLexicalLookup(
   input: LexicalLookupInput,
   index: LexicalIndex,
 ): LexicalLookupResult {
-  if (input.direction === "th→en" && /\s/.test(input.query)) {
-    throw new Error(
-      `[lexical invariant] query must not contain whitespace: ${JSON.stringify(input.query)}`,
-    );
-  }
-
   const diagnostics: LexicalLookupDiagnostic[] = [];
+
+  if (input.direction === "th→en" && /\s/.test(input.query)) {
+    diagnostics.push({
+      code: "LEXICAL_KEY_WHITESPACE_REJECTED",
+      severity: "warning",
+      path: ["query"],
+      message: `Thai query must not contain whitespace: ${JSON.stringify(input.query)}`,
+    });
+
+    return deepFreezeStructure({
+      schemaVersion: LEXICAL_LOOKUP_RESULT_SCHEMA_VERSION,
+      query: input.query,
+      direction: input.direction,
+      entries: [],
+      diagnostics,
+    });
+  }
 
   if (index.entryCount === 0) {
     diagnostics.push({
