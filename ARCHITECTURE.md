@@ -420,7 +420,7 @@ flowchart LR
 
 The lexical index and lexical lookup share a single, deterministic key-normalization policy so that equivalent inputs produce equivalent keys at both index construction and lookup. Key normalization is per direction, and the two directions are intentionally asymmetric.
 
-Thai-side keys (th→en). A Thai lexical key is whitespace-free. It is canonicalized by the established lexical-key normalization (Thai tone-mark and Thai-digit folding) and a query containing whitespace is rejected. This guarantee is unchanged by this policy.
+Thai-side keys (th→en). A Thai lexical key is whitespace-free. It is canonicalized by the established lexical-key normalization (Thai tone-mark and Thai-digit folding) and a query containing whitespace is rejected. This guarantee is unchanged by this policy. At lookup, that rejection is surfaced as a returned lookup diagnostic on the result rather than as a thrown error, while the index-construction whitespace invariant remains a fail-fast guard.
 
 English-side keys (en→th). An English lexical key is a whole-phrase, deterministically canonicalized string. Canonicalization collapses internal whitespace runs to a single space, trims boundary whitespace, and lower-cases the phrase, composing only the platform's existing normalization rule primitives (collapse-whitespace, trim-boundary-whitespace) together with case folding. The same canonicalization is applied identically at index construction and at lookup. A multi-word gloss (for example, "to eat") is therefore stored under, and reachable by, one canonical whole-phrase key.
 
