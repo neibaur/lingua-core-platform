@@ -16,8 +16,14 @@ import LookupForm from "../components/LookupForm.astro";
     import type {
       LexicalDefinition,
       LexicalEntry,
+      LexicalLookupDiagnostic,
+      LexicalLookupDiagnosticSeverity,
       LexicalLookupResult,
     } from "@core/lexical";
+    import {
+      categoryForDiagnostic,
+      messageForDiagnostic,
+    } from "../lib/lookup-states";
 
     const form = document.getElementById("lookup-form");
     const qInput = document.getElementById("q") as HTMLInputElement | null;
@@ -31,20 +37,18 @@ import LookupForm from "../components/LookupForm.astro";
         .replace(/>/g, "&gt;");
     }
 
-    function renderEntries(result: LexicalLookupResult) {
-      const entries = result.entries ?? [];
-      const diagnostics = result.diagnostics ?? [];
+    // A small severity tag, driven by the diagnostic's own severity value
+    // (verified shape: "error" | "warning") rather than a per-code hardcode.
+    function severityBadge(severity: LexicalLookupDiagnosticSeverity): string {
+      const label = severity === "error" ? "error" : "warning";
+      return `<span class="state__severity state__severity--${label}">${label}</span>`;
+    }
 
-      if (entries.length === 0) {
-        const reason =
-          diagnostics.length > 0
-            ? escapeHtml(diagnostics[0].message)
-            : "No entry found.";
-        results.innerHTML = `<p class="diagnostic">${reason}</p>`;
-        return;
-      }
+    // Each render fully replaces #results — no stale or overlapping fragments.
 
-      results.innerHTML = entries
+    // Success: the existing result-card hierarchy, unchanged.
+    function renderResult(result: LexicalLookupResult) {
+      results.innerHTML = (result.entries ?? [])
         .map((entry: LexicalEntry) => {
           const romanized = entry.romanized
             ? `<span class="romanized">${escapeHtml(entry.romanized)}</span>`
@@ -60,20 +64,109 @@ import LookupForm from "../components/LookupForm.astro";
         .join("");
     }
 
+    // Loading: a neutral in-progress state while the request is in flight.
+    function renderLoading() {
+      results.innerHTML =
+        '<div class="state state--loading"><span class="state__spinner" aria-hidden="true"></span><p class="state__body">Looking up…</p></div>';
+    }
+
+    // No-result: a neutral "no exact match" — NOT an error. Echoes the user's
+    // query and explains exact-key behavior. No suggestions, near-matches, or
+    // alternatives of any kind are offered.
+    function renderNoResult(query: string, diagnostic?: LexicalLookupDiagnostic) {
+      const detail = diagnostic
+        ? escapeHtml(messageForDiagnostic(diagnostic))
+        : "This is an exact-key lookup, so only an entry whose key matches exactly is returned.";
+      results.innerHTML =
+        `<div class="state state--no-result">` +
+        `<p class="state__heading">No exact match for “${escapeHtml(query)}”.</p>` +
+        `<p class="state__body">${detail}</p>` +
+        `</div>`;
+    }
+
+    // Rejected-input: the query was invalid input (empty or whitespace-bearing),
+    // a correctable condition distinct from a no-match and from a system error.
+    function renderRejectedInput(diagnostic: LexicalLookupDiagnostic) {
+      results.innerHTML =
+        `<div class="state state--rejected">` +
+        `<p class="state__heading">Check your input ${severityBadge(diagnostic.severity)}</p>` +
+        `<p class="state__body">${escapeHtml(messageForDiagnostic(diagnostic))}</p>` +
+        `<p class="state__hint">Thai → English looks up one Thai token (e.g. กิน). ` +
+        `English → Thai matches an English term by exact equality.</p>` +
+        `</div>`;
+    }
+
+    // System condition: an empty index, an unmapped/future diagnostic code, or a
+    // failed request. Distinct from a normal no-match. The accent tone follows
+    // the diagnostic's real severity when one is present.
+    function renderSystem(
+      heading: string,
+      message: string,
+      severity: LexicalLookupDiagnosticSeverity,
+    ) {
+      results.innerHTML =
+        `<div class="state state--system state--system-${severity}">` +
+        `<p class="state__heading">${escapeHtml(heading)} ${severityBadge(severity)}</p>` +
+        `<p class="state__body">${escapeHtml(message)}</p>` +
+        `</div>`;
+    }
+
+    // Decide which state a successful (HTTP-OK) response resolves to.
+    function renderResponse(result: LexicalLookupResult) {
+      const entries = result.entries ?? [];
+      if (entries.length > 0) {
+        renderResult(result);
+        return;
+      }
+
+      const diagnostics = result.diagnostics ?? [];
+      const primary = diagnostics[0];
+      if (!primary) {
+        // No entries and no diagnostic: the honest answer is still no result.
+        renderNoResult(result.query);
+        return;
+      }
+
+      const category = categoryForDiagnostic(primary);
+      if (category === "rejected-input") {
+        renderRejectedInput(primary);
+      } else if (category === "no-result") {
+        renderNoResult(result.query, primary);
+      } else {
+        renderSystem(
+          "Lookup unavailable",
+          messageForDiagnostic(primary),
+          primary.severity,
+        );
+      }
+    }
+
     async function doLookup(event?: Event) {
-      event?.preventDefault();
       if (event) event.preventDefault();
       const q = qInput.value;
       const dir = dirSelect.value;
-      results.innerHTML = '<p class="muted">Looking up…</p>';
+      renderLoading();
       try {
         const response = await fetch(
           `/api/lookup?q=${encodeURIComponent(q)}&dir=${encodeURIComponent(dir)}`,
         );
-        const result = await response.json();
-        renderEntries(result);
+        if (!response.ok) {
+          renderSystem(
+            "Lookup failed",
+            `The lookup request failed (HTTP ${response.status}).`,
+            "error",
+          );
+          return;
+        }
+        const result = (await response.json()) as LexicalLookupResult;
+        renderResponse(result);
       } catch (error) {
-        results.innerHTML = `<p class="diagnostic">Lookup failed: ${escapeHtml(error)}</p>`;
+        const detail = error instanceof Error ? error.message : String(error);
+        renderSystem(
+          "Lookup failed",
+          `The lookup request could not be completed: ${detail}`,
+          "error",
+        );
       }
     }
 
