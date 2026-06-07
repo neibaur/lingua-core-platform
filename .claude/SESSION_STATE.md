@@ -28,6 +28,7 @@ Cross-Session State Document | Updated After Each PR Cycle
   docs/usethai/ux-friction-log.md before considering any search-related
   warrant. Phase 16/17 remain PENDING AUTHORIZATION (HANDOFF §9 audit
   first).
+  Dataset-readiness review (step 4) complete. Volubilis data-shape spike merged — a throwaway, non-governed, docs-only investigation (report: docs/spikes/volubilis-data-shape-spike.md, snapshot SHA-pinned). Findings: Volubilis is a license-verified CC BY-SA 4.0 TH↔EN foundation (~114k rows; headword/romanization/POS ~100%, English gloss 93%) that maps to the existing LexicalEntry/CanonicalDictionaryEntry via a moderate adapter — sense-split on ;, a lossy 73→10 TYPE→LexicalPartOfSpeech map — plus decisions (Thai whitespace ~7.5% throws; romanization-column choice; duplicate-headword merge ~11.4k rows). Critically: no native tone (length only) — a tone-marked surface would be a generated transcriber dependency, so Volubilis does not close Cluster 4 on its own; ~46% of rows are multi-word expressions. Ingestion is a core initiative, not authorized here; it remains gated on (a) a product-posture / CC BY-SA ShareAlike decision and (b) whether tone is a product requirement. Any future adapter, contract extension, or ingestion goes through normal core governance. No core slice pending.
 - UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
   evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
   target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
@@ -38,7 +39,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #188 — docs(usethai): persist first warrant review and update session state
+- Last merged PR: #189 — fix(usethai): make lookup direction chrome reactive
 
 ## Application-tier — current state
 
@@ -49,8 +50,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Evidence: friction log seeded — 13 FIXTURE entries (both directions);
   triage complete (docs/usethai/warrant-review-2026-06-07.md). Cluster 1
   disposition implemented (#189); Cluster 3 investigation confirmed a
-  data-content gap rather than a render omission. No REAL data yet
-  (DATA_SOURCES candidates unverified).
+  data-content gap rather than a render omission. No REAL data yet. Volubilis license independently verified (CC BY-SA 4.0, rights-holder Francis Bastien) and a fixed snapshot pinned (v25.3, SHA-256) via the data-shape spike; data shape now known. Still candidate — not approved_for_ingestion (ShareAlike intent / commercial posture unresolved). Volubilis data-shape spike (docs/spikes/volubilis-data-shape-spike.md): viable CC BY-SA 4.0 foundation, moderate adapter, no native tone, ~46% multi-word expressions — ingestion is a gated core decision, not undertaken.
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier load-bearing learnings (durable; for the next
