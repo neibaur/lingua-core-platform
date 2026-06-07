@@ -39,24 +39,29 @@ fall back to raw URLs only if attachments are absent):
    exposed-capability denominator: exactly what core exposes through its public
    top-level barrels, the reachability tiers, and the prefix / substring / fuzzy
    verdicts.
-4. ARCHITECTURE.md — especially "Pluggable Tokenizer And Search Abstraction,"
+4. docs/usethai/ux-friction-log.md — the app-tier UX friction evidence log: real lookup
+   friction captured as append-only evidence (FIXTURE vs REAL, target-confirmed-present,
+   descriptive friction types), triaged only in a separate deferred warrant review. Read it
+   for accumulated evidence; append observations during app use (never solution inline).
+5. ARCHITECTURE.md — especially "Pluggable Tokenizer And Search Abstraction,"
    "Lexical Key Normalization Policy," "Deterministic Query Explainability" (the
    no-ranking identity), the public/barrel boundary, and "Explicit Non-Goals."
-5. DATA_SOURCES.md — read it in full (unlike a core session, where it is skipped):
+6. DATA_SOURCES.md — read it in full (unlike a core session, where it is skipped):
    data consumption and storage are in scope here. Dataset candidates are
    unverified and gate any real-data usability work; app fixtures are illustrative
    and carry no provenance.
-6. CLAUDE.md and AGENTS.md — toolchain, branch conventions, and the app-vs-core
+7. CLAUDE.md and AGENTS.md — toolchain, branch conventions, and the app-vs-core
    boundary.
 
 Raw URL fallbacks (1–6 and the inventory):
 https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/APP_SHELL_GUIDELINES.md
-https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/.claude/SESSION_STATE.md
-https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/docs/architecture/tokenizer-search-barrel-inventory.md
 https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/ARCHITECTURE.md
 https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/DATA_SOURCES.md
 https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/CLAUDE.md
 https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/AGENTS.md
+https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/.claude/SESSION_STATE.md
+https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/docs/usethai/ux-friction-log.md
+https://raw.githubusercontent.com/neibaur/lingua-core-platform/main/docs/architecture/tokenizer-search-barrel-inventory.md
 
 After reading, confirm and summarize current app-tier state in this exact format
 and nothing else — no commentary, no proposals, no implementation discussion:
@@ -102,3 +107,6 @@ Fixtures cap evidence. Structural questions are answerable on fixture data now;
 true content-usability needs real licensed data, which is gated by DATA_SOURCES.md.
 App fixtures are illustrative and must not fabricate the source-provenance lineage
 that governed dictionary entries carry.
+Real lookup friction observed in the app is recorded in docs/usethai/ux-friction-log.md as
+append-only evidence; warrant/triage is a separate deferred review, and fixture-only friction
+is discounted there.
