@@ -14,17 +14,20 @@ Cross-Session State Document | Updated After Each PR Cycle
   enabled-language configuration realized by TenantConfiguration + CanonicalLanguageTag).
   The ADR-0016 corrective core thread (th→en whitespace returned diagnostic) is IMPLEMENTED
   and merged (#181); the apps/usethai consumption slice is merged (#182). No core slice pending.
-- Next action: Triage convened 2026-06-07 on the first FIXTURE batch (13 entries, both
-  directions, post-P1 seed); outcome = Cluster 1 (lookup direction in page heading/title)
-  authorized for a P2 presentation slice with the Cluster 3 multi-entry field-population
-  check folded in (expected to resolve to a data-content gap, since P1 already surfaces
-  POS and full definitions); Cluster 2 (mixed-case echo) closed as intended, bounded by
-  the no-normalized-key guardrail; Clusters 5 and 8 HELD under reachability-≠-warrant
-  pending a mapping REAL signal; Cluster 4 data/core-schema-gated; Clusters 6/7
-  core-governance-class only if REAL evidence accumulates; Cluster 9 closed as fixture
-  noise; triage persisted at docs/usethai/warrant-review-2026-06-07.md. The P2 slice is
-  the next app-tier build; no core slice pending; Phase 16/17 remain PENDING AUTHORIZATION
-  (HANDOFF §9 audit first).
+- Next action: First FIXTURE triage cycle COMPLETE. Cluster 1 (lookup
+  direction in page heading/title) implemented via the P2 direction-aware
+  chrome slice (#189); Cluster 3 field-population investigation confirmed
+  the expected outcome — the remaining multi-entry ambiguity is a
+  data-content gap, not a render omission, so no app change was warranted.
+  Cluster 2 (mixed-case echo) remains closed as intended, bounded by the
+  no-normalized-key guardrail; Clusters 5 and 8 remain HELD under
+  reachability-≠-warrant pending a mapping REAL signal; Cluster 4 remains
+  data/core-schema-gated; Clusters 6/7 remain core-governance-class only
+  if REAL evidence accumulates; Cluster 9 remains closed as fixture noise.
+  No core slice pending. Continue gathering REAL lookup friction through
+  docs/usethai/ux-friction-log.md before considering any search-related
+  warrant. Phase 16/17 remain PENDING AUTHORIZATION (HANDOFF §9 audit
+  first).
 - UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
   evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
   target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
@@ -35,16 +38,19 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #187 — fix/session-state-p1-maturation
+- Last merged PR: #188 — docs(usethai): persist first warrant review and update session state
 
 ## Application-tier — current state
 
-- App status: shell + Cloudflare adapter (build-green) + layout/component baseline +
-  honest lookup states + P1 lookup presentation maturation, all merged.
+- App status: shell + Cloudflare adapter (build-green) + layout/component
+  baseline + honest lookup states + P1 lookup presentation maturation +
+  P2 direction-aware chrome (reactive heading/title), all merged.
 - Active app branch: none.
-- Evidence: friction log seeded — 13 FIXTURE entries (both directions); triage complete
-  (docs/usethai/warrant-review-2026-06-07.md); no REAL data yet (DATA_SOURCES candidates
-  unverified).
+- Evidence: friction log seeded — 13 FIXTURE entries (both directions);
+  triage complete (docs/usethai/warrant-review-2026-06-07.md). Cluster 1
+  disposition implemented (#189); Cluster 3 investigation confirmed a
+  data-content gap rather than a render omission. No REAL data yet
+  (DATA_SOURCES candidates unverified).
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier load-bearing learnings (durable; for the next
@@ -82,6 +88,12 @@ planning session):
   multi-entry paths in core-returned order, no app sort. Raw query + direction echo
   on every state, sourced from raw client controls (never result.query) — preserves
   the no-normalized-key guardrail.
+- Direction-aware chrome (page heading + document title) now reflects the
+  currently selected lookup direction independent of lookup execution.
+  SSR seeds the default direction for first paint; client-side direction
+  changes update both surfaces without triggering lookup. The copy source
+  is centralized in app presentation code and shared between SSR and
+  client synchronization.
 - Lexical index homograph asymmetry (confirmed during P1 fixture enrichment): th→en
   is one-entry-per-key by construction (thaiToEnglish: Record<string, LexicalEntry>,
   last-writer-wins), so th→en cannot surface homographs; en→th admits multiple
