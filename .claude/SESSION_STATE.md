@@ -10,22 +10,25 @@ Cross-Session State Document | Updated After Each PR Cycle
 > are append-only logs. Record the last MERGED PR (stable, knowable post-merge);
 > never record the current branch or a self-referential commit hash.
 
-- Current phase: Phase 15 — COMPLETE (closure ADR-0015 accepted; binding-grounded
-  surface — tenant identity + enabled-language configuration, backed by canonical
-  language identity — realized by TenantConfiguration + CanonicalLanguageTag)
-- Next action: ADR-0016 accepted — th→en whitespace rejection surfaced as a returned
-  LEXICAL_KEY_WHITESPACE_REJECTED diagnostic (Option A), grounded by the ARCHITECTURE "Lexical Key
-  Normalization Policy" clarification. Pending: a §9 pre-implementation assessment for the core slice
-  that emits the diagnostic in composeLexicalLookup (replacing the inline /\s/.test throw), carrying an
-  explicit premise check that the existing LexicalLookupResultStatus union can represent the rejection
-  without a new member (any pull toward a new member surfaces as a conflict, not an implementation).
-  The apps/usethai slice (delete the endpoint pre-guard; consume core's real diagnostic) unblocks after
-  the core slice lands.
-- Last accepted ADR: ADR-0016 (docs/adr/0016-lexical-lookup-whitespace-diagnostic-surfacing.md), Accepted
-- Tests passing: 856
+- Current phase: Phase 15 — COMPLETE (closure ADR-0015 accepted; tenant identity +
+  enabled-language configuration realized by TenantConfiguration + CanonicalLanguageTag).
+  The ADR-0016 corrective core thread (th→en whitespace returned diagnostic) is IMPLEMENTED
+  and merged (#181); the apps/usethai consumption slice is merged (#182). No core slice pending.
+- Next action: ADR-0016 is closed end-to-end across both tiers — core returns the real
+  LEXICAL_KEY_WHITESPACE_REJECTED diagnostic (#181) and apps/usethai consumes it with the
+  pre-guard removed (#182); en→th whole-phrase lookup ("to eat" → กิน) is now reachable in the
+  app UI. No authorized core slice pending. Next direction is app-tier UX maturation and
+  use-driven evidence-gathering (to inform whether prefix/substring/fuzzy search is warranted
+  before any tokenizer/search core work). Phase 16 (AI-assisted private envelope) and Phase 17
+  (multilingual) remain PENDING AUTHORIZATION; either requires the HANDOFF §9 phase-transition
+  audit before authorization.
+- Last accepted ADR: ADR-0016 (docs/adr/0016-lexical-lookup-whitespace-diagnostic-surfacing.md),
+  Accepted — implemented in #181
+- Tests passing: 859
 - Test files: 62
-- Statement coverage: 92.78%
-- Last merged PR: #179 — docs(session-state): correct th→en whitespace rejection mechanism to inline guard
+- Statement coverage: 92.79%
+- Last merged PR: #182 — fix(usethai): remove lookup whitespace pre-guard and consume core
+  diagnostics (app-tier; the core baseline above is post-#181)
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
@@ -34,23 +37,19 @@ load-bearing learnings for the next planning session:
 
 - The core consumes cleanly as source via a Vite path alias (@core ->
   ../../src/core); no core build/exports/dist is needed yet.
-- Exact-key lexical lookup is insufficient for a real dictionary UX — prefix/
-  substring/fuzzy is wanted.
-- en→th whole-phrase lookup IS delivered in core (feat/lexical-english-phrase-keying;
-  ARCHITECTURE "Lexical Key Normalization Policy" Option D — symmetric whole-phrase
-  canonical English key, exact-equality only). composeLexicalLookup resolves "to eat"
-  → กิน directly and already collapses multiple internal spaces ("to eat" → กิน).
-  HOWEVER it is currently UNREACHABLE through the apps/usethai endpoint: api/lookup.ts
-  applies a blanket whitespace pre-guard (query === "" || /\s/.test(query)) that
-  rejects internal whitespace for BOTH directions before calling core, and that guard
-  FABRICATES a LEXICAL_KEY_WHITESPACE_REJECTED diagnostic in the app — a code core's
-  lexical-lookup path never emits (core throws via the inline /\s/.test guard
-  in composeLexicalLookup (#87) instead). Resolution path: core slice FIRST (reconcile the
-  declared-but-unemitted th→en whitespace diagnostic — see Per-PR Next action / Open
-  Doctrinal Questions), THEN app slice (delete the endpoint pre-guard, pass through to
-  core, mint nothing; PR-177 honest-states taxonomy already maps core's real
-  diagnostics). Active app branch: none (slices through honest-states merged); the
-  next app slice is BLOCKED on the core reconciliation.
+- Exact-key lexical lookup may be insufficient for a mature dictionary UX — prefix/substring/
+  fuzzy is suspected wanted, but this is to be confirmed by app-use evidence before any core
+  search work is warranted (evidence-driven, not architecture-driven).
+- en→th whole-phrase lookup is delivered in core (feat/lexical-english-phrase-keying;
+  ARCHITECTURE "Lexical Key Normalization Policy" — symmetric whole-phrase canonical English
+  key, exact-equality only) AND is now reachable through the apps/usethai UI: the blanket
+  whitespace pre-guard was removed in #182, so "to eat" → กิน resolves and renders. th→en
+  whitespace queries now surface core's REAL LEXICAL_KEY_WHITESPACE_REJECTED diagnostic through
+  the PR-177 honest-states taxonomy (categoryForDiagnostic → rejected-input); the app no longer
+  fabricates the code. Known consequence: the real diagnostic severity is "warning" (core's
+  grounded value), where the app's prior fabricated diagnostic claimed "error" — the severity
+  badge now reflects core's true value (state/category unchanged). Empty/whitespace-only input
+  rests in a neutral awaiting-input state without calling core. Active app branch: none.
 - Barrel denominator captured — docs/architecture/tokenizer-search-barrel-inventory.md
   (merged). Two search surfaces are already app-reachable: lexical exact-key lookup
   (composeLexicalLookup) and a tokenizer corpus token/phrase path
@@ -279,6 +278,15 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
   Normalization Policy" clarification grounding the returned-diagnostic surfacing posture.
   Documentation-only governance grounding; no implementation slice delivered. Baseline unchanged:
   856 / 62 / 92.78%.
+- feat/lexical-th-en-whitespace-diagnostic (#181) — implemented ADR-0016 Option A.
+  composeLexicalLookup th→en whitespace branch changed throw → emit-and-return: one inline
+  LEXICAL_KEY_WHITESPACE_REJECTED diagnostic (severity "warning", path ["query"], plain message;
+  [lexical invariant] prefix dropped), first position before the empty-index check,
+  deepFreezeStructure-wrapped, entries: []. /\s/.test detection byte-unchanged. No new public
+  surface (no new type / field / schema literal / diagnostic-code member / status member);
+  LexicalLookupResultStatus maps the rejection to existing "not-found". Tests: 3 throw-asserting
+  tests rewritten result-asserting; +1 lookup positive, +1 interop bucket-populates-via-passthrough,
+  +1 trace "not-found"; net +3. Baseline 856 → 859 / 62 / 92.78% → 92.79%. Schema literals unchanged.
 
 ## Active Scope and Derivation Surface
 
@@ -454,10 +462,13 @@ Resolved doctrinal rulings:
   ARCHITECTURE.md — Tenant-Scoped Enabled-Language Configuration.
 
 - th→en whitespace declared-but-unemitted diagnostic — RESOLVED by ADR-0016 (reconcile-to-return,
-  Option A). composeLexicalLookup will surface th→en whitespace rejection as a returned
+  Option A). composeLexicalLookup surfaces th→en whitespace rejection as a returned
   LEXICAL_KEY_WHITESPACE_REJECTED diagnostic, replacing the inline /\s/.test throw; the
   index-construction whitespace invariant is unchanged. Grounded-of-record by the ARCHITECTURE
   "Lexical Key Normalization Policy" clarification co-merged with ADR-0016; the existing union member
   and LexicalLookupResult.diagnostics ground the reused surface. Implementation pending a §9
   assessment, which must verify the existing LexicalLookupResultStatus union (found | not-found |
-  empty-index) can represent the rejection without a new member.
+  empty-index) can represent the rejection without a new member. Implemented and merged in #181: the throw is removed and composeLexicalLookup returns the
+  diagnostic; the premise check held — the rejection maps to the existing "not-found" status
+  with no new LexicalLookupResultStatus member. apps/usethai consumes the real diagnostic as of
+  #182 (pre-guard removed). Thread closed end-to-end.
