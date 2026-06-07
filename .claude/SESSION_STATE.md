@@ -22,13 +22,18 @@ Cross-Session State Document | Updated After Each PR Cycle
   before any tokenizer/search core work). Phase 16 (AI-assisted private envelope) and Phase 17
   (multilingual) remain PENDING AUTHORIZATION; either requires the HANDOFF §9 phase-transition
   audit before authorization.
+- UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
+  evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
+  target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
+  review. Only REAL clustered query-form-unmatched signals can support a core search-capability
+  warrant; fixture-only friction is discounted.
 - Last accepted ADR: ADR-0016 (docs/adr/0016-lexical-lookup-whitespace-diagnostic-surfacing.md),
   Accepted — implemented in #181
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #182 — fix(usethai): remove lookup whitespace pre-guard and consume core
-  diagnostics (app-tier; the core baseline above is post-#181)
+- Last merged PR: #184 — docs(usethai): add UX friction evidence log (app-tier docs; core
+  baseline above is unchanged, post-#181)
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
