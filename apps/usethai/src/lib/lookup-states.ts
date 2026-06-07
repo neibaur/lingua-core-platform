@@ -34,21 +34,20 @@ export const DIAGNOSTIC_MESSAGES: Record<LexicalLookupDiagnosticCode, string> =
       "The dictionary has no entries loaded, so there is nothing to look up.",
   };
 
-// Single generic, honest fallback for any code not present above (for example a
-// future core diagnostic). It never fabricates a specific meaning and never
-// surfaces the raw enum string.
-export const GENERIC_DIAGNOSTIC_MESSAGE =
-  "The lookup reported a condition this page cannot describe specifically.";
-
-// Resolve a diagnostic to its honest message. The cast widens the lookup so the
-// runtime fallback is genuinely reachable (and not flagged as a dead branch);
-// the underlying access is a plain keyed read. Mirrors the repository's accepted
-// type-system accommodation pattern.
+// Resolve a diagnostic to its PRIMARY user-facing message under Policy B:
+//   - Mapped codes use the app-authored copy above (unchanged behavior).
+//   - Unmapped codes (e.g. a future core diagnostic) fall back to core's OWN
+//     verbatim diagnostic.message rather than a generic placeholder, so core's
+//     real information is never suppressed. The raw enum code is still never
+//     shown as primary text.
+// The cast widens the lookup so the runtime fallback is genuinely reachable (and
+// not flagged as a dead branch); the underlying access is a plain keyed read.
+// Mirrors the repository's accepted type-system accommodation pattern.
 export function messageForDiagnostic(
   diagnostic: LexicalLookupDiagnostic,
 ): string {
   const byCode = DIAGNOSTIC_MESSAGES as Record<string, string | undefined>;
-  return byCode[diagnostic.code] ?? GENERIC_DIAGNOSTIC_MESSAGE;
+  return byCode[diagnostic.code] ?? diagnostic.message;
 }
 
 // Route a diagnostic to its presentation category. The rejection code routes to

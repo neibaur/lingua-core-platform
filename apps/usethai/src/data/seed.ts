@@ -67,4 +67,35 @@ export const seed: LexicalEntry[] = [
       { definitionIndex: 0, definition: "love", partOfSpeech: "verb" },
     ],
   },
+  // Multi-definition entry: exercises the definition-list render path
+  // (definitions.length > 1). Definitions are presented in this core-returned
+  // array order — the app adds no sort.
+  {
+    headword: "เอา",
+    romanized: "ao",
+    definitions: [
+      { definitionIndex: 0, definition: "to take", partOfSpeech: "verb" },
+      { definitionIndex: 1, definition: "to want", partOfSpeech: "verb" },
+    ],
+  },
+  // Homograph pair: two distinct Thai headwords sharing one English gloss
+  // ("old"). The en→th index keys on the canonical English definition and holds
+  // an entry array per key (LexicalIndex.englishToThai: Record<string,
+  // readonly LexicalEntry[]>), so en→th "old" resolves to BOTH entries — this is
+  // the only fixture-observable multi-entry path (th→en is one-entry-per-key by
+  // construction). See the homograph-feasibility finding in the slice summary.
+  {
+    headword: "แก่",
+    romanized: "kae",
+    definitions: [
+      { definitionIndex: 0, definition: "old", partOfSpeech: "adjective" },
+    ],
+  },
+  {
+    headword: "เก่า",
+    romanized: "kao",
+    definitions: [
+      { definitionIndex: 0, definition: "old", partOfSpeech: "adjective" },
+    ],
+  },
 ];

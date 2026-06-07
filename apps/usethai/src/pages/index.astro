@@ -20,6 +20,9 @@ import LookupForm from "../components/LookupForm.astro";
       LexicalLookupDiagnosticSeverity,
       LexicalLookupResult,
     } from "@core/lexical";
+    // orderLexicalDiagnostics is the ONLY ordering applied to diagnostics — the
+    // app introduces no ranking, scoring, or relevance ordering of its own.
+    import { orderLexicalDiagnostics } from "@core/lexical";
     import {
       categoryForDiagnostic,
       messageForDiagnostic,
@@ -44,147 +47,242 @@ import LookupForm from "../components/LookupForm.astro";
       return `<span class="state__severity state__severity--${label}">${label}</span>`;
     }
 
-    // Each render fully replaces #results — no stale or overlapping fragments.
+    // Query/direction echo (P1-3). Rendered in EVERY result state. Sourced from
+    // the client's own RAW controls — the verbatim query the user typed and the
+    // human-readable direction label from the select — never from result.query
+    // (which is the trimmed, core-seen value) or any core-processed/normalized
+    // value. The raw query may be empty (awaiting-input); the direction label is
+    // always shown.
+    function renderEcho(rawQuery: string, dirLabel: string): string {
+      const queryPart =
+        rawQuery.trim() === ""
+          ? ""
+          : `<span class="echo__query">“${escapeHtml(rawQuery)}”</span>`;
+      return (
+        `<header class="echo">` +
+        queryPart +
+        `<span class="echo__dir">${escapeHtml(dirLabel)}</span>` +
+        `</header>`
+      );
+    }
 
-    // Success: the existing result-card hierarchy, unchanged.
-    function renderResult(result: LexicalLookupResult) {
-      results.innerHTML = (result.entries ?? [])
+    // Each render fully replaces #results — no stale or overlapping fragments.
+    // Every state is painted as the echo header followed by a state body, so the
+    // query/direction echo is present uniformly.
+    function paint(echo: string, body: string) {
+      results.innerHTML = echo + body;
+    }
+
+    // Render a diagnostic list (P1-2). Diagnostics arrive already ordered via
+    // orderLexicalDiagnostics; each is shown with its PRIMARY message (Policy B,
+    // via messageForDiagnostic) and, as clearly-secondary text, core's verbatim
+    // diagnostic.message. The verbatim secondary is displayed exactly as core
+    // provides it — never edited, stripped, or reworded — and is suppressed only
+    // when it is already the primary (an unmapped code under Policy B), to avoid
+    // printing identical text twice. The raw code is never shown as primary text.
+    function renderDiagnostics(
+      diagnostics: readonly LexicalLookupDiagnostic[],
+    ): string {
+      return diagnostics
+        .map((diagnostic: LexicalLookupDiagnostic) => {
+          const primary = messageForDiagnostic(diagnostic);
+          const verbatim = diagnostic.message;
+          const secondary =
+            verbatim === primary
+              ? ""
+              : `<p class="state__detail">${escapeHtml(verbatim)}</p>`;
+          return (
+            `<div class="state__diagnostic">` +
+            `<p class="state__body">${escapeHtml(primary)}</p>` +
+            secondary +
+            `</div>`
+          );
+        })
+        .join("");
+    }
+
+    // Success: the existing result-card hierarchy. Legibility only (P1-1) — each
+    // entry's definitions render as an ordered list in core-returned array order
+    // (no app-side sort), and multiple entries under one query are grouped with a
+    // stable divider between cards.
+    function renderResultBody(result: LexicalLookupResult): string {
+      return (result.entries ?? [])
         .map((entry: LexicalEntry) => {
           const romanized = entry.romanized
             ? `<span class="romanized">${escapeHtml(entry.romanized)}</span>`
             : "";
-          const defs = (entry.definitions ?? [])
-            .map(
-              (def: LexicalDefinition) =>
-                `<p class="definition">${escapeHtml(def.definition)} <span class="pos">(${escapeHtml(def.partOfSpeech)})</span></p>`,
-            )
-            .join("");
+          const defs =
+            `<ol class="definitions">` +
+            (entry.definitions ?? [])
+              .map(
+                (def: LexicalDefinition) =>
+                  `<li class="definition">${escapeHtml(def.definition)} <span class="pos">(${escapeHtml(def.partOfSpeech)})</span></li>`,
+              )
+              .join("") +
+            `</ol>`;
           return `<div class="entry"><p class="headword">${escapeHtml(entry.headword)} ${romanized}</p>${defs}</div>`;
         })
-        .join("");
+        .join(`<hr class="entry__divider" />`);
     }
 
     // Awaiting-input: a neutral resting state when there is nothing to look up
     // yet (empty or whitespace-only input). NOT an error and NOT a no-match —
     // no lookup is attempted, so the page makes no core call and shows no
     // diagnostic.
-    function renderAwaitingInput() {
-      results.innerHTML =
+    function renderAwaitingInputBody(): string {
+      return (
         `<div class="state state--awaiting">` +
         `<p class="state__body">Type a term above to look it up.</p>` +
-        `</div>`;
+        `</div>`
+      );
     }
 
     // Loading: a neutral in-progress state while the request is in flight.
-    function renderLoading() {
-      results.innerHTML =
-        '<div class="state state--loading"><span class="state__spinner" aria-hidden="true"></span><p class="state__body">Looking up…</p></div>';
+    function renderLoadingBody(): string {
+      return '<div class="state state--loading"><span class="state__spinner" aria-hidden="true"></span><p class="state__body">Looking up…</p></div>';
     }
 
-    // No-result: a neutral "no exact match" — NOT an error. Echoes the user's
-    // query and explains exact-key behavior. No suggestions, near-matches, or
-    // alternatives of any kind are offered.
-    function renderNoResult(query: string, diagnostic?: LexicalLookupDiagnostic) {
-      const detail = diagnostic
-        ? escapeHtml(messageForDiagnostic(diagnostic))
-        : "This is an exact-key lookup, so only an entry whose key matches exactly is returned.";
-      results.innerHTML =
+    // No-result: a neutral "no exact match" — NOT an error. Explains exact-key
+    // behavior. No suggestions, near-matches, or alternatives of any kind are
+    // offered. When core supplied diagnostics they are rendered (primary +
+    // verbatim secondary); otherwise the static exact-key explanation stands.
+    function renderNoResultBody(
+      query: string,
+      diagnostics: readonly LexicalLookupDiagnostic[],
+    ): string {
+      const detail =
+        diagnostics.length > 0
+          ? renderDiagnostics(diagnostics)
+          : `<p class="state__body">This is an exact-key lookup, so only an entry whose key matches exactly is returned.</p>`;
+      return (
         `<div class="state state--no-result">` +
         `<p class="state__heading">No exact match for “${escapeHtml(query)}”.</p>` +
-        `<p class="state__body">${detail}</p>` +
-        `</div>`;
+        detail +
+        `</div>`
+      );
     }
 
-    // Rejected-input: the query was invalid input (empty or whitespace-bearing),
-    // a correctable condition distinct from a no-match and from a system error.
-    function renderRejectedInput(diagnostic: LexicalLookupDiagnostic) {
-      results.innerHTML =
+    // Rejected-input: the query was invalid input (whitespace-bearing), a
+    // correctable condition distinct from a no-match and from a system error.
+    // The heading badge follows the governing (first ordered) diagnostic's real
+    // severity.
+    function renderRejectedInputBody(
+      diagnostics: readonly LexicalLookupDiagnostic[],
+    ): string {
+      const primary = diagnostics[0];
+      return (
         `<div class="state state--rejected">` +
-        `<p class="state__heading">Check your input ${severityBadge(diagnostic.severity)}</p>` +
-        `<p class="state__body">${escapeHtml(messageForDiagnostic(diagnostic))}</p>` +
+        `<p class="state__heading">Check your input ${severityBadge(primary.severity)}</p>` +
+        renderDiagnostics(diagnostics) +
         `<p class="state__hint">Thai → English looks up one Thai token (e.g. กิน). ` +
         `English → Thai matches an English term by exact equality.</p>` +
-        `</div>`;
+        `</div>`
+      );
     }
 
-    // System condition: an empty index, an unmapped/future diagnostic code, or a
-    // failed request. Distinct from a normal no-match. The accent tone follows
-    // the diagnostic's real severity when one is present.
-    function renderSystem(
+    // System condition driven by core diagnostics: an empty index, or any
+    // unmapped/future diagnostic code. Distinct from a normal no-match. The
+    // accent tone and heading badge follow the governing diagnostic's real
+    // severity; each diagnostic renders with its primary + verbatim secondary.
+    function renderSystemDiagnosticsBody(
+      heading: string,
+      diagnostics: readonly LexicalLookupDiagnostic[],
+    ): string {
+      const primary = diagnostics[0];
+      return (
+        `<div class="state state--system state--system-${primary.severity}">` +
+        `<p class="state__heading">${escapeHtml(heading)} ${severityBadge(primary.severity)}</p>` +
+        renderDiagnostics(diagnostics) +
+        `</div>`
+      );
+    }
+
+    // System condition with an app-authored message and no core diagnostic — a
+    // transport/request failure the app itself observed (HTTP error, network
+    // error). No verbatim core message exists to disclose here.
+    function renderSystemMessageBody(
       heading: string,
       message: string,
       severity: LexicalLookupDiagnosticSeverity,
-    ) {
-      results.innerHTML =
+    ): string {
+      return (
         `<div class="state state--system state--system-${severity}">` +
         `<p class="state__heading">${escapeHtml(heading)} ${severityBadge(severity)}</p>` +
         `<p class="state__body">${escapeHtml(message)}</p>` +
-        `</div>`;
+        `</div>`
+      );
     }
 
-    // Decide which state a successful (HTTP-OK) response resolves to.
-    function renderResponse(result: LexicalLookupResult) {
+    // Decide which state a successful (HTTP-OK) response resolves to. Diagnostics
+    // are ordered only via orderLexicalDiagnostics; the first ordered diagnostic
+    // selects the presentation lane (categoryForDiagnostic), and every diagnostic
+    // is rendered within that lane.
+    function renderResponse(result: LexicalLookupResult, echo: string) {
       const entries = result.entries ?? [];
       if (entries.length > 0) {
-        renderResult(result);
+        paint(echo, renderResultBody(result));
         return;
       }
 
-      const diagnostics = result.diagnostics ?? [];
+      const diagnostics = orderLexicalDiagnostics(result.diagnostics ?? []);
       const primary = diagnostics[0];
       if (!primary) {
         // No entries and no diagnostic: the honest answer is still no result.
-        renderNoResult(result.query);
+        paint(echo, renderNoResultBody(result.query, []));
         return;
       }
 
       const category = categoryForDiagnostic(primary);
       if (category === "rejected-input") {
-        renderRejectedInput(primary);
+        paint(echo, renderRejectedInputBody(diagnostics));
       } else if (category === "no-result") {
-        renderNoResult(result.query, primary);
+        paint(echo, renderNoResultBody(result.query, diagnostics));
       } else {
-        renderSystem(
-          "Lookup unavailable",
-          messageForDiagnostic(primary),
-          primary.severity,
-        );
+        paint(echo, renderSystemDiagnosticsBody("Lookup unavailable", diagnostics));
       }
     }
 
     async function doLookup(event?: Event) {
       if (event) event.preventDefault();
-      const q = qInput.value;
+      const rawQuery = qInput.value;
       const dir = dirSelect.value;
+      const dirLabel = dirSelect.options[dirSelect.selectedIndex]?.text ?? dir;
+      const echo = renderEcho(rawQuery, dirLabel);
       // Empty or whitespace-only input is not a lookup: rest in the neutral
       // awaiting-input state without calling the endpoint. Whitespace-bearing
       // queries (e.g. "to eat") are NOT blocked here — they are sent intact so
       // core can resolve an en→th phrase or return its own th→en diagnostic.
-      if (q.trim() === "") {
-        renderAwaitingInput();
+      if (rawQuery.trim() === "") {
+        paint(echo, renderAwaitingInputBody());
         return;
       }
-      renderLoading();
+      paint(echo, renderLoadingBody());
       try {
         const response = await fetch(
-          `/api/lookup?q=${encodeURIComponent(q)}&dir=${encodeURIComponent(dir)}`,
+          `/api/lookup?q=${encodeURIComponent(rawQuery)}&dir=${encodeURIComponent(dir)}`,
         );
         if (!response.ok) {
-          renderSystem(
-            "Lookup failed",
-            `The lookup request failed (HTTP ${response.status}).`,
-            "error",
+          paint(
+            echo,
+            renderSystemMessageBody(
+              "Lookup failed",
+              `The lookup request failed (HTTP ${response.status}).`,
+              "error",
+            ),
           );
           return;
         }
         const result = (await response.json()) as LexicalLookupResult;
-        renderResponse(result);
+        renderResponse(result, echo);
       } catch (error) {
         const detail = error instanceof Error ? error.message : String(error);
-        renderSystem(
-          "Lookup failed",
-          `The lookup request could not be completed: ${detail}`,
-          "error",
+        paint(
+          echo,
+          renderSystemMessageBody(
+            "Lookup failed",
+            `The lookup request could not be completed: ${detail}`,
+            "error",
+          ),
         );
       }
     }

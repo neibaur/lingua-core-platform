@@ -14,14 +14,14 @@ Cross-Session State Document | Updated After Each PR Cycle
   enabled-language configuration realized by TenantConfiguration + CanonicalLanguageTag).
   The ADR-0016 corrective core thread (th→en whitespace returned diagnostic) is IMPLEMENTED
   and merged (#181); the apps/usethai consumption slice is merged (#182). No core slice pending.
-- Next action: ADR-0016 is closed end-to-end across both tiers — core returns the real
-  LEXICAL_KEY_WHITESPACE_REJECTED diagnostic (#181) and apps/usethai consumes it with the
-  pre-guard removed (#182); en→th whole-phrase lookup ("to eat" → กิน) is now reachable in the
-  app UI. No authorized core slice pending. Next direction is app-tier UX maturation and
-  use-driven evidence-gathering (to inform whether prefix/substring/fuzzy search is warranted
-  before any tokenizer/search core work). Phase 16 (AI-assisted private envelope) and Phase 17
-  (multilingual) remain PENDING AUTHORIZATION; either requires the HANDOFF §9 phase-transition
-  audit before authorization.
+- Next action: First app-tier UX maturation slice merged — P1 lookup presentation
+  maturation (apps/usethai, #N). Next direction is use-driven friction evidence
+  capture: use the matured UI and seed docs/usethai/ux-friction-log.md with real
+  F-entries (FIXTURE-tagged against the enriched seed now; REAL gated on data
+  licensing). P2/P3 app UX items and any tokenizer/search core work remain gated —
+  the latter behind a REAL clustered query-form-unmatched cluster plus core
+  governance. No authorized core slice pending. Phase 16/17 remain PENDING
+  AUTHORIZATION (HANDOFF §9 phase-transition audit required first).
 - UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
   evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
   target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
@@ -32,12 +32,11 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #184 — docs(usethai): add UX friction evidence log (app-tier docs; core
-  baseline above is unchanged, post-#181)
+- Last merged PR: #185 — docs(app): add UX friction log to session bootstrap
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
-(build-green) + layout/component baseline + honest lookup states merged;
+(build-green) + layout/component baseline + honest lookup states + P1 lookup presentation maturation merged;
 load-bearing learnings for the next planning session:
 
 - The core consumes cleanly as source via a Vite path alias (@core ->
@@ -63,6 +62,27 @@ load-bearing learnings for the next planning session:
   ever warranted they belong to the tokenizer/search layer only. Phase 13 search
   projections and Phase 14 route delivery contracts sit in a leaf-only barrel
   (query-learning-interop) with no app-legal path today.
+- P1 lookup presentation maturation merged (#N, app-tier; no core change).
+  Diagnostics render via orderLexicalDiagnostics (all diagnostics, not just [0]).
+  Policy B: app copy primary for mapped diagnostic codes, core's verbatim
+  diagnostic.message primary for unmapped codes (the generic fallback was removed),
+  with core's verbatim message also disclosed as secondary; severity always from
+  core's diagnostic.severity. Result rendering exercises multi-definition and
+  multi-entry paths in core-returned order, no app sort. Raw query + direction echo
+  on every state, sourced from raw client controls (never result.query) — preserves
+  the no-normalized-key guardrail. Active app branch: none.
+- Lexical index homograph asymmetry (confirmed during P1 fixture enrichment): th→en
+  is one-entry-per-key by construction (thaiToEnglish: Record<string, LexicalEntry>,
+  last-writer-wins), so th→en cannot surface homographs; en→th admits multiple
+  entries per key (englishToThai: Record<string, readonly LexicalEntry[]>, dedup by
+  reference identity only). The multi-entry render path is fixture-observable only
+  via en→th (seed: แก่/เก่า both "old"). Structural core fact, not an app defect —
+  any UX consequence is a friction-log observation, not a core change.
+- Reachability ≠ warrant: the app-reachable corpus token/phrase path
+  (buildSearchProjection → CorpusIndexer → executeQuery/executePhraseQuery) is held
+  UNWIRED pending a logged friction signal that maps to it. matchSearchTerm is
+  token-exact, not substring (inventory Observation 4), so it would not deliver
+  partial/narrowing behavior regardless.
 
 Application-tier work is governed and tracked separately per
 APP_SHELL_GUIDELINES.md.
