@@ -106,7 +106,7 @@ eslint-disable, config relaxation, and bypass flags do not satisfy validation.
 Fixtures cap evidence. Structural questions are answerable on fixture data now;
 true content-usability needs real licensed data, which is gated by DATA_SOURCES.md.
 App fixtures are illustrative and must not fabricate the source-provenance lineage
-that governed dictionary entries carry. 
+that governed dictionary entries carry.
 Real lookup friction observed in the app is recorded in docs/usethai/ux-friction-log.md as
 append-only evidence; warrant/triage is a separate deferred review, and fixture-only friction
 is discounted there.
