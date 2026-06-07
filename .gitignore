@@ -1,6 +1,11 @@
 # Dependency directories
 node_modules/
 
+# Throwaway spike workspace — Volubilis data-shape spike (spike/volubilis-data-shape).
+# Holds the locally downloaded CC BY-SA 4.0 Volubilis dataset, any throwaway
+# inspection scripts, and generated intermediates. None of this may be committed.
+.spike-local/
+
 # Astro generated files
 .astro/
 apps/**/.astro/
