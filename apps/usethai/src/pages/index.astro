@@ -5,9 +5,21 @@
 // lexical lookup). No framework runtime — vanilla client TypeScript.
 import Layout from "../layouts/Layout.astro";
 import LookupForm from "../components/LookupForm.astro";
+import {
+  DEFAULT_DIRECTION,
+  documentTitleForDirection,
+  headingForDirection,
+} from "../lib/direction-chrome";
+
+// Seed the server-rendered chrome with the default direction so the <title> and
+// <h1> are already direction-correct on first paint (matching the #dir select's
+// initially-selected option); the client script below keeps them in sync as the
+// direction changes — including in the neutral awaiting-input state.
+const initialTitle = documentTitleForDirection(DEFAULT_DIRECTION);
+const initialHeading = headingForDirection(DEFAULT_DIRECTION);
 ---
 
-<Layout title="UseThai — lookup">
+<Layout title={initialTitle} heading={initialHeading}>
   <LookupForm />
 
   <section id="results" aria-live="polite"></section>
@@ -27,11 +39,28 @@ import LookupForm from "../components/LookupForm.astro";
       categoryForDiagnostic,
       messageForDiagnostic,
     } from "../lib/lookup-states";
+    import {
+      documentTitleForDirection,
+      headingForDirection,
+      normalizeDirection,
+    } from "../lib/direction-chrome";
 
     const form = document.getElementById("lookup-form");
     const qInput = document.getElementById("q") as HTMLInputElement | null;
     const dirSelect = document.getElementById("dir") as HTMLSelectElement | null;
     const results = document.getElementById("results");
+    const heading = document.getElementById("page-heading");
+
+    // Direction-aware page chrome (P2, Cluster 1 / F-0004). Reflect the active
+    // lookup direction in the document <title> and the page <h1> at ALL times —
+    // including the neutral awaiting-input state, before any lookup — driven
+    // purely by the select's current value (which is app state), never by a
+    // lookup result. No lookup is triggered here; only the chrome is updated.
+    function syncDirectionChrome() {
+      const direction = normalizeDirection(dirSelect.value);
+      document.title = documentTitleForDirection(direction);
+      heading.textContent = headingForDirection(direction);
+    }
 
     function escapeHtml(value: string): string {
       return String(value)
@@ -288,7 +317,12 @@ import LookupForm from "../components/LookupForm.astro";
     }
 
     form.addEventListener("submit", doLookup);
-    // Run an initial lookup so the acceptance word renders on load.
+    // Keep the title/heading in sync when the direction changes, independently of
+    // any lookup — the chrome must track direction even from the resting state.
+    dirSelect.addEventListener("change", syncDirectionChrome);
+    // Paint the direction chrome and run an initial lookup so both the chrome and
+    // the acceptance word are correct on load.
+    syncDirectionChrome();
     doLookup();
   </script>
 </Layout>

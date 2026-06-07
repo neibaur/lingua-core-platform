@@ -6,9 +6,11 @@ import "../styles/global.css";
 
 interface Props {
   title?: string;
+  heading?: string;
 }
 
-const { title = "UseThai — lookup" } = Astro.props;
+const { title = "UseThai — lookup", heading = "UseThai — Thai word lookup" } =
+  Astro.props;
 ---
 
 <!doctype html>
@@ -20,7 +22,7 @@ const { title = "UseThai — lookup" } = Astro.props;
   </head>
   <body>
     <header>
-      <h1>UseThai — Thai word lookup</h1>
+      <h1 id="page-heading">{heading}</h1>
     </header>
     <main>
       <slot />
