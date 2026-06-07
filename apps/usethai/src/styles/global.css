@@ -84,12 +84,53 @@ button {
   cursor: pointer;
 }
 
+/*
+ * Query/direction echo header. A quiet line above every result state that
+ * restates the raw query the user typed and the direction label, so the result
+ * is always read in the context of what was asked.
+ */
+.echo {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-faint);
+}
+
+.echo__query {
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.echo__dir {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .entry {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-3);
   background: var(--color-surface);
+}
+
+/*
+ * Definition list: definitions render in core-returned array order (the app
+ * adds no sort). The list marker carries that order honestly.
+ */
+.definitions {
+  margin: var(--space-1) 0 0;
+  padding-left: var(--space-4);
+}
+
+/* A stable divider between multiple entries grouped under one query. */
+.entry__divider {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-3) 0;
 }
 
 /*
@@ -157,6 +198,23 @@ button {
 
 .state__hint {
   margin: var(--space-2) 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-faint);
+}
+
+/* One diagnostic block: a primary message with optional secondary disclosure. */
+.state__diagnostic {
+  margin: var(--space-2) 0 0;
+}
+
+/*
+ * Secondary disclosure: core's verbatim diagnostic.message, presented as
+ * clearly-secondary text below the app-authored primary message. Smaller and
+ * fainter so it never competes with the primary, and rendered exactly as core
+ * provides it.
+ */
+.state__detail {
+  margin: var(--space-1) 0 0;
   font-size: var(--text-xs);
   color: var(--color-faint);
 }
