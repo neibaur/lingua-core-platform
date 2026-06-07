@@ -7,9 +7,9 @@ import type { LexicalEntry } from "@core/lexical";
 // DATA_SOURCES.md before ingestion.
 //
 // Note on en→th: the core keys englishToThai on the full, lowercased definition
-// string. Single-token definitions (e.g. "rice") are reachable via en→th;
-// multi-word definitions (e.g. "to eat") are not, because the lookup rejects any
-// query containing whitespace. Single-word glosses are included where natural.
+// string and resolves it by exact equality. Both single-token definitions (e.g.
+// "rice") and whole-phrase definitions (e.g. "to eat") are reachable via en→th —
+// core does not reject internal whitespace for this direction.
 export const seed: LexicalEntry[] = [
   {
     headword: "กิน",

@@ -64,6 +64,17 @@ import LookupForm from "../components/LookupForm.astro";
         .join("");
     }
 
+    // Awaiting-input: a neutral resting state when there is nothing to look up
+    // yet (empty or whitespace-only input). NOT an error and NOT a no-match —
+    // no lookup is attempted, so the page makes no core call and shows no
+    // diagnostic.
+    function renderAwaitingInput() {
+      results.innerHTML =
+        `<div class="state state--awaiting">` +
+        `<p class="state__body">Type a term above to look it up.</p>` +
+        `</div>`;
+    }
+
     // Loading: a neutral in-progress state while the request is in flight.
     function renderLoading() {
       results.innerHTML =
@@ -145,6 +156,14 @@ import LookupForm from "../components/LookupForm.astro";
       if (event) event.preventDefault();
       const q = qInput.value;
       const dir = dirSelect.value;
+      // Empty or whitespace-only input is not a lookup: rest in the neutral
+      // awaiting-input state without calling the endpoint. Whitespace-bearing
+      // queries (e.g. "to eat") are NOT blocked here — they are sent intact so
+      // core can resolve an en→th phrase or return its own th→en diagnostic.
+      if (q.trim() === "") {
+        renderAwaitingInput();
+        return;
+      }
       renderLoading();
       try {
         const response = await fetch(

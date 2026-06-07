@@ -26,23 +26,20 @@ export const GET: APIRoute = ({ url }) => {
 
   const query = rawQuery.trim();
 
-  // The core lookup THROWS if the query contains any whitespace, so we guard
-  // before calling it. An empty or whitespace-bearing query is reported as a
-  // diagnostic rather than allowed to throw — single-token queries only.
-  if (query === "" || /\s/.test(query)) {
+  // Empty input is not a lookup: there is nothing to resolve. We return a
+  // neutral, entry-less response without calling core and without fabricating
+  // any diagnostic — the "awaiting input" condition is the UI's to present.
+  // Whitespace-BEARING queries are NOT guarded here: they pass through to core,
+  // which decides per direction (th→en returns its own real
+  // LEXICAL_KEY_WHITESPACE_REJECTED diagnostic; en→th resolves a whole-phrase
+  // query such as "to eat" by exact equality). The app mints no diagnostic and
+  // consumes whatever core returns.
+  if (query === "") {
     return jsonResponse({
       query: rawQuery,
       direction,
       entries: [],
-      diagnostics: [
-        {
-          code: "LEXICAL_KEY_WHITESPACE_REJECTED",
-          severity: "error",
-          path: ["query"],
-          message:
-            "Query must be a single token with no whitespace (e.g. กิน).",
-        },
-      ],
+      diagnostics: [],
     });
   }
 
