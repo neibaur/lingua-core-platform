@@ -32,7 +32,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #185 — docs(app): add UX friction log to session bootstrap
+- Last merged PR: #186 — feat(usethai): mature lookup result and diagnostic presentation
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
