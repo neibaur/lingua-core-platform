@@ -39,7 +39,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #189 — fix(usethai): make lookup direction chrome reactive
+- Last merged PR: #190 — docs(spikes): add Volubilis data-shape assessment
 
 ## Application-tier — current state
 
