@@ -90,7 +90,174 @@ plus core grounding + §9 assessment.
 
 ## Entries
 
-(no observations yet — first real entry goes here as F-0001)
+### F-0001 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~10 minutes)
+- Query: hello Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: no
+- Expected: A Thai greeting result (e.g. สวัสดี)
+- Actual: No exact match for "hello"
+- Friction type: ENTRY-ABSENT
+- Notes: Expected a common greeting to be present. The lookup behaved as an exact-key search and returned a not-found state.
+
+### F-0002 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~10 minutes)
+- Query: eat Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: Result for กิน
+- Actual: No exact match for "eat"
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The concept was known to exist in the fixture via the gloss "to eat", but the shorter query form "eat" did not reach it.
+
+### F-0003 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~15 minutes)
+- Query: old Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: Understand the pronunciation differences between the returned Thai entries.
+- Actual: The lookup returned two entries, เก่า (kao) and แก่ (kae), each with a romanized form but without tone/accent markings.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: The result was successfully returned, but the romanized forms did not communicate tone information. During use, it was difficult to determine how the pronunciations differed compared with references that include tone-marked romanization.
+
+### F-0004 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~20 minutes)
+- Query: old Direction: en→th
+- Surface exercised: lookup UI result presentation
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: The page heading and result presentation would clearly reinforce that I was performing an English → Thai lookup.
+- Actual: The page title remained "Use Thai - Thai word lookup" regardless of lookup direction.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: During English → Thai lookups the page title did not appear to reflect the active lookup direction.
+
+### F-0005 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~20 minutes)
+- Query: To eAt Direction: en→th
+- Surface exercised: query echo presentation
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: A result for the concept "to eat."
+- Actual: The lookup succeeded and returned กิน. The query echo displayed the original mixed-case input exactly as entered.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: The echoed query looked unusual because the original mixed-case input was preserved.
+
+### F-0006 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~20 minutes)
+- Query: old Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: Understand why two Thai entries were returned and when each would be used.
+- Actual: The lookup returned both เก่า and แก่ with the same English gloss "old."
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: The result successfully returned multiple entries, but there was insufficient information to understand the distinction between them.
+
+### F-0007 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~20 minutes)
+- Query: old! Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: Same result as searching for "old".
+- Actual: No exact match was returned.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The target concept was present in the fixture, but adding punctuation prevented the query from reaching it.
+
+### F-0008 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~20 minutes)
+- Query: eating Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: Result for กิน.
+- Actual: No exact match was returned.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The target concept existed in the fixture via the gloss "to eat," but the inflected form "eating" did not reach it.
+
+### F-0009 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~25 minutes)
+- Query: กรุงเทพมหานคร อมรรัตนโกสินทร์ Direction: th→en
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: unknown
+- Expected: Attempt a Thai → English lookup for the entered Thai text.
+- Actual: The lookup returned a warning diagnostic. Primary message: "Enter a single term with no spaces." Secondary message: `Thai query must not contain whitespace: "กรุงเทพมหานคร อมรรัตนโกสินทร์"`. The state also explained that Thai → English looks up one Thai token.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The entered text was valid Thai text containing whitespace. The lookup surface rejected the query because it was not a single whitespace-free Thai token.
+
+### F-0010 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~30 minutes)
+- Query: กิน ข้าว Direction: th→en
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: A lookup result related to the entered Thai phrase.
+- Actual: The lookup returned a warning diagnostic indicating that Thai queries must not contain whitespace and that Thai → English looks up a single Thai token.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The entered text consisted of multiple Thai words separated by whitespace. The lookup surface rejected the query because it was not a single whitespace-free Thai token.
+
+### F-0011 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~30 minutes)
+- Query: ฉันกินข้าว Direction: th→en
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: unknown
+- Expected: Some form of lookup result related to the entered Thai text.
+- Actual: No exact match was returned.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The entered text was a complete Thai sentence rather than a single lexical lookup key. The query did not reach a result.
+
+### F-0012 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~30 minutes)
+- Query: old Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: Understand the pronunciation differences between the returned Thai entries.
+- Actual: The lookup returned both เก่า (kao) and แก่ (kae). Romanized forms were present but did not clearly communicate pronunciation differences or tone distinctions.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: The lookup succeeded and returned results. Difficulty occurred when attempting to understand how the returned pronunciations differed.
+
+### F-0013 — 2026-06-07
+
+- Session context: Manual testing of the post-P1 lookup UI (~30 minutes)
+- Query: กิน? Direction: th→en
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: enriched seed fixture (post-P1)
+- Target confirmed present in data: yes
+- Expected: Same result as searching for กิน.
+- Actual: No exact match was returned.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The target word exists in the fixture. Adding punctuation prevented the query from reaching the result.
 
 ## Warrant Review (DEFERRED — do not fill during evidence capture)
 

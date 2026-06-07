@@ -14,14 +14,15 @@ Cross-Session State Document | Updated After Each PR Cycle
   enabled-language configuration realized by TenantConfiguration + CanonicalLanguageTag).
   The ADR-0016 corrective core thread (th→en whitespace returned diagnostic) is IMPLEMENTED
   and merged (#181); the apps/usethai consumption slice is merged (#182). No core slice pending.
-- Next action: First app-tier UX maturation slice merged — P1 lookup presentation
-  maturation (apps/usethai, #N). Next direction is use-driven friction evidence
-  capture: use the matured UI and seed docs/usethai/ux-friction-log.md with real
-  F-entries (FIXTURE-tagged against the enriched seed now; REAL gated on data
-  licensing). P2/P3 app UX items and any tokenizer/search core work remain gated —
-  the latter behind a REAL clustered query-form-unmatched cluster plus core
-  governance. No authorized core slice pending. Phase 16/17 remain PENDING
-  AUTHORIZATION (HANDOFF §9 phase-transition audit required first).
+- Next action: P1 lookup presentation maturation merged (apps/usethai, #186).
+  Friction-evidence seeding is underway — a first FIXTURE batch (both directions) is
+  logged in docs/usethai/ux-friction-log.md against the enriched seed. Next is
+  continued accumulation (REAL entries gated on data licensing) and, once enough
+  accumulates, a separate deferred warrant-review/triage session. P2/P3 app UX items
+  and any tokenizer/search core work remain gated — the latter behind a REAL
+  clustered query-form-unmatched cluster plus core governance; FIXTURE entries carry
+  no core-capability warrant weight. No authorized core slice pending. Phase 16/17
+  remain PENDING AUTHORIZATION (HANDOFF §9 phase-transition audit required first).
 - UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
   evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
   target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
@@ -32,7 +33,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #185 — docs(app): add UX friction log to session bootstrap
+- Last merged PR: #186 — feat(usethai): mature lookup result and diagnostic presentation
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
@@ -62,7 +63,7 @@ load-bearing learnings for the next planning session:
   ever warranted they belong to the tokenizer/search layer only. Phase 13 search
   projections and Phase 14 route delivery contracts sit in a leaf-only barrel
   (query-learning-interop) with no app-legal path today.
-- P1 lookup presentation maturation merged (#N, app-tier; no core change).
+- P1 lookup presentation maturation merged (#186, app-tier; no core change).
   Diagnostics render via orderLexicalDiagnostics (all diagnostics, not just [0]).
   Policy B: app copy primary for mapped diagnostic codes, core's verbatim
   diagnostic.message primary for unmapped codes (the generic fallback was removed),
