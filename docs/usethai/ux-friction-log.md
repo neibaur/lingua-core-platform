@@ -271,4 +271,6 @@ support bucket (c). FIXTURE-tagged and ENTRY-ABSENT entries are discounted for c
 claims regardless of how clean the signal looks. No core proposal leaves this review
 without a separate core grounding + §9 assessment.
 
-(empty until a warrant review is convened)
+A first warrant-review triage was convened 2026-06-07 on the FIXTURE batch (F-0001–F-0013).
+Result persisted at docs/usethai/warrant-review-2026-06-07.md. FIXTURE basis — no
+core-capability warrant issued.

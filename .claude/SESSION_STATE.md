@@ -14,15 +14,17 @@ Cross-Session State Document | Updated After Each PR Cycle
   enabled-language configuration realized by TenantConfiguration + CanonicalLanguageTag).
   The ADR-0016 corrective core thread (th→en whitespace returned diagnostic) is IMPLEMENTED
   and merged (#181); the apps/usethai consumption slice is merged (#182). No core slice pending.
-- Next action: P1 lookup presentation maturation merged (apps/usethai, #186).
-  Friction-evidence seeding is underway — a first FIXTURE batch (both directions) is
-  logged in docs/usethai/ux-friction-log.md against the enriched seed. Next is
-  continued accumulation (REAL entries gated on data licensing) and, once enough
-  accumulates, a separate deferred warrant-review/triage session. P2/P3 app UX items
-  and any tokenizer/search core work remain gated — the latter behind a REAL
-  clustered query-form-unmatched cluster plus core governance; FIXTURE entries carry
-  no core-capability warrant weight. No authorized core slice pending. Phase 16/17
-  remain PENDING AUTHORIZATION (HANDOFF §9 phase-transition audit required first).
+- Next action: Triage convened 2026-06-07 on the first FIXTURE batch (13 entries, both
+  directions, post-P1 seed); outcome = Cluster 1 (lookup direction in page heading/title)
+  authorized for a P2 presentation slice with the Cluster 3 multi-entry field-population
+  check folded in (expected to resolve to a data-content gap, since P1 already surfaces
+  POS and full definitions); Cluster 2 (mixed-case echo) closed as intended, bounded by
+  the no-normalized-key guardrail; Clusters 5 and 8 HELD under reachability-≠-warrant
+  pending a mapping REAL signal; Cluster 4 data/core-schema-gated; Clusters 6/7
+  core-governance-class only if REAL evidence accumulates; Cluster 9 closed as fixture
+  noise; triage persisted at docs/usethai/warrant-review-2026-06-07.md. The P2 slice is
+  the next app-tier build; no core slice pending; Phase 16/17 remain PENDING AUTHORIZATION
+  (HANDOFF §9 audit first).
 - UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
   evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
   target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
@@ -33,12 +35,20 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #186 — feat(usethai): mature lookup result and diagnostic presentation
+- Last merged PR: #187 — fix/session-state-p1-maturation
+
+## Application-tier — current state
+
+- App status: shell + Cloudflare adapter (build-green) + layout/component baseline +
+  honest lookup states + P1 lookup presentation maturation, all merged.
+- Active app branch: none.
+- Evidence: friction log seeded — 13 FIXTURE entries (both directions); triage complete
+  (docs/usethai/warrant-review-2026-06-07.md); no REAL data yet (DATA_SOURCES candidates
+  unverified).
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
-(src/core) only. Application-tier work (apps/usethai) — shell + Cloudflare adapter
-(build-green) + layout/component baseline + honest lookup states + P1 lookup presentation maturation merged;
-load-bearing learnings for the next planning session:
+(src/core) only. Application-tier load-bearing learnings (durable; for the next
+planning session):
 
 - The core consumes cleanly as source via a Vite path alias (@core ->
   ../../src/core); no core build/exports/dist is needed yet.
@@ -54,7 +64,7 @@ load-bearing learnings for the next planning session:
   fabricates the code. Known consequence: the real diagnostic severity is "warning" (core's
   grounded value), where the app's prior fabricated diagnostic claimed "error" — the severity
   badge now reflects core's true value (state/category unchanged). Empty/whitespace-only input
-  rests in a neutral awaiting-input state without calling core. Active app branch: none.
+  rests in a neutral awaiting-input state without calling core.
 - Barrel denominator captured — docs/architecture/tokenizer-search-barrel-inventory.md
   (merged). Two search surfaces are already app-reachable: lexical exact-key lookup
   (composeLexicalLookup) and a tokenizer corpus token/phrase path
@@ -71,7 +81,7 @@ load-bearing learnings for the next planning session:
   core's diagnostic.severity. Result rendering exercises multi-definition and
   multi-entry paths in core-returned order, no app sort. Raw query + direction echo
   on every state, sourced from raw client controls (never result.query) — preserves
-  the no-normalized-key guardrail. Active app branch: none.
+  the no-normalized-key guardrail.
 - Lexical index homograph asymmetry (confirmed during P1 fixture enrichment): th→en
   is one-entry-per-key by construction (thaiToEnglish: Record<string, LexicalEntry>,
   last-writer-wins), so th→en cannot surface homographs; en→th admits multiple
@@ -84,6 +94,10 @@ load-bearing learnings for the next planning session:
   UNWIRED pending a logged friction signal that maps to it. matchSearchTerm is
   token-exact, not substring (inventory Observation 4), so it would not deliver
   partial/narrowing behavior regardless.
+
+- Friction triage (2026-06-07) is persisted at
+  docs/usethai/warrant-review-2026-06-07.md; clusters 5 and 8 are recorded HELD there
+  pending REAL evidence — do not re-litigate them from FIXTURE.
 
 Application-tier work is governed and tracked separately per
 APP_SHELL_GUIDELINES.md.

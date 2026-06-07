@@ -31,10 +31,10 @@ fall back to raw URLs only if attachments are absent):
 1. APP_SHELL_GUIDELINES.md — the governing tier: the public-barrel boundary,
    doctrine isolation, app validation (the full CI gate, no suppression), and the
    app data rules.
-2. .claude/SESSION_STATE.md — read the Application-tier status block (current
-   app status and load-bearing learnings) and the Per-PR Update Block (phase,
+2. .claude/SESSION_STATE.md — read the "Application-tier — current state" block (current
+   app status, active branch, and evidence summary) and the Per-PR Update Block (phase,
    baseline, last merged PR) for context. App-tier state currently lives in the
-   Application-tier block.
+   "Application-tier — current state" block.
 3. docs/architecture/tokenizer-search-barrel-inventory.md — the
    exposed-capability denominator: exactly what core exposes through its public
    top-level barrels, the reachability tiers, and the prefix / substring / fuzzy
@@ -42,7 +42,10 @@ fall back to raw URLs only if attachments are absent):
 4. docs/usethai/ux-friction-log.md — the app-tier UX friction evidence log: real lookup
    friction captured as append-only evidence (FIXTURE vs REAL, target-confirmed-present,
    descriptive friction types), triaged only in a separate deferred warrant review. Read it
-   for accumulated evidence; append observations during app use (never solution inline).
+   for accumulated evidence; append observations during app use (never solution inline). If
+   its Warrant Review section points to a completed triage doc, follow that pointer and read
+   the current triage for cluster dispositions and any HELD signals before proposing
+   search-related app work.
 5. ARCHITECTURE.md — especially "Pluggable Tokenizer And Search Abstraction,"
    "Lexical Key Normalization Policy," "Deterministic Query Explainability" (the
    no-ranking identity), the public/barrel boundary, and "Explicit Non-Goals."
@@ -67,8 +70,8 @@ After reading, confirm and summarize current app-tier state in this exact format
 and nothing else — no commentary, no proposals, no implementation discussion:
 
 ```
-App status: [current apps/usethai status from SESSION_STATE Application-tier block]
-Active app branch: [in-progress app branch, or none]
+App status: [current apps/usethai status from SESSION_STATE "Application-tier — current state" block]
+Active app branch: [from SESSION_STATE "Application-tier — current state" block, or none]
 Last merged PR: [#N and short title from SESSION_STATE Per-PR Update Block]
 Barrel denominator: [inventory reference + the headline reachable surfaces vs the prefix/substring/fuzzy gap]
 Open app thread / next step: [from SESSION_STATE Next action and Application-tier learnings]
