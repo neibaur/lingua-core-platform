@@ -14,9 +14,10 @@ Cross-Session State Document | Updated After Each PR Cycle
   enabled-language configuration realized by TenantConfiguration + CanonicalLanguageTag).
   The ADR-0016 corrective core thread (th→en whitespace returned diagnostic) is IMPLEMENTED
   and merged (#181); the apps/usethai consumption slice is merged (#182). No core slice pending.
-- Next action: First FIXTURE triage cycle COMPLETE. Cluster 1 (lookup
+- Next action: Product decisions recorded (operator): tone IS a product requirement for UseThai; runtime tone
+  inference is OUT; generated-and-stored offline/precomputed derived tone is the intended direction, subject to governance. Product/licensing posture recorded in DATA_SOURCES.md (Product Licensing Posture): commercial-first, ShareAlike-cautious — ShareAlike sources (e.g. Volubilis) remain candidates but ingestion stays gated until the specific ShareAlike obligations and product consequences are explicitly reviewed and accepted; do not proceed with Volubilis ingestion while it requires assuming ShareAlike tolerance. The next core-governance thread is documentation-only (no §9 implementation, no field, no ingestion): ground derived linguistic artifact provenance — generator identity + generator version + input headword lineage — as a concept distinct from source provenance, without overloading DictionarySourceProvenance or the internal generatedFrom marker, via an ARCHITECTURE.md grounding amendment (grounding-of-record) plus a companion ADR; concrete shape deferred to a later §9 assessment. Prior triage context: First FIXTURE triage cycle COMPLETE. Cluster 1 (lookup
   direction in page heading/title) implemented via the P2 direction-aware
-  chrome slice (#189); Cluster 3 field-population investigation confirmed
+  chrome slice; Cluster 3 field-population investigation confirmed
   the expected outcome — the remaining multi-entry ambiguity is a
   data-content gap, not a render omission, so no app change was warranted.
   Cluster 2 (mixed-case echo) remains closed as intended, bounded by the
@@ -40,7 +41,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #191 — docs(data): update Volubilis audit with spike findings
+- Last merged PR: #192 — spike: document Thai tone-generation feasibility
 
 ## Application-tier — current state
 
@@ -51,7 +52,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Evidence: friction log seeded — 13 FIXTURE entries (both directions);
   triage complete (docs/usethai/warrant-review-2026-06-07.md). Cluster 1
   disposition implemented (#189); Cluster 3 investigation confirmed a
-  data-content gap rather than a render omission. No REAL data yet. Volubilis license independently verified (CC BY-SA 4.0, rights-holder Francis Bastien) and a fixed snapshot pinned (v25.3, SHA-256) via the data-shape spike; data shape now known. Still candidate — not approved_for_ingestion (ShareAlike intent / commercial posture unresolved). Volubilis data-shape spike (docs/spikes/volubilis-data-shape-spike.md): viable CC BY-SA 4.0 foundation, moderate adapter, no native tone, ~46% multi-word expressions — ingestion is a gated core decision, not undertaken.
+  data-content gap rather than a render omission. No REAL data yet. Volubilis license independently verified (CC BY-SA 4.0, rights-holder Francis Bastien) and a fixed snapshot pinned (v25.3, SHA-256) via the data-shape spike; data shape now known. Still candidate — not approved_for_ingestion (commercial-first posture now decided; Volubilis ShareAlike obligations not yet reviewed/accepted under that posture). Volubilis data-shape spike (docs/spikes/volubilis-data-shape-spike.md): viable CC BY-SA 4.0 foundation, moderate adapter, no native tone, ~46% multi-word expressions — ingestion is a gated core decision, not undertaken.
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier load-bearing learnings (durable; for the next
