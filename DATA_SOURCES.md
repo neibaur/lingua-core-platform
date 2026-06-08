@@ -21,6 +21,12 @@ The repository MIT license covers repository-authored framework code, source cod
 
 Third-party linguistic datasets retain their own licensing, attribution, commercial-use, transformation, and redistribution boundaries. Including metadata about a dataset in this repository does not relicense that dataset.
 
+## Product Licensing Posture
+
+The product (UseThai and any future private envelope) is commercial-first and ShareAlike-cautious. The project intends to remain revenue-capable (for example: ads, premium memberships, donations, sponsorships) and is not adopting an open-data / ShareAlike-first posture. ShareAlike-obligated sources (for example Volubilis, SCB-MT-EN-TH-2020) remain candidates, but ingestion of any such source — and any commitment of the core dictionary dataset, normalized records, generated artifacts, app data, or premium surfaces to ShareAlike terms — stays gated until the specific ShareAlike obligations and their product consequences are explicitly reviewed and accepted.
+
+This is a product / data-strategy posture, not a relicensing of the public core, which remains under the repository MIT license (ARCHITECTURE.md — Public Core And Future Private Envelope). It does not assert any source as cleared: the per-source `is_commercially_viable` and redistribution findings in the audit records below remain `unknown` until independently verified.
+
 ## Audit Table Specification
 
 Every dataset candidate or ingested source should have an audit record with the following fields:
