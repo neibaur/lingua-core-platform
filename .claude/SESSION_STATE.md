@@ -21,14 +21,15 @@ Cross-Session State Document | Updated After Each PR Cycle
   data-content gap, not a render omission, so no app change was warranted.
   Cluster 2 (mixed-case echo) remains closed as intended, bounded by the
   no-normalized-key guardrail; Clusters 5 and 8 remain HELD under
-  reachability-≠-warrant pending a mapping REAL signal; Cluster 4 remains
-  data/core-schema-gated; Clusters 6/7 remain core-governance-class only
+  reachability-≠-warrant pending a mapping REAL signal; Cluster 4 remains data/core-schema-gated (tone-generation feasibility now established — see the tone spike below); Clusters 6/7 remain core-governance-class only
   if REAL evidence accumulates; Cluster 9 remains closed as fixture noise.
   No core slice pending. Continue gathering REAL lookup friction through
   docs/usethai/ux-friction-log.md before considering any search-related
   warrant. Phase 16/17 remain PENDING AUTHORIZATION (HANDOFF §9 audit
   first).
   Dataset-readiness review (step 4) complete. Volubilis data-shape spike merged — a throwaway, non-governed, docs-only investigation (report: docs/spikes/volubilis-data-shape-spike.md, snapshot SHA-pinned). Findings: Volubilis is a license-verified CC BY-SA 4.0 TH↔EN foundation (~114k rows; headword/romanization/POS ~100%, English gloss 93%) that maps to the existing LexicalEntry/CanonicalDictionaryEntry via a moderate adapter — sense-split on ;, a lossy 73→10 TYPE→LexicalPartOfSpeech map — plus decisions (Thai whitespace ~7.5% throws; romanization-column choice; duplicate-headword merge ~11.4k rows). Critically: no native tone (length only) — a tone-marked surface would be a generated transcriber dependency, so Volubilis does not close Cluster 4 on its own; ~46% of rows are multi-word expressions. Ingestion is a core initiative, not authorized here; it remains gated on (a) a product-posture / CC BY-SA ShareAlike decision and (b) whether tone is a product requirement. Any future adapter, contract extension, or ingestion goes through normal core governance. No core slice pending.
+- Tone-generation feasibility spike complete — a throwaway, non-governed, docs-only investigation (report:
+  docs/spikes/tone-generation-feasibility-spike.md). Findings: Thai tone-marked learner pronunciation can be generated from orthography by a rule-based engine (tltk 1.10 G2P), verified deterministic-at-pin (byte-identical hash across three independent processes) but NOT replay-stable across versions, so generator identity + version becomes part of the derived artifact's lineage; commercial-safe and posture-neutral (tltk BSD-3-Clause; ML alternatives thaig2p are CC-BY 4.0), so generated tone does NOT inherit Volubilis's ShareAlike question — generator and dictionary are independently licensed. Compatible with a precompute-and-store model only, never runtime inference (REPLAY-SAFE / STATIC RESOLUTION; "no AI at runtime"). Accuracy is not asserted (no gold set; a validation methodology is proposed). Representability gap flagged: the contracts can STORE a tone value (SpellingEntry.toneClassification / phoneticNotation) but cannot represent derived-artifact provenance (generator id + version + input headword lineage); DictionarySourceProvenance is the wrong home, so a new provenance representation would be a governed core change. Generation/ingestion is a core initiative, not authorized here; it remains gated on a product decision (is tone a product requirement) and, if generate-and-store, on resolving that provenance representability gap first. This advances Cluster 4 (tone now established as generatable) without closing it. No core slice pending.
 - UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
   evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
   target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
@@ -39,7 +40,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #190 — docs(spikes): add Volubilis data-shape assessment
+- Last merged PR: #191 — docs(data): update Volubilis audit with spike findings
 
 ## Application-tier — current state
 
