@@ -12,6 +12,7 @@ export default tseslint.config(
       "coverage/**",
       ".turbo/**",
       ".venv/**",
+      ".spike-local/**",
       "apps/**/dist/**",
       "apps/**/.astro/**",
     ],
