@@ -41,7 +41,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #194 — docs: ground derived linguistic artifact provenance
+- Last merged PR: #195 — docs: update session state after ADR-0017 grounding
 
 ## Application-tier — current state
 
