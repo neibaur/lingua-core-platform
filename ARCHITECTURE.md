@@ -438,6 +438,43 @@ Non-Goals (this policy introduces none of the following):
 
 This policy is independent of Phase 15 tenant and enabled-language configuration. The concrete type names, function shapes, guard forms, and file placement that realize this policy are derived at a later per-slice pre-implementation assessment under the Documentary Derivation Law and the Typed Reference Law; this section grounds the behavior only and prescribes no implementation shape.
 
+## Derived Linguistic Artifact Provenance
+
+This section is binding architectural grounding for the concept of derived linguistic artifact provenance and for the boundaries that contain it. It grounds a concept and defers all implementation shape, in the manner of "Static Content Address" and "Canonical Language Identity"; it introduces no type, field, schema-version literal, or builder.
+
+Derived linguistic artifact provenance is the lineage of a linguistic surface the platform **derives** — a surface produced from existing linguistic data by a generator, rather than carried in from a source dataset. It is distinct from source provenance: source provenance records where source data came from, while derived-artifact provenance records how a derived value was produced. The two are different lineages over different things and must not be collapsed into one.
+
+### The grounded case
+
+The only case grounded by this section is the **machine-generated, precomputed pronunciation and tone** surface. Thai tone-marked learner pronunciation is not present in candidate source data as a native field; it is a surface the platform would generate from orthography by a deterministic generator and store. A stored generated pronunciation surface is therefore a derived artifact, and the platform needs a way to express the lineage of that derivation. This section grounds that need; it grounds no other derived surface, and any additional derived case requires its own future grounding.
+
+### Required lineage
+
+The lineage that derived-artifact provenance must carry — stated as concept, not as fields — is **generator identity, generator version, and input headword lineage**: which generator produced the surface, at which version of that generator, from which headword. The generator version is part of the lineage because a generated surface is reproducible only against a pinned generator; a different generator version is a different derivation and must be recorded as such.
+
+### Posture
+
+Derived-artifact provenance is **deterministic-at-pin and generator-version-aware**. A generator that is deterministic at a pinned version yields the same surface for the same input, so its output may be precomputed and stored as a static artifact. Output is not guaranteed to be stable across generator versions; a generator-version change is therefore treated as a deliberate, audited regeneration of the derived surface, never as silent drift. Recording the generator version in the lineage is what makes that discipline enforceable.
+
+Derivation is **precompute / offline / static only, never runtime inference**. A generated surface, if ever stored, is produced offline by a pinned generator and committed as static data; it is read at runtime as data, never computed, inferred, or model-evaluated at runtime. This is required by the Replay-Safe Governance Law (caller-supplied primitives only; no runtime-derived values), by the Static Resolution Law (no runtime registries, plugins, or async orchestration), and by the Explicit Non-Goal "No AI dependency as a core runtime requirement." The line that governs this concept is precompute (permitted for a deterministic-at-pin generator) versus runtime inference (prohibited for any generator).
+
+This grounding is **generator-agnostic**. It grounds the concept of derived-artifact provenance and its boundaries, not any particular generator, generation technique, or library; whether a future generator is rule-based or machine-learned, and which one, is not decided here and is not part of this grounding.
+
+### Distinction from existing provenance concepts
+
+Two existing concepts are adjacent and must not be overloaded to carry derived-artifact provenance:
+
+- `DictionarySourceProvenance` (`src/core/lexical/provenance/dictionary-source-provenance.ts`) is **source-shaped**: it records the identity, location, license, and attribution of a source dataset. It describes where source data came from, not how a value was derived. Reusing it for a generator would conflate generated surfaces with source data — the exact conflation this concept exists to prevent.
+- The internal `generatedFrom` marker (e.g. on the lexical lookup trace and the dataset-validation report) is an **artifact-classification discriminant** governed by the Artifact Classification Law: it classifies an internal computed/governance-reporting artifact by what produced it within the platform. It is not the content provenance of an externally generated linguistic surface, and it does not express generator identity, generator version, or input headword lineage.
+
+The existing `SpellingEntry.phoneticNotation` and `SpellingEntry.toneClassification` fields can hold a generated pronunciation or tone _value_, but they record only the value, not its derivation; they express no generator identity, no generator version, and no input headword lineage. The representability gap is therefore between holding a derived value and recording its lineage — not a gap in storing the value itself.
+
+### Scope boundary and non-goals
+
+This section grounds a concept only. It introduces no type, field, schema-version literal, builder, ingestion path, generator, or generator selection, and it authorizes no runtime inference of any kind. The concrete representation of derived-artifact provenance — whether a standalone provenance type or a field, its name, and which existing fields would hold derived values — is deferred to a later §9 pre-implementation assessment under the Documentary Derivation Law and the Typed Reference Law.
+
+Human-curated override and exception-table provenance — the lineage of a curated correction that supplies a known-exception pronunciation, including its own human-curation lineage and licensing — is **related but explicitly out of scope here**. It is a different provenance concern from machine-generated derivation and is not grounded by this section. Grounding it later requires a future, additive amendment under explicit operator authorization. This grounding is forward-only and additive: it amends nothing above it, migrates no existing type, and is itself extended only by further additive amendment.
+
 ## Database Blueprint
 
 This schema is conceptual and subject to ADRs and future migration decisions. It does not select a production database, migration framework, hosting provider, or ORM.
