@@ -15,7 +15,7 @@ Cross-Session State Document | Updated After Each PR Cycle
   The ADR-0016 corrective core thread (th→en whitespace returned diagnostic) is IMPLEMENTED
   and merged (#181); the apps/usethai consumption slice is merged (#182). No core slice pending.
 - Next action: Product decisions recorded (operator): tone IS a product requirement for UseThai; runtime tone
-  inference is OUT; generated-and-stored offline/precomputed derived tone is the intended direction, subject to governance. Product/licensing posture recorded in DATA_SOURCES.md (Product Licensing Posture): commercial-first, ShareAlike-cautious — ShareAlike sources (e.g. Volubilis) remain candidates but ingestion stays gated until the specific ShareAlike obligations and product consequences are explicitly reviewed and accepted; do not proceed with Volubilis ingestion while it requires assuming ShareAlike tolerance. The next core-governance thread is documentation-only (no §9 implementation, no field, no ingestion): ground derived linguistic artifact provenance — generator identity + generator version + input headword lineage — as a concept distinct from source provenance, without overloading DictionarySourceProvenance or the internal generatedFrom marker, via an ARCHITECTURE.md grounding amendment (grounding-of-record) plus a companion ADR; concrete shape deferred to a later §9 assessment. Prior triage context: First FIXTURE triage cycle COMPLETE. Cluster 1 (lookup
+  inference is OUT; generated-and-stored offline/precomputed derived tone is the intended direction, subject to governance. Product/licensing posture recorded in DATA_SOURCES.md (Product Licensing Posture): commercial-first, ShareAlike-cautious — ShareAlike sources (e.g. Volubilis) remain candidates but ingestion stays gated until the specific ShareAlike obligations and product consequences are explicitly reviewed and accepted; do not proceed with Volubilis ingestion while it requires assuming ShareAlike tolerance. The derived-linguistic-artifact-provenance grounding thread is COMPLETE: an ARCHITECTURE.md "Derived Linguistic Artifact Provenance" amendment (grounding-of-record) plus companion ADR-0017 ground it as a concept distinct from source provenance (grounded case: machine-generated/precomputed pronunciation and tone; lineage = generator identity + generator version + input headword lineage; precompute-only, never runtime; not overloading DictionarySourceProvenance or the internal generatedFrom marker; human-curated override provenance deferred; no field introduced, concrete shape deferred to a later §9 assessment). Next concrete step: no authorized core slice pending — continue gathering REAL lookup friction via docs/usethai/ux-friction-log.md; any §9 assessment of the concrete derived-provenance representation is gated on the operator's tone-spike product decisions (generator selection, canonical notation, accuracy-validation methodology) and is not yet authorized. Prior triage context: First FIXTURE triage cycle COMPLETE. Cluster 1 (lookup
   direction in page heading/title) implemented via the P2 direction-aware
   chrome slice; Cluster 3 field-population investigation confirmed
   the expected outcome — the remaining multi-entry ambiguity is a
@@ -36,12 +36,12 @@ Cross-Session State Document | Updated After Each PR Cycle
   target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
   review. Only REAL clustered query-form-unmatched signals can support a core search-capability
   warrant; fixture-only friction is discounted.
-- Last accepted ADR: ADR-0016 (docs/adr/0016-lexical-lookup-whitespace-diagnostic-surfacing.md),
-  Accepted — implemented in #181
+- Last accepted ADR: ADR-0017 (docs/adr/0017-derived-linguistic-artifact-provenance.md),
+  Accepted (contingent on the co-merged ARCHITECTURE.md "Derived Linguistic Artifact Provenance" amendment)
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #192 — spike: document Thai tone-generation feasibility
+- Last merged PR: #194 — docs: ground derived linguistic artifact provenance
 
 ## Application-tier — current state
 
@@ -341,6 +341,19 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
   LexicalLookupResultStatus maps the rejection to existing "not-found". Tests: 3 throw-asserting
   tests rewritten result-asserting; +1 lookup positive, +1 interop bucket-populates-via-passthrough,
   +1 trace "not-found"; net +3. Baseline 856 → 859 / 62 / 92.78% → 92.79%. Schema literals unchanged.
+- fix/derived-linguistic-artifact-provenance-grounding (#194) — grounded derived
+  linguistic artifact provenance as a binding concept distinct from source provenance.
+  Added an ARCHITECTURE.md "Derived Linguistic Artifact Provenance" section
+  (grounding-of-record; inserted between "Lexical Key Normalization Policy" and
+  "Database Blueprint") plus companion ADR-0017 (Accepted, contingent on the co-merged
+  amendment; Related ADR-0009/0010/0016). Grounded case limited to machine-generated/
+  precomputed pronunciation and tone; required lineage = generator identity + generator
+  version + input headword lineage; precompute-only/never-runtime; generator-agnostic;
+  explicitly not DictionarySourceProvenance and not the internal generatedFrom marker;
+  human-curated override/exception-table provenance deferred (additive, forward-only).
+  Documentation-only governance grounding; no implementation slice delivered; grounds no
+  field; no type/field/schema literal/builder introduced. Baseline unchanged:
+  859 / 62 / 92.79%.
 
 ## Active Scope and Derivation Surface
 
@@ -379,6 +392,13 @@ explicitly authorized:
   not warranted; ARCHITECTURE.md defines no phase-coupled migration semantics
 - Phase 14 chartered categories — API contract, static/SEO rendering contract, browser-native fallback
   contract — DEFERRED. The Phase 14 closure assessment determined each resolves to no structurally distinct artifact under current grounding: all would be field-identical to the route delivery contract ({schemaVersion, deliveryId, searchProjection, staticContentAddress}), distinguished only by name, with any category-specific field being domain-convention invention (DOCUMENTARY DERIVATION LAW) or prohibited vocabulary (ADR-0013). The groundable structural delivery surface is a single contract shape realized per-projection (the route category). Building any deferred category as a distinct type requires new ARCHITECTURE.md content grounding — an operator architectural decision, not yet warranted.
+- Human-curated override / exception-table provenance — human-curation lineage and a
+  curated correction's own licensing — DEFERRED (ADR-0017; ARCHITECTURE.md "Derived
+  Linguistic Artifact Provenance"): related to derived linguistic artifact provenance but
+  explicitly out of scope, requiring a future additive ARCHITECTURE.md amendment under
+  explicit operator authorization before any assessment. The concrete derived-provenance
+  representation itself (standalone type vs. field, names, population path) remains
+  deferred to a future §9 assessment, gated on the operator's tone-spike product decisions.
 
 ## Schema Version Literals (Confirmed from Repository Files)
 
