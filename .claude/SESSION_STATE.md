@@ -42,7 +42,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #196 — chore: exclude spike-local artifacts from ESLint
+- Last merged PR: #197 — docs: record provisional tone generator/notation/validation product rulings in session state
 
 ## Application-tier — current state
 
