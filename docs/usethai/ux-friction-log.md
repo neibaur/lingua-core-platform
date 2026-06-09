@@ -456,3 +456,5 @@ without a separate core grounding + §9 assessment.
 A first warrant-review triage was convened 2026-06-07 on the FIXTURE batch (F-0001–F-0013).
 Result persisted at docs/usethai/warrant-review-2026-06-07.md. FIXTURE basis — no
 core-capability warrant issued.
+
+A second warrant-review triage was convened 2026-06-09 on the FIXTURE batch (F-0014–F-0027). Result persisted at docs/usethai/warrant-review-2026-06-09.md. FIXTURE basis — no core-capability warrant issued; six app-tier presentation candidates identified (not authorized); romanized-form lookup and as-you-type held pending REAL evidence.
