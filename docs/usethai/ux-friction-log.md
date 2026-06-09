@@ -259,6 +259,188 @@ plus core grounding + §9 assessment.
 - Friction type: QUERY-FORM-UNMATCHED
 - Notes: The target word exists in the fixture. Adding punctuation prevented the query from reaching the result.
 
+### F-0014 — 2026-06-09
+
+- Session context: Manual comparison testing against an external Thai dictionary reference while reviewing the current UseThai lookup experience
+- Query: กิน Direction: th→en
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/manual lookup compared against external reference screenshots
+- Target confirmed present in data: yes
+- Expected: Understand the displayed pronunciation for กิน and how to interpret the romanized form.
+- Actual: UseThai returned กิน with romanized form "kin" and definition "to eat." The external reference displayed a different romanized form, "gin," for the same Thai word.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: The lookup succeeded, but the romanized form was difficult to interpret because the transcription system was not apparent during use. The friction was not that the lookup failed, but that a non-Thai speaker comparing references could not tell why the same Thai word appeared with different romanized spellings.
+
+### F-0015 — 2026-06-09
+
+- Session context: Manual comparison testing while reviewing whether a beginner can understand common usage of returned Thai words
+- Query: กิน Direction: th→en
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/manual lookup compared against external reference screenshots
+- Target confirmed present in data: yes
+- Expected: Understand the meaning of กิน well enough to recognize common usage beyond the narrow English gloss.
+- Actual: UseThai returned the definition "to eat." The external reference indicated usage that also covers consuming drinks or medicine, which is not obvious from the returned UseThai definition alone.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: The result was present and correct at a basic level, but the displayed definition was too narrow for a learner to understand common usage contexts observed in comparison material.
+
+### F-0016 — 2026-06-09
+
+- Session context: Manual comparison testing while reviewing how much context a learner gets after a successful Thai → English lookup
+- Query: กิน Direction: th→en
+- Surface exercised: lookup UI result presentation
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/manual lookup compared against external reference screenshots
+- Target confirmed present in data: yes
+- Expected: After a successful lookup for a common Thai word, see enough surrounding usage context to understand how the word appears in related words or phrases.
+- Actual: UseThai returned the single entry for กิน with its romanized form and definition. The comparison reference showed related words/phrases and example sentence material using กิน, but that surrounding context was not visible in the UseThai result.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: The lookup itself succeeded. The friction was that the returned result was isolated, making it harder to understand how the word appears in common compounds or sentence contexts.
+
+### F-0017 — 2026-06-09
+
+- Session context: Manual comparison testing of English → Thai lookup breadth
+- Query: old Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/manual lookup compared against external reference screenshots
+- Target confirmed present in data: yes
+- Expected: Understand whether the returned Thai translations represented the full set of common Thai options for "old."
+- Actual: UseThai returned เก่า and แก่. The comparison reference displayed additional Thai forms associated with "old," including เก่าๆ and เก่าแก่.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: This is distinct from the prior tone and homograph-disambiguation entries. The result was present, but comparison testing made the result set feel incomplete or difficult to evaluate for coverage. The presence of the additional Thai forms in the current UseThai data was not confirmed.
+
+### F-0018 — 2026-06-09
+
+- Session context: Manual testing of lookup direction and search-box guidance
+- Query: กิน Direction: en→th
+- Surface exercised: lookup UI input placeholder / lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/manual lookup
+- Target confirmed present in data: yes, but in the opposite direction
+- Expected: The example shown in the search box would be usable in the currently selected lookup direction.
+- Actual: The search box showed a Thai example, "Type a word, e.g. กิน," even while English → Thai mode was selected. Entering the displayed Thai example in English → Thai mode did not reach the Thai → English entry.
+- Friction type: OTHER
+- Notes: The friction came from the input guidance and active direction being out of sync. The target word exists in the fixture, but following the displayed example under the selected direction led to a not-found result.
+
+### F-0019 — 2026-06-09
+
+- Session context: Manual testing of direction-selection friction while comparing UseThai with a single-search-box external reference
+- Query: old Direction: th→en
+- Surface exercised: lookup direction selector / lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/manual lookup
+- Target confirmed present in data: yes, but in the opposite direction
+- Expected: Entering an English word that exists in the dictionary would reach the English → Thai result or make the direction mismatch clear.
+- Actual: With Thai → English selected, the English query "old" did not reach the existing English → Thai result for old.
+- Friction type: OTHER
+- Notes: The target concept exists in the fixture for English → Thai lookup. The friction was caused by the user needing to choose the correct lookup direction before entering the query.
+
+### F-0020 — 2026-06-09
+
+- Session context: Manual comparison testing of a common Thai word with multiple meanings
+- Query: เอา Direction: th→en
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/manual lookup compared against external reference screenshots
+- Target confirmed present in data: yes
+- Expected: Understand how many meanings the Thai word เอา has and how common or usable the returned senses are.
+- Actual: UseThai returned definitions corresponding to "to take" and "to want." The comparison reference showed additional meaning/context, including an "ok/right/well" sense and metadata indicating multiple meanings, common usage, and pronunciation availability.
+- Friction type: RESULT-PRESENT-HARD-TO-USE
+- Notes: The lookup succeeded and returned multiple definitions, but the result did not make the breadth, commonness, or pronunciation context of the word easy to assess during use.
+
+### F-0021 — 2026-06-09
+
+- Session context: Manual testing of the lookup UI while the browser/network connection was offline
+- Query: not recorded Direction: not recorded
+- Surface exercised: lookup request / error state presentation
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/local dev app
+- Target confirmed present in data: unknown
+- Expected: The app would explain that the lookup could not complete because the browser was offline or the network request failed.
+- Actual: The UI displayed: `Lookup failed ERROR The lookup request could not be completed: Failed to fetch`.
+- Friction type: DIAGNOSTIC-UNCLEAR
+- Notes: The lookup failure was caused by the offline/network state, but the displayed message exposed a low-level fetch failure rather than making the offline/network condition clear to the user.
+
+### F-0022 — 2026-06-09
+
+- Session context: Manual testing of whether a user can look up a Thai word by the way it sounds in roman letters
+- Query: kin Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/local dev app
+- Target confirmed present in data: yes
+- Expected: Some result related to กิน / "to eat," because the entered roman letters matched the displayed romanized pronunciation seen in the Thai → English result.
+- Actual: No exact match was returned.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The target word exists in the fixture as กิน and appears with romanized form "kin" in the Thai → English result, but entering the romanized form as a lookup query did not reach the entry.
+
+### F-0023 — 2026-06-09
+
+- Session context: Manual testing of whether a user can look up a Thai word by an alternate romanized spelling observed in comparison material
+- Query: gin Direction: en→th
+- Surface exercised: lexical exact-key lookup endpoint
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/local dev app compared against external reference material
+- Target confirmed present in data: yes
+- Expected: Some result related to กิน / "to eat," because the entered roman letters matched an alternate romanized form observed in external reference material.
+- Actual: No exact match was returned.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: The target word exists in the fixture as กิน, but the alternate romanized spelling did not reach the entry. This is distinct from the romanization-display friction: here the lookup query itself was a romanized sound form.
+
+### F-0024 — 2026-06-09
+
+- Session context: Manual testing of repeated lookups followed by browser Back navigation
+- Query: multiple lookup queries, exact sequence not recorded Direction: mixed / not recorded
+- Surface exercised: browser navigation behavior / lookup UI state
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/local dev app
+- Target confirmed present in data: unknown
+- Expected: After performing several lookups, the browser Back button would move back through earlier lookup states or prior searches within UseThai.
+- Actual: Pressing the browser Back button returned to the site visited before `localhost:4321` instead of navigating through earlier UseThai lookup states.
+- Friction type: OTHER
+- Notes: The observed friction was not about a lookup result. It was about search/navigation state not being represented in browser history during the manual session.
+
+### F-0025 — 2026-06-09
+
+- Session context: Manual stress testing of the lookup input with a very long pasted query
+- Query: approximately 4,405 characters, mostly blank spaces, with `old` included Direction: en→th
+- Surface exercised: lookup request / error state presentation
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/local dev app
+- Target confirmed present in data: yes
+- Expected: The app would either handle the pasted input gracefully or clearly explain that the lookup input was too long.
+- Actual: The UI displayed a lookup failure: `The lookup request failed (HTTP 431)`. The terminal also logged a Vite 431 warning for request header fields too large.
+- Friction type: DIAGNOSTIC-UNCLEAR
+- Notes: An error for excessive input length was understandable, but the displayed HTTP 431 message was not learner-facing and did not clearly explain the excessive-input condition.
+
+### F-0026 — 2026-06-09
+
+- Session context: Manual testing of page refresh behavior after changing lookup direction and query
+- Query: old Direction: en→th
+- Surface exercised: page reload / lookup UI state
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/local dev app
+- Target confirmed present in data: yes
+- Expected: Refreshing the page after searching for `old` in English → Thai mode would preserve the active direction and query state.
+- Actual: Refreshing the page returned the UI to the default Thai → English state with กิน pre-populated and its definition loaded.
+- Friction type: OTHER
+- Notes: The lookup result for `old` was present before refresh, but the refreshed page did not preserve the user’s active lookup direction or query state.
+
+### F-0027 — 2026-06-09
+
+- Session context: Manual testing of the lookup input while typing rather than submitting a full exact query
+- Query: partial typed input, exact characters not recorded Direction: not recorded
+- Surface exercised: lookup input behavior
+- Data basis: FIXTURE
+- Data snapshot/source: current UseThai fixture/local dev app
+- Target confirmed present in data: unknown
+- Expected: While typing, the input would provide some indication of matching available words or otherwise guide the user toward valid lookup keys.
+- Actual: The page remained static while typing; no matching words, completion hint, or intermediate guidance appeared before submitting a lookup.
+- Friction type: QUERY-FORM-UNMATCHED
+- Notes: This observation is about input guidance during typing rather than a submitted lookup result. Because it concerns partial/as-you-type behavior, it should remain evidence only and not be treated as a search-capability warrant without later review.
+
 ## Warrant Review (DEFERRED — do not fill during evidence capture)
 
 Filled only in a separate, later session, after enough entries accumulate. As the log
