@@ -14,12 +14,15 @@ Cross-Session State Document | Updated After Each PR Cycle
   enabled-language configuration realized by TenantConfiguration + CanonicalLanguageTag).
   The ADR-0016 corrective core thread (th→en whitespace returned diagnostic) is IMPLEMENTED
   and merged (#181); the apps/usethai consumption slice is merged (#182). No core slice pending.
-- Next action: Friction capture paused. Single next step — run a second warrant-review/
-  triage over the second friction batch (F-0014–F-0027). FIXTURE basis: like the first
-  triage it can dispose app-tier presentation items and update cluster status, but cannot
-  issue a core-capability warrant (no REAL clustered signal yet). No core slice authorized;
-  Phase 16/17 remain PENDING AUTHORIZATION (HANDOFF §9 audit first); §9 derived-provenance-
-  shape assessment remains unauthorized (gated on tone-validation whole-word exact-match).
+- Next action: Second friction triage complete (warrant-review-2026-06-09.md) — FIXTURE
+  basis, no core-capability warrant; search-capability-shaped items (romanized-form lookup,
+  as-you-type) HELD with clusters 5/8. Six app-tier presentation candidates identified, none
+  authorized: direction-aware placeholder, direction-mismatch hint, user-facing error
+  messages, URL-state persistence. Single next step — operator authorizes one as the next
+  app-tier slice, or holds. Core gates unchanged: no core slice authorized; Phase 16/17
+  PENDING AUTHORIZATION (HANDOFF §9 audit first); §9 derived-provenance-shape assessment
+  unauthorized; REAL friction (gated on real data) still required for any search-capability
+  warrant.
 - Tone-generation feasibility spike complete — a throwaway, non-governed, docs-only investigation (report:
   docs/spikes/tone-generation-feasibility-spike.md). Findings: Thai tone-marked learner pronunciation can be generated from orthography by a rule-based engine (tltk 1.10 G2P), verified deterministic-at-pin (byte-identical hash across three independent processes) but NOT replay-stable across versions, so generator identity + version becomes part of the derived artifact's lineage; commercial-safe and posture-neutral (tltk BSD-3-Clause; ML alternatives thaig2p are CC-BY 4.0), so generated tone does NOT inherit Volubilis's ShareAlike question — generator and dictionary are independently licensed. Compatible with a precompute-and-store model only, never runtime inference (REPLAY-SAFE / STATIC RESOLUTION; "no AI at runtime"). Accuracy is not asserted (no gold set; a validation methodology is proposed). Representability gap flagged: the contracts can STORE a tone value (SpellingEntry.toneClassification / phoneticNotation) but cannot represent derived-artifact provenance (generator id + version + input headword lineage); DictionarySourceProvenance is the wrong home, so a new provenance representation would be a governed core change. Generation/ingestion is a core initiative, not authorized here; it remains gated on a product decision (is tone a product requirement) and, if generate-and-store, on resolving that provenance representability gap first. This advances Cluster 4 (tone now established as generatable) without closing it. No core slice pending. Product decisions (operator): tone IS a product requirement for UseThai (closing the open question above); runtime tone inference is OUT; generated-and-stored offline/precomputed derived tone is the intended direction, subject to governance. Generator selection (provisional baseline, operator — fork ruling: baseline-then-validate): generator = tltk 1.10 G2P; selection basis is governance/lineage, NOT accuracy; ML options thaig2p/thaig2p_v2 (CC-BY-4.0) remain DEFERRED comparator candidates only under the preconditions already recorded in the pilot protocol (runnable environment; determinism-at-pin; model-version pinning).
 - Tone-validation pilot protocol recorded (docs/validation/tone-validation-pilot-protocol.md) — planning
@@ -34,7 +37,7 @@ Cross-Session State Document | Updated After Each PR Cycle
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #200 — docs: append second UseThai friction evidence batch
+- Last merged PR: #202 — docs: add second UseThai friction warrant review
 
 ## Application-tier — current state
 
@@ -42,7 +45,7 @@ Cross-Session State Document | Updated After Each PR Cycle
   baseline + honest lookup states + P1 lookup presentation maturation +
   P2 direction-aware chrome (reactive heading/title), all merged.
 - Active app branch: none.
-- Evidence: ffriction log now holds 27 FIXTURE entries (both directions); first batch F-0001–F-0013 triaged (docs/usethai/warrant-review-2026-06-07.md), second batch F-0014–F-0027 pending warrant review. Cluster 1
+  friction log holds 27 FIXTURE entries (both directions); first batch F-0001–F-0013 triaged (docs/usethai/warrant-review-2026-06-07.md), second batch F-0014–F-0027 triaged (docs/usethai/warrant-review-2026-06-09.md) — no core warrant (FIXTURE); six app-tier presentation candidates identified (not authorized); romanized-form lookup and as-you-type HELD.
   disposition implemented (#189); Cluster 3 investigation confirmed a
   data-content gap rather than a render omission. No REAL data yet. Volubilis license independently verified (CC BY-SA 4.0, rights-holder Francis Bastien) and a fixed snapshot pinned (v25.3, SHA-256) via the data-shape spike; data shape now known. Still candidate — not approved_for_ingestion (commercial-first posture now decided; Volubilis ShareAlike obligations not yet reviewed/accepted under that posture). Volubilis data-shape spike (docs/spikes/volubilis-data-shape-spike.md): viable CC BY-SA 4.0 foundation, moderate adapter, no native tone, ~46% multi-word expressions — ingestion is a gated core decision, not undertaken.
 
