@@ -6,8 +6,8 @@ Cross-Session State Document | Updated After Each PR Cycle
 
 > Single source of truth for values that change most cycles. Update them here and
 > nowhere else; every other file points to this block rather than restating it.
-> Completed Slices, Schema Version Literals, and Open Doctrinal Questions below
-> are append-only logs. Record the last MERGED PR (stable, knowable post-merge);
+> Completed Slices, Investigation Log, Schema Version Literals, and Open Doctrinal
+> Questions below are append-only logs. Record the last MERGED PR (stable, knowable post-merge);
 > never record the current branch or a self-referential commit hash.
 
 - Current phase: Phase 15 — COMPLETE (closure ADR-0015 accepted; tenant identity +
@@ -23,21 +23,12 @@ Cross-Session State Document | Updated After Each PR Cycle
   PENDING AUTHORIZATION (HANDOFF §9 audit first); §9 derived-provenance-shape assessment
   unauthorized; REAL friction (gated on real data) still required for any search-capability
   warrant.
-- Tone-generation feasibility spike complete — a throwaway, non-governed, docs-only investigation (report:
-  docs/spikes/tone-generation-feasibility-spike.md). Findings: Thai tone-marked learner pronunciation can be generated from orthography by a rule-based engine (tltk 1.10 G2P), verified deterministic-at-pin (byte-identical hash across three independent processes) but NOT replay-stable across versions, so generator identity + version becomes part of the derived artifact's lineage; commercial-safe and posture-neutral (tltk BSD-3-Clause; ML alternatives thaig2p are CC-BY 4.0), so generated tone does NOT inherit Volubilis's ShareAlike question — generator and dictionary are independently licensed. Compatible with a precompute-and-store model only, never runtime inference (REPLAY-SAFE / STATIC RESOLUTION; "no AI at runtime"). Accuracy is not asserted (no gold set; a validation methodology is proposed). Representability gap flagged: the contracts can STORE a tone value (SpellingEntry.toneClassification / phoneticNotation) but cannot represent derived-artifact provenance (generator id + version + input headword lineage); DictionarySourceProvenance is the wrong home, so a new provenance representation would be a governed core change. Generation/ingestion is a core initiative, not authorized here; it remains gated on a product decision (is tone a product requirement) and, if generate-and-store, on resolving that provenance representability gap first. This advances Cluster 4 (tone now established as generatable) without closing it. No core slice pending. Product decisions (operator): tone IS a product requirement for UseThai (closing the open question above); runtime tone inference is OUT; generated-and-stored offline/precomputed derived tone is the intended direction, subject to governance. Generator selection (provisional baseline, operator — fork ruling: baseline-then-validate): generator = tltk 1.10 G2P; selection basis is governance/lineage, NOT accuracy; ML options thaig2p/thaig2p_v2 (CC-BY-4.0) remain DEFERRED comparator candidates only under the preconditions already recorded in the pilot protocol (runnable environment; determinism-at-pin; model-version pinning).
-- Tone-validation pilot protocol recorded (docs/validation/tone-validation-pilot-protocol.md) — planning
-  artifact only; calibration-only; authorizes no execution. Records the full pilot decision set: composite gate (overall whole-word exact-match + independent §4 floor; per-syllable diagnostic-only) reserved for the later full set after thresholds are fixed; planning target 240 items, Shape B (~70–75% §4 over six failure categories, ~28–30 items per §4 stratum / ~25–30% regular contrast); comparison form = tltk th2ipa IPA-with-tone-digits, separators normalized out for the whole-word exact-match spine; per-syllable diagnostic on segmentation-agreeing items only; segmentation-divergence rate is a first-class pilot finding; human-only ground truth (licensed-reference path closed); untracked/spike-style sandbox; §4-prioritized double-annotation subset with a single designated independent adjudicator under a written segmentation-vs-tone rule; generator-agnostic gold set; ML comparator deferred unless outcome (c) triggered and all three preconditions met (runnable environment; determinism-at-pin; model-version pinning). Authorizes no execution, data, deps, tooling, §9 shape assessment, override/exception table, ingestion, or Volubilis work.
-- UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
-  evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
-  target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
-  review. Only REAL clustered query-form-unmatched signals can support a core search-capability
-  warrant; fixture-only friction is discounted.
 - Last accepted ADR: ADR-0017 (docs/adr/0017-derived-linguistic-artifact-provenance.md),
   Accepted (contingent on the co-merged ARCHITECTURE.md "Derived Linguistic Artifact Provenance" amendment)
 - Tests passing: 859
 - Test files: 62
 - Statement coverage: 92.79%
-- Last merged PR: #202 — docs: add second UseThai friction warrant review
+- Last merged PR: #203 — docs: update session state after second friction triage
 
 ## Application-tier — current state
 
@@ -45,9 +36,19 @@ Cross-Session State Document | Updated After Each PR Cycle
   baseline + honest lookup states + P1 lookup presentation maturation +
   P2 direction-aware chrome (reactive heading/title), all merged.
 - Active app branch: none.
-  friction log holds 27 FIXTURE entries (both directions); first batch F-0001–F-0013 triaged (docs/usethai/warrant-review-2026-06-07.md), second batch F-0014–F-0027 triaged (docs/usethai/warrant-review-2026-06-09.md) — no core warrant (FIXTURE); six app-tier presentation candidates identified (not authorized); romanized-form lookup and as-you-type HELD.
-  disposition implemented (#189); Cluster 3 investigation confirmed a
-  data-content gap rather than a render omission. No REAL data yet. Volubilis license independently verified (CC BY-SA 4.0, rights-holder Francis Bastien) and a fixed snapshot pinned (v25.3, SHA-256) via the data-shape spike; data shape now known. Still candidate — not approved_for_ingestion (commercial-first posture now decided; Volubilis ShareAlike obligations not yet reviewed/accepted under that posture). Volubilis data-shape spike (docs/spikes/volubilis-data-shape-spike.md): viable CC BY-SA 4.0 foundation, moderate adapter, no native tone, ~46% multi-word expressions — ingestion is a gated core decision, not undertaken.
+- Evidence: friction log holds 27 FIXTURE entries (both directions); first batch
+  F-0001–F-0013 triaged (docs/usethai/warrant-review-2026-06-07.md), second batch
+  F-0014–F-0027 triaged (docs/usethai/warrant-review-2026-06-09.md) — no core warrant
+  (FIXTURE); six app-tier presentation candidates identified (not authorized);
+  romanized-form lookup and as-you-type HELD. Cluster 1 disposition implemented (#189);
+  Cluster 3 investigation confirmed a data-content gap rather than a render omission. No
+  REAL data yet. Volubilis license independently verified (CC BY-SA 4.0, rights-holder
+  Francis Bastien) and a fixed snapshot pinned (v25.3, SHA-256) via the data-shape spike;
+  data shape now known. Still candidate — not approved_for_ingestion (commercial-first
+  posture now decided; Volubilis ShareAlike obligations not yet reviewed/accepted under that
+  posture). Volubilis data-shape spike (docs/spikes/volubilis-data-shape-spike.md): viable
+  CC BY-SA 4.0 foundation, moderate adapter, no native tone, ~46% multi-word expressions —
+  ingestion is a gated core decision, not undertaken.
 
 Completed Slices, the validation baseline, and Schema Version Literals track core
 (src/core) only. Application-tier load-bearing learnings (durable; for the next
@@ -349,6 +350,22 @@ Repository-wide architectural audit (pre-Phase-12) complete — 29 conflicts res
   Documentation-only governance grounding; no implementation slice delivered; grounds no
   field; no type/field/schema literal/builder introduced. Baseline unchanged:
   859 / 62 / 92.79%.
+
+## Investigation Log
+
+Append-only record of docs-only spikes, validation protocols, evidence logs, and triage
+artifacts. These entries preserve investigation state and decision context; they do not
+authorize implementation.
+
+- Tone-generation feasibility spike complete — a throwaway, non-governed, docs-only investigation (report:
+  docs/spikes/tone-generation-feasibility-spike.md). Findings: Thai tone-marked learner pronunciation can be generated from orthography by a rule-based engine (tltk 1.10 G2P), verified deterministic-at-pin (byte-identical hash across three independent processes) but NOT replay-stable across versions, so generator identity + version becomes part of the derived artifact's lineage; commercial-safe and posture-neutral (tltk BSD-3-Clause; ML alternatives thaig2p are CC-BY 4.0), so generated tone does NOT inherit Volubilis's ShareAlike question — generator and dictionary are independently licensed. Compatible with a precompute-and-store model only, never runtime inference (REPLAY-SAFE / STATIC RESOLUTION; "no AI at runtime"). Accuracy is not asserted (no gold set; a validation methodology is proposed). Representability gap flagged: the contracts can STORE a tone value (SpellingEntry.toneClassification / phoneticNotation) but cannot represent derived-artifact provenance (generator id + version + input headword lineage); DictionarySourceProvenance is the wrong home, so a new provenance representation would be a governed core change. Generation/ingestion is a core initiative, not authorized here; it remains gated on a product decision (is tone a product requirement) and, if generate-and-store, on resolving that provenance representability gap first. This advances Cluster 4 (tone now established as generatable) without closing it. No core slice pending. Product decisions (operator): tone IS a product requirement for UseThai (closing the open question above); runtime tone inference is OUT; generated-and-stored offline/precomputed derived tone is the intended direction, subject to governance. Generator selection (provisional baseline, operator — fork ruling: baseline-then-validate): generator = tltk 1.10 G2P; selection basis is governance/lineage, NOT accuracy; ML options thaig2p/thaig2p_v2 (CC-BY-4.0) remain DEFERRED comparator candidates only under the preconditions already recorded in the pilot protocol (runnable environment; determinism-at-pin; model-version pinning).
+- Tone-validation pilot protocol recorded (docs/validation/tone-validation-pilot-protocol.md) — planning
+  artifact only; calibration-only; authorizes no execution. Records the full pilot decision set: composite gate (overall whole-word exact-match + independent §4 floor; per-syllable diagnostic-only) reserved for the later full set after thresholds are fixed; planning target 240 items, Shape B (~70–75% §4 over six failure categories, ~28–30 items per §4 stratum / ~25–30% regular contrast); comparison form = tltk th2ipa IPA-with-tone-digits, separators normalized out for the whole-word exact-match spine; per-syllable diagnostic on segmentation-agreeing items only; segmentation-divergence rate is a first-class pilot finding; human-only ground truth (licensed-reference path closed); untracked/spike-style sandbox; §4-prioritized double-annotation subset with a single designated independent adjudicator under a written segmentation-vs-tone rule; generator-agnostic gold set; ML comparator deferred unless outcome (c) triggered and all three preconditions met (runnable environment; determinism-at-pin; model-version pinning). Authorizes no execution, data, deps, tooling, §9 shape assessment, override/exception table, ingestion, or Volubilis work.
+- UX friction evidence log added (docs/usethai/ux-friction-log.md, #184) — the append-only
+  evidence vehicle for the UX-maturation phase. Captures real lookup friction (FIXTURE vs REAL,
+  target-confirmed-present, descriptive friction types); warrant/triage is a separate deferred
+  review. Only REAL clustered query-form-unmatched signals can support a core search-capability
+  warrant; fixture-only friction is discounted.
 
 ## Active Scope and Derivation Surface
 
