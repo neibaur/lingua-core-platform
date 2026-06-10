@@ -28,6 +28,7 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
     import type {
       LexicalDefinition,
       LexicalEntry,
+      LexicalLanguageDirection,
       LexicalLookupDiagnostic,
       LexicalLookupDiagnosticSeverity,
       LexicalLookupResult,
@@ -43,6 +44,7 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
       documentTitleForDirection,
       headingForDirection,
       normalizeDirection,
+      placeholderForDirection,
     } from "../lib/direction-chrome";
 
     const form = document.getElementById("lookup-form");
@@ -60,6 +62,7 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
       const direction = normalizeDirection(dirSelect.value);
       document.title = documentTitleForDirection(direction);
       heading.textContent = headingForDirection(direction);
+      qInput.placeholder = placeholderForDirection(direction);
     }
 
     function escapeHtml(value: string): string {
@@ -171,22 +174,49 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
       return '<div class="state state--loading"><span class="state__spinner" aria-hidden="true"></span><p class="state__body">Looking up…</p></div>';
     }
 
-    // No-result: a neutral "no exact match" — NOT an error. Explains exact-key
+    // Purely presentational script-mismatch hint (F-0019, Cluster 12).
+    // Returns a non-empty hint string only when the submitted query's script
+    // obviously does not match the selected direction. Mixed or ambiguous
+    // input returns “”. This check NEVER gates, skips, or precedes the core
+    // call — it is only used to optionally append copy after core returns.
+    function scriptMismatchHint(
+      query: string,
+      direction: LexicalLanguageDirection,
+    ): string {
+      const hasThai = /[฀-๿]/.test(query);
+      const hasLatin = /[a-zA-Z]/.test(query);
+      if (hasThai && hasLatin) return “”;
+      if (direction === “th→en” && hasLatin && !hasThai) {
+        return “This looks like an English term. Try switching the direction to English → Thai.”;
+      }
+      if (direction === “en→th” && hasThai && !hasLatin) {
+        return “This looks like a Thai term. Try switching the direction to Thai → English.”;
+      }
+      return “”;
+    }
+
+    // No-result: a neutral “no exact match” — NOT an error. Explains exact-key
     // behavior. No suggestions, near-matches, or alternatives of any kind are
     // offered. When core supplied diagnostics they are rendered (primary +
     // verbatim secondary); otherwise the static exact-key explanation stands.
+    // An optional hint string (from scriptMismatchHint) is appended when present.
     function renderNoResultBody(
       query: string,
       diagnostics: readonly LexicalLookupDiagnostic[],
+      hint?: string,
     ): string {
       const detail =
         diagnostics.length > 0
           ? renderDiagnostics(diagnostics)
-          : `<p class="state__body">This is an exact-key lookup, so only an entry whose key matches exactly is returned.</p>`;
+          : `<p class=”state__body”>This is an exact-key lookup, so only an entry whose key matches exactly is returned.</p>`;
+      const hintHtml = hint
+        ? `<p class=”state__hint”>${escapeHtml(hint)}</p>`
+        : “”;
       return (
-        `<div class="state state--no-result">` +
-        `<p class="state__heading">No exact match for “${escapeHtml(query)}”.</p>` +
+        `<div class=”state state--no-result”>` +
+        `<p class=”state__heading”>No exact match for “${escapeHtml(query)}”.</p>` +
         detail +
+        hintHtml +
         `</div>`
       );
     }
@@ -246,7 +276,12 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
     // are ordered only via orderLexicalDiagnostics; the first ordered diagnostic
     // selects the presentation lane (categoryForDiagnostic), and every diagnostic
     // is rendered within that lane.
-    function renderResponse(result: LexicalLookupResult, echo: string) {
+    function renderResponse(
+      result: LexicalLookupResult,
+      echo: string,
+      rawQuery: string,
+      direction: LexicalLanguageDirection,
+    ) {
       const entries = result.entries ?? [];
       if (entries.length > 0) {
         paint(echo, renderResultBody(result));
@@ -257,7 +292,14 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
       const primary = diagnostics[0];
       if (!primary) {
         // No entries and no diagnostic: the honest answer is still no result.
-        paint(echo, renderNoResultBody(result.query, []));
+        paint(
+          echo,
+          renderNoResultBody(
+            result.query,
+            [],
+            scriptMismatchHint(rawQuery, direction),
+          ),
+        );
         return;
       }
 
@@ -265,7 +307,14 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
       if (category === "rejected-input") {
         paint(echo, renderRejectedInputBody(diagnostics));
       } else if (category === "no-result") {
-        paint(echo, renderNoResultBody(result.query, diagnostics));
+        paint(
+          echo,
+          renderNoResultBody(
+            result.query,
+            diagnostics,
+            scriptMismatchHint(rawQuery, direction),
+          ),
+        );
       } else {
         paint(echo, renderSystemDiagnosticsBody("Lookup unavailable", diagnostics));
       }
@@ -302,7 +351,7 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
           return;
         }
         const result = (await response.json()) as LexicalLookupResult;
-        renderResponse(result, echo);
+        renderResponse(result, echo, rawQuery, normalizeDirection(dir));
       } catch (error) {
         const detail = error instanceof Error ? error.message : String(error);
         paint(
