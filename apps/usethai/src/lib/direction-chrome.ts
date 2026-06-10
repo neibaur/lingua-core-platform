@@ -32,6 +32,15 @@ export function headingForDirection(
     : "Thai → English lookup";
 }
 
+// Input placeholder example for each lookup direction (F-0018, Cluster 1 residual).
+export function placeholderForDirection(
+  direction: LexicalLanguageDirection,
+): string {
+  return direction === "en→th"
+    ? "Type a word, e.g. old"
+    : "Type a word, e.g. กิน";
+}
+
 // Narrow an arbitrary control value (e.g. the raw #dir select value) to the
 // LexicalLanguageDirection union, defaulting to DEFAULT_DIRECTION. Mirrors the
 // endpoint's own normalization so client chrome and server agree.
