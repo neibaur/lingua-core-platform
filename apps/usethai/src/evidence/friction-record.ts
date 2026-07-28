@@ -38,17 +38,12 @@ export type ReachOutcome = "hit" | "miss" | "unsupported";
 
 /** Capability verdict vocabulary — verbatim from the inventory §1 definitions. */
 export type CapabilityVerdict =
-  | "EXPORTED"
-  | "PRESENT — NOT APP-REACHABLE"
-  | "NOT PRESENT";
+  "EXPORTED" | "PRESENT — NOT APP-REACHABLE" | "NOT PRESENT";
 
 /** Reachability tier — from the inventory §1. `APP-REACHABLE` accompanies an
  *  EXPORTED verdict; the lower tiers accompany PRESENT — NOT APP-REACHABLE. */
 export type ReachabilityTier =
-  | "APP-REACHABLE"
-  | "INTERMEDIATE"
-  | "LEAF-ONLY"
-  | "INTERNAL";
+  "APP-REACHABLE" | "INTERMEDIATE" | "LEAF-ONLY" | "INTERNAL";
 
 /**
  * Evidence classification of the reach.
@@ -67,10 +62,7 @@ export type ReachabilityTier =
  *   support one); the summary still tallies all three friction values separately.
  */
 export type EvidenceClassification =
-  | "STRUCTURAL"
-  | "CONTENT-CAPPED"
-  | "AMBIGUOUS"
-  | "NONE";
+  "STRUCTURAL" | "CONTENT-CAPPED" | "AMBIGUOUS" | "NONE";
 
 /** Author hint applied only when an EXPORTED capability did NOT hit: it records
  *  whether the miss is a clean data gap (CONTENT-CAPPED) or genuinely AMBIGUOUS.

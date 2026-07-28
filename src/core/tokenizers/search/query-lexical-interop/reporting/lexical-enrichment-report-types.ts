@@ -25,16 +25,15 @@ export const LEXICAL_ENRICHMENT_LOOKUP_DIAGNOSTIC_CODES: readonly LexicalLookupD
 // ── Diagnostics-by-code projection ───────────────────────────────────────────
 
 export type LexicalEnrichmentDiagnosticsByCode = {
-  readonly [K in LexicalLookupDiagnosticCode]: readonly LexicalLookupDiagnostic[];
+  readonly [
+    K in LexicalLookupDiagnosticCode
+  ]: readonly LexicalLookupDiagnostic[];
 };
 
 // ── Enrichment status ─────────────────────────────────────────────────────────
 
 export type LexicalQueryEnrichmentStatus =
-  | "fully-enriched"
-  | "partially-enriched"
-  | "unenriched"
-  | "vacuous";
+  "fully-enriched" | "partially-enriched" | "unenriched" | "vacuous";
 
 // ── Report artifact ───────────────────────────────────────────────────────────
 

@@ -773,7 +773,8 @@ describe("query snapshots", () => {
       typeof nested === "object" &&
       !Array.isArray(nested)
     ) {
-      expect(Object.isFrozen(nested["values"])).toBe(true);
+      const nestedValues = (nested as Record<string, unknown>)["values"];
+      expect(Object.isFrozen(nestedValues)).toBe(true);
     }
   });
 

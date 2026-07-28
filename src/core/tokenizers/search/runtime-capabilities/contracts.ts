@@ -21,10 +21,7 @@ export type RuntimeCapabilityCertificationSummarySchemaVersion =
 export type RuntimeCapabilityId = `${string}:${string}:${string}`;
 
 export type RuntimeCapabilityKind =
-  | "engine"
-  | "query"
-  | "snapshot"
-  | "governance";
+  "engine" | "query" | "snapshot" | "governance";
 
 export type RuntimeCapabilityStability = "stable" | "experimental";
 
@@ -93,8 +90,7 @@ export interface RuntimeCapabilityCompatibilityResult {
 export type RuntimeCapabilityCertificationStatus = "certified" | "rejected";
 
 export type RuntimeCapabilityCertificationDiagnosticCode =
-  | "CAPABILITY_MISMATCH"
-  | "CERTIFICATION_FAILURE";
+  "CAPABILITY_MISMATCH" | "CERTIFICATION_FAILURE";
 
 export interface RuntimeCapabilityCertificationMismatch {
   readonly stageIndex: number;

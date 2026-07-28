@@ -20,9 +20,7 @@ export type ReplayGovernanceReportSchemaVersion =
 const GOVERNANCE_REPORT_GENERATED_FROM = "replay-governance-report" as const;
 
 export type ReplayGovernanceReportCompatibility =
-  | "PERFECT_MATCH"
-  | "FORWARD_COMPATIBLE"
-  | "BREAKING_MISMATCH";
+  "PERFECT_MATCH" | "FORWARD_COMPATIBLE" | "BREAKING_MISMATCH";
 
 export interface ReplayGovernanceValidationBlock {
   readonly stageTrackingIndex: number;
@@ -54,9 +52,7 @@ export interface ReplayGovernanceArtifactSummary {
 export interface ReplayGovernanceDiagnosticItem {
   readonly stageTrackingIndex: number;
   readonly artifactTarget:
-    | ReplayArtifactValidationTarget
-    | "compatibility"
-    | "diff";
+    ReplayArtifactValidationTarget | "compatibility" | "diff";
   readonly code: string;
   readonly message: string;
   readonly path: readonly string[];
@@ -221,8 +217,7 @@ function collectMismatches(
 
 function classifyReportCompatibility(
   compatibilityResult:
-    | QuerySnapshotValidationResult<QueryReplayCompatibilityResult>
-    | undefined,
+    QuerySnapshotValidationResult<QueryReplayCompatibilityResult> | undefined,
   diffResult: QuerySnapshotValidationResult<QueryReplayDiffResult> | undefined,
   diffSummary: ReplayDiffSummary | undefined,
   diagnosticCount: number,
