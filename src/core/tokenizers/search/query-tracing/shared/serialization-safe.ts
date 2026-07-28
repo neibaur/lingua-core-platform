@@ -1,8 +1,5 @@
 export type DeepReadonlySerializable<T> = T extends
-  | string
-  | number
-  | boolean
-  | null
+  string | number | boolean | null
   ? T
   : T extends readonly (infer U)[]
     ? readonly DeepReadonlySerializable<U>[]

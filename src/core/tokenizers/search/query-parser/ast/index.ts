@@ -8,10 +8,7 @@ export interface QueryAstBaseNode {
 }
 
 export type QueryAstNode =
-  | TokenQueryNode
-  | PhraseQueryNode
-  | BooleanQueryNode
-  | GroupedQueryNode;
+  TokenQueryNode | PhraseQueryNode | BooleanQueryNode | GroupedQueryNode;
 
 export interface TokenQueryNode extends QueryAstBaseNode {
   readonly type: "TOKEN";

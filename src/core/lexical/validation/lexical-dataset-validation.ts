@@ -25,9 +25,7 @@ export interface LexicalDatasetValidationDiagnostic {
 }
 
 export type LexicalDatasetValidationStatus =
-  | "invalid"
-  | "valid"
-  | "valid-with-warnings";
+  "invalid" | "valid" | "valid-with-warnings";
 
 export interface LexicalDatasetValidationResult {
   readonly schemaVersion: LexicalDatasetValidationResultSchemaVersion;

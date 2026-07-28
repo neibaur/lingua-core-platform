@@ -28,11 +28,7 @@ export interface ExecuteQueryPipelineOptions {
 }
 
 export type QueryPipelineStage =
-  | "lex"
-  | "parse"
-  | "compile"
-  | "plan"
-  | "execute";
+  "lex" | "parse" | "compile" | "plan" | "execute";
 
 export interface QueryPipelineDiagnosticBase {
   readonly stage: QueryPipelineStage;

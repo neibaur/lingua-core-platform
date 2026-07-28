@@ -59,20 +59,15 @@ export interface QuerySnapshotBundle {
 export type JsonPrimitive = string | number | boolean | null;
 
 export type JsonValue =
-  | JsonPrimitive
-  | readonly JsonValue[]
-  | { readonly [key: string]: JsonValue };
+  JsonPrimitive | readonly JsonValue[] | { readonly [key: string]: JsonValue };
 
 export type JsonObject = { readonly [key: string]: JsonValue };
 
 export type QueryReplayCompatibilityClassification =
-  | "compatible"
-  | "incompatible";
+  "compatible" | "incompatible";
 
 export type QueryReplayDiffClassification =
-  | "equivalent"
-  | "different"
-  | "incompatible";
+  "equivalent" | "different" | "incompatible";
 
 export type QueryReplayDiffKind =
   | "schema-version"
@@ -117,10 +112,7 @@ export interface QueryReplayCompatibilityResult {
 export type ReplayDiffSeverity = "none" | "warning" | "error";
 
 export type ReplayDiffSummaryStage =
-  | "envelope"
-  | "artifact"
-  | "provenance"
-  | "compatibility";
+  "envelope" | "artifact" | "provenance" | "compatibility";
 
 export interface ReplayDiffStatistics {
   readonly totalDiffCount: number;
@@ -156,14 +148,10 @@ export interface ReplayDiffSummary {
 }
 
 export type ReplayAggregationStage =
-  | "validation"
-  | "compatibility"
-  | "diff"
-  | "provenance";
+  "validation" | "compatibility" | "diff" | "provenance";
 
 export type ReplayAggregationArtifact =
-  | "snapshot-envelope"
-  | QuerySnapshotArtifactKind;
+  "snapshot-envelope" | QuerySnapshotArtifactKind;
 
 export interface ReplayDiagnosticGroup {
   readonly stage: ReplayAggregationStage;

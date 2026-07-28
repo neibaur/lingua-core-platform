@@ -22,7 +22,9 @@ export const LEXICAL_DATASET_VALIDATION_RULE_CODES: readonly LexicalDatasetValid
   ];
 
 export type LexicalDatasetDiagnosticsByCode = {
-  readonly [K in LexicalDatasetValidationDiagnosticCode]: readonly LexicalDatasetValidationDiagnostic[];
+  readonly [
+    K in LexicalDatasetValidationDiagnosticCode
+  ]: readonly LexicalDatasetValidationDiagnostic[];
 };
 
 export interface LexicalDatasetValidationReport {
