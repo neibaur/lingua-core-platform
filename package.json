@@ -46,7 +46,14 @@
   },
   "pnpm": {
     "overrides": {
+      "fast-uri": "3.1.5",
+      "js-yaml": "5.2.2",
+      "nanoid": "3.3.18",
+      "undici": "7.29.0",
       "yaml@<2.8.3": "^2.8.3"
+    },
+    "patchedDependencies": {
+      "astro@7.2.0": "patches/astro@7.2.0.patch"
     }
   }
 }
