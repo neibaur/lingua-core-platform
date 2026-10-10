@@ -88,11 +88,35 @@ stricter, the stricter rule wins.
   changes. The agent keeps them out of its own commits, hands off the exact
   `git add`, `git commit`, and `git push` commands, waits for the maintainer's
   commit, then continues the task.
-- **Dependencies.** Agents may add, upgrade, or remove dependencies when a task
-  needs it. They make and verify the change, then wait for the maintainer's
-  explicit authorization or hand off the commit. Keep dependency changes in
-  their own commit, and list each one in the PR description with an exact
-  version verified against a current source.
+- **Dependencies.** Install from the committed lockfile
+  (`pnpm install --frozen-lockfile`), except while making a dependency change.
+  Agents may add, upgrade, or remove dependencies when a task needs it. They
+  make and verify the change (frozen install, `pnpm validate`, `pnpm audit`),
+  then wait for the maintainer's explicit authorization or hand off the commit.
+  Keep dependency changes in their own commit, and list each one in the PR
+  description with an exact version verified against a current source.
+  - **Advisory fixes are pre-authorized.** An agent may commit a dependency
+    change without waiting when all of these hold: it is a minor or patch
+    change to an existing dependency or override pin (a new override pin for a
+    package already in the lockfile counts) that fixes an advisory reported by
+    `pnpm audit`; the version meets the release-age rule below; frozen install,
+    `pnpm audit`, and `pnpm validate` pass; and it is its own commit. New
+    dependencies, major versions, removals, `ignoreGhsas` entries, and trust
+    exclusions still wait for authorization or a handoff.
+  - **Release age.** Use only versions published at least 7 days ago, checked
+    on the registry, not recalled. A version that fixes an advisory reported by
+    `pnpm audit` is exempt: use it as soon as it is published. If it is younger
+    than 7 days, add a version-pinned `minimumReleaseAgeExclude` entry
+    (`package@version`, never a bare package name) and say so in the PR
+    description.
+  - **Fix deadline.** High and critical advisories are fixed within 7 days of a
+    patched version being published. The weekly `dependency-audit` workflow
+    opens an issue that lists the open ones. They do not block unrelated pull
+    requests: the `audit-gate` check fails only a pull request that introduces
+    one (`neibaur-labs/agent-ops`, `docs/adr/0001`).
+  - **No usable fix.** If an advisory has no patched version, do not add an
+    exception on your own. Open an issue with the advisory, the affected
+    dependency path, and the proposed dated `ignoreGhsas` entry.
 - **Pull request size.** One concern per pull request, or two when they are
   tightly coupled. There is no line cap; the ceiling is 20,000 changed lines,
   excluding lockfiles and generated files.

@@ -1,0 +1,87 @@
+# dependency-audit.yml
+#
+# Weekly audit of the committed lockfile. When `pnpm audit` reports a high or
+# critical advisory, this opens one tracking issue (or comments on the open one)
+# listing each advisory and its patched version.
+#
+# Why this exists: the `audit-gate` check fails only a pull request that
+# INTRODUCES an advisory. Advisories that are already on main do not block
+# unrelated work, so they need their own alarm and a deadline. That is this
+# workflow. Policy: neibaur-labs/agent-ops docs/adr/0001.
+#
+# The issue is the to-do item. Fixing it follows the Dependencies rail in AGENTS.md (an advisory fix is
+# exempt from the 7-day release age). Nothing here changes a dependency.
+name: dependency-audit
+
+on:
+  schedule:
+    - cron: "17 6 * * 1" # Mondays 06:17 UTC
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: dependency-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with: { node-version: 22 }
+
+      - name: Audit and report
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          title='Dependency audit: open high or critical advisories'
+          pnpm audit --json > "$RUNNER_TEMP/audit.json" || true
+          jq -e 'has("advisories")' "$RUNNER_TEMP/audit.json" > /dev/null \
+            || { echo "::error::pnpm audit returned no advisory data; failing closed."; exit 1; }
+
+          rows=$(jq -r '.advisories // {} | to_entries[] | .value
+            | select(.severity == "high" or .severity == "critical")
+            | "| `\(.module_name)` | \(.severity) | \(.github_advisory_id) | \([.findings[]?.version] | unique | join(", ")) | \(.patched_versions) |"' \
+            "$RUNNER_TEMP/audit.json" | sort -u)
+          existing=$(gh issue list -R "$REPO" --state open --search "in:title \"$title\"" \
+            --json number,title --jq "[.[] | select(.title == \"$title\")][0].number // empty")
+
+          if [ -z "$rows" ]; then
+            echo "No high or critical advisories."
+            if [ -n "$existing" ]; then
+              gh issue comment "$existing" -R "$REPO" \
+                --body "The weekly audit found no high or critical advisories ($RUN_URL). This issue can be closed."
+            fi
+            exit 0
+          fi
+
+          {
+            echo "The weekly audit of \`pnpm-lock.yaml\` on the default branch reports:"
+            echo
+            echo "| Package | Severity | Advisory | Installed | Patched |"
+            echo "| --- | --- | --- | --- | --- |"
+            echo "$rows"
+            echo
+            echo "These do not block unrelated pull requests. Fix them within 7 days of a patched version being published (\`AGENTS.md\`, Dependencies rail). An advisory fix is exempt from the 7-day release age."
+            echo
+            echo "Run: $RUN_URL"
+          } > "$RUNNER_TEMP/body.md"
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" -R "$REPO" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh issue create -R "$REPO" --title "$title" --body-file "$RUNNER_TEMP/body.md"
+          fi
+          echo "::warning::High or critical advisories are open; see the tracking issue."
