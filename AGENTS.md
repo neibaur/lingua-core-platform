@@ -84,10 +84,11 @@ stricter, the stricter rule wins.
   requests.
 - **Protected paths: agents edit, the maintainer commits.** Agents may edit
   agent-instruction files (`AGENTS.md`, `CLAUDE.md`, and similar), `.github/**`,
-  `LICENSE`, and skill directories, but the maintainer commits and pushes those
-  changes. The agent keeps them out of its own commits, hands off the exact
-  `git add`, `git commit`, and `git push` commands, waits for the maintainer's
-  commit, then continues the task.
+  `LICENSE`, skill directories, and sub-agent definitions (`.claude/agents/**`),
+  but the maintainer commits and pushes those changes. The agent keeps them out
+  of its own commits, hands off the exact `git add`, `git commit`, and
+  `git push` commands, waits for the maintainer's commit, then continues the
+  task.
 - **Dependencies.** Install from the committed lockfile
   (`pnpm install --frozen-lockfile`), except while making a dependency change.
   Agents may add, upgrade, or remove dependencies when a task needs it. They
