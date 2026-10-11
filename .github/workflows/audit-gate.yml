@@ -5,8 +5,8 @@
 # on the base branch are warnings; the weekly dependency-audit workflow
 # raises those. Policy: neibaur-labs/agent-ops docs/adr/0001.
 #
-# The gate step is the same text as the `security` job step in
-# neibaur-labs/project-template-node. Keep them identical.
+# The gate itself is the shared, tested action in neibaur-labs/ci-workflows,
+# pinned by commit.
 name: audit-gate
 
 on:
@@ -33,46 +33,4 @@ jobs:
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with: { node-version: 22, cache: pnpm }
-      - name: Audit gate (fails on newly introduced advisories)
-        # Fails only when this pull request adds a high or critical advisory that
-        # the base branch does not already have. Advisories already on the base
-        # branch are printed as warnings and do not block; the weekly
-        # dependency-audit workflow tracks those (neibaur-labs/agent-ops docs/adr/0001).
-        # If pnpm audit returns no advisory data, the step fails closed.
-        shell: bash
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: |
-          set -euo pipefail
-          pnpm install --frozen-lockfile
-          keys() {
-            jq -r '.advisories // {} | to_entries[] | .value
-              | select(.severity == "high" or .severity == "critical")
-              | "\(.github_advisory_id) \(.module_name)"' "$1" | sort -u
-          }
-          audit() { # <dir> <out.json>
-            (cd "$1" && pnpm audit --json > "$2") || true
-            jq -e 'has("advisories")' "$2" > /dev/null \
-              || { echo "::error::pnpm audit returned no advisory data for $1; failing closed."; exit 1; }
-          }
-          audit "$PWD" "$RUNNER_TEMP/head.json"
-          keys "$RUNNER_TEMP/head.json" > "$RUNNER_TEMP/head.txt"
-          if [ -z "$BASE_SHA" ]; then
-            while IFS= read -r k; do [ -n "$k" ] && echo "::warning::Open advisory on this branch: $k"; done < "$RUNNER_TEMP/head.txt"
-            echo "Not a pull request; nothing to compare."
-            exit 0
-          fi
-          mkdir -p "$RUNNER_TEMP/base"
-          for f in package.json pnpm-lock.yaml pnpm-workspace.yaml; do
-            git show "$BASE_SHA:$f" > "$RUNNER_TEMP/base/$f" 2>/dev/null || rm -f "$RUNNER_TEMP/base/$f"
-          done
-          audit "$RUNNER_TEMP/base" "$RUNNER_TEMP/base.json"
-          keys "$RUNNER_TEMP/base.json" > "$RUNNER_TEMP/base.txt"
-          comm -12 "$RUNNER_TEMP/base.txt" "$RUNNER_TEMP/head.txt" > "$RUNNER_TEMP/existing.txt"
-          comm -13 "$RUNNER_TEMP/base.txt" "$RUNNER_TEMP/head.txt" > "$RUNNER_TEMP/new.txt"
-          while IFS= read -r k; do [ -n "$k" ] && echo "::warning::Advisory already on the base branch (not blocking): $k"; done < "$RUNNER_TEMP/existing.txt"
-          if [ -s "$RUNNER_TEMP/new.txt" ]; then
-            while IFS= read -r k; do echo "::error::This change introduces a high or critical advisory: $k"; done < "$RUNNER_TEMP/new.txt"
-            exit 1
-          fi
-          echo "Audit gate OK: this change introduces no high or critical advisory."
+      - uses: neibaur-labs/ci-workflows/.github/actions/audit-gate@4245e598bdf3331400096b9e5468d842222e95cc # v1.0.0
