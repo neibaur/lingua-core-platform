@@ -185,14 +185,14 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
     ): string {
       const hasThai = /[฀-๿]/.test(query);
       const hasLatin = /[a-zA-Z]/.test(query);
-      if (hasThai && hasLatin) return “”;
-      if (direction === “th→en” && hasLatin && !hasThai) {
-        return “This looks like an English term. Try switching the direction to English → Thai.”;
+      if (hasThai && hasLatin) return "";
+      if (direction === "th→en" && hasLatin && !hasThai) {
+        return "This looks like an English term. Try switching the direction to English → Thai.";
       }
-      if (direction === “en→th” && hasThai && !hasLatin) {
-        return “This looks like a Thai term. Try switching the direction to Thai → English.”;
+      if (direction === "en→th" && hasThai && !hasLatin) {
+        return "This looks like a Thai term. Try switching the direction to Thai → English.";
       }
-      return “”;
+      return "";
     }
 
     // No-result: a neutral “no exact match” — NOT an error. Explains exact-key
@@ -208,13 +208,13 @@ const initialHeading = headingForDirection(DEFAULT_DIRECTION);
       const detail =
         diagnostics.length > 0
           ? renderDiagnostics(diagnostics)
-          : `<p class=”state__body”>This is an exact-key lookup, so only an entry whose key matches exactly is returned.</p>`;
+          : `<p class="state__body">This is an exact-key lookup, so only an entry whose key matches exactly is returned.</p>`;
       const hintHtml = hint
-        ? `<p class=”state__hint”>${escapeHtml(hint)}</p>`
-        : “”;
+        ? `<p class="state__hint">${escapeHtml(hint)}</p>`
+        : "";
       return (
-        `<div class=”state state--no-result”>` +
-        `<p class=”state__heading”>No exact match for “${escapeHtml(query)}”.</p>` +
+        `<div class="state state--no-result">` +
+        `<p class="state__heading">No exact match for “${escapeHtml(query)}”.</p>` +
         detail +
         hintHtml +
         `</div>`
